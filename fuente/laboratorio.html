@@ -159,7 +159,12 @@ tr.cur td{background:var(--accent-weak)}
 .probbar button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 14px;border-radius:8px;background:var(--panel)}
 .probbar button small{font:12px var(--body);color:var(--muted)}
 .probbar button[aria-pressed=true]{background:var(--accent-weak);border-color:var(--accent)}
-.edo-top{display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1.3fr);gap:20px;align-items:start}
+.edo-top{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:20px;align-items:start}
+.edo-side{position:sticky;top:12px;display:flex;flex-direction:column;gap:16px;min-width:0}
+@media (max-width:1100px){.edo-side{position:static}}
+.edo-side .edo-ctl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 22px;align-items:center}
+.edo-side .edo-ctl > h3,.edo-side .edo-ctl > .field,.edo-side .edo-ctl > .hint,.edo-side .edo-ctl > #setres{grid-column:1/-1}
+@media (max-width:560px){.edo-side .edo-ctl{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:1100px){.edo-top{grid-template-columns:minmax(0,1fr)}}
 .worked{display:flex;flex-direction:column;gap:12px}
 .worked .stmt{margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink);font-size:14.5px;max-width:68ch}
@@ -172,7 +177,7 @@ tr.cur td{background:var(--accent-weak)}
 .datos span{font:13px var(--mono);padding:3px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--line)}
 .modbanner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:13.5px;padding:8px 12px;border:1px solid var(--num);border-radius:8px;color:var(--ink)}
 .sim{display:flex;flex-direction:column;gap:12px}
-.simgrid{display:grid;grid-template-columns:minmax(170px,0.5fr) minmax(0,1.5fr);gap:14px;align-items:start}
+.simgrid{display:grid;grid-template-columns:minmax(200px,0.38fr) minmax(0,1.62fr);gap:18px;align-items:start}
 @media (max-width:560px){.simgrid{grid-template-columns:minmax(0,1fr)}}
 #spring{display:block;width:100%}
 .transport{display:grid;grid-template-columns:auto auto 1fr auto;gap:10px;align-items:center}
@@ -208,6 +213,15 @@ canvas.chart{display:block;width:100%;touch-action:none}
 @media (max-width:900px){.methods{grid-template-columns:minmax(0,1fr)}}
 .methods .formula{font-size:14px}
 .mtable td:first-child,.mtable th:first-child{text-align:left;font-family:var(--body)}
+.algo{grid-column:1/-1;border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.algohead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.algogrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 28px}
+@media (max-width:900px){.algogrid{grid-template-columns:minmax(0,1fr)}}
+.algo-code{margin:0;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font:13px/1.6 var(--mono);color:var(--ink);overflow-x:auto;white-space:pre}
+.algo-code .cm{color:var(--muted)}
+#algoidea p,.algofirst p{margin:4px 0;max-width:72ch;font-size:14.5px}
+.algofirst{font-size:14.5px}
+#algotable td,#algotable th{white-space:nowrap}
 .mtable tr.sel td{background:var(--accent-weak)}
 .sw.num{background:var(--num)}
 .sw.acc{background:var(--accent)}
@@ -226,7 +240,7 @@ canvas.chart{display:block;width:100%;touch-action:none}
 .rq input.good{border-color:var(--im)}.rq input.bad{border-color:var(--num)}
 .rqmsg{font-size:13.5px;font-weight:500}
 .worked ol.vars{background:var(--accent-weak);border-radius:8px;padding:10px 14px 10px 34px;margin:0}
-.worked .solh{font:600 13px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px}
+.algo .solh,.worked .solh{font:600 13px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px}
 .worked details.sol ul{margin:4px 0;padding-left:20px;display:flex;flex-direction:column;gap:5px;max-width:68ch}
 .sw.env{background:none;border-top:2px dashed var(--muted);border-radius:0;height:0;width:16px;vertical-align:3px}
 /* ---------- Fundamentos de Matemática 2 ---------- */
@@ -1298,6 +1312,37 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
   </div>
 </article>
 
+<div class="edo-side">
+<aside class="panel edo-ctl" aria-label="Parámetros">
+  <h3>Parámetros</h3>
+  <div class="slider"><label for="pm" id="lpm">m (kg)</label><input type="range" id="pm" min="0.05" max="10" step="0.05"><output id="om_"></output></div>
+  <div class="slider"><label for="pc" id="lpc">c (N·s/m)</label><input type="range" id="pc" min="0" max="12" step="0.05"><output id="oc_"></output></div>
+  <div class="slider"><label for="pk" id="lpk">k (N/m)</label><input type="range" id="pk" min="0.5" max="30" step="0.1"><output id="ok_"></output></div>
+  <div class="slider"><label for="px0" id="lpx0">x₀ (m)</label><input type="range" id="px0" min="-1" max="1" step="0.01"><output id="ox0"></output></div>
+  <div class="slider"><label for="pv0" id="lpv0">v₀ (m/s)</label><input type="range" id="pv0" min="-5" max="5" step="0.05"><output id="ov0"></output></div>
+  <div class="field">
+    <label for="pft" id="lpft">Fuerza externa F(t)</label>
+    <select id="pft">
+      <option value="none">Sin fuerza: F(t) = 0</option>
+      <option value="cos">F(t) = F₀ cos(ωt)</option>
+      <option value="texp">F(t) = F₀ t e⁻ᵗ</option>
+    </select>
+  </div>
+  <div class="slider" id="rowF0"><label for="pF0" id="lpF0">F₀ (N)</label><input type="range" id="pF0" min="0" max="5" step="0.05"><output id="oF0"></output></div>
+  <div class="slider" id="roww"><label for="pw">ω (rad/s)</label><input type="range" id="pw" min="0.1" max="10" step="0.01"><output id="ow"></output></div>
+  <button type="button" id="setres" hidden>Poner ω = ω₀ (resonancia)</button>
+  <div class="slider"><label for="pT">T (s)</label><input type="range" id="pT" min="1" max="40" step="0.5"><output id="oT"></output></div>
+  <p class="hint">T es el intervalo [0, T] que se grafica y se anima.</p>
+</aside>
+<section class="panel" aria-label="Solución con los datos actuales">
+    <div class="cardhead"><h3>Solución con los datos actuales</h3><span class="pill reg" id="regime"></span></div>
+    <div class="formula" id="esol"></div>
+    <dl class="kv" id="ekv" style="margin-top:10px"></dl>
+    <p class="warn" id="ewarn" hidden></p>
+  </section>
+</div>
+</div>
+
 <section class="panel sim" aria-label="Simulación">
   <div class="view-head"><h2>Simulación</h2><span class="hint">Clic en un gráfico para mover el tiempo</span></div>
   <div class="simgrid">
@@ -1323,40 +1368,8 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <output id="otime">t = 0.00 s</output>
   </div>
 </section>
-</div>
 
-<div class="edo-mid">
-<aside class="panel edo-ctl" aria-label="Parámetros">
-  <h3>Parámetros</h3>
-  <div class="slider"><label for="pm" id="lpm">m (kg)</label><input type="range" id="pm" min="0.05" max="10" step="0.05"><output id="om_"></output></div>
-  <div class="slider"><label for="pc" id="lpc">c (N·s/m)</label><input type="range" id="pc" min="0" max="12" step="0.05"><output id="oc_"></output></div>
-  <div class="slider"><label for="pk" id="lpk">k (N/m)</label><input type="range" id="pk" min="0.5" max="30" step="0.1"><output id="ok_"></output></div>
-  <div class="slider"><label for="px0" id="lpx0">x₀ (m)</label><input type="range" id="px0" min="-1" max="1" step="0.01"><output id="ox0"></output></div>
-  <div class="slider"><label for="pv0" id="lpv0">v₀ (m/s)</label><input type="range" id="pv0" min="-5" max="5" step="0.05"><output id="ov0"></output></div>
-  <div class="field">
-    <label for="pft" id="lpft">Fuerza externa F(t)</label>
-    <select id="pft">
-      <option value="none">Sin fuerza: F(t) = 0</option>
-      <option value="cos">F(t) = F₀ cos(ωt)</option>
-      <option value="texp">F(t) = F₀ t e⁻ᵗ</option>
-    </select>
-  </div>
-  <div class="slider" id="rowF0"><label for="pF0" id="lpF0">F₀ (N)</label><input type="range" id="pF0" min="0" max="5" step="0.05"><output id="oF0"></output></div>
-  <div class="slider" id="roww"><label for="pw">ω (rad/s)</label><input type="range" id="pw" min="0.1" max="10" step="0.01"><output id="ow"></output></div>
-  <button type="button" id="setres" hidden>Poner ω = ω₀ (resonancia)</button>
-  <div class="slider"><label for="pT">T (s)</label><input type="range" id="pT" min="1" max="40" step="0.5"><output id="oT"></output></div>
-  <p class="hint">T es el intervalo [0, T] que se grafica y se anima.</p>
-</aside>
 
-<div class="edo-res">
-  <section class="panel" aria-label="Solución con los datos actuales">
-    <div class="cardhead"><h3>Solución con los datos actuales</h3><span class="pill reg" id="regime"></span></div>
-    <div class="formula" id="esol"></div>
-    <dl class="kv" id="ekv" style="margin-top:10px"></dl>
-    <p class="warn" id="ewarn" hidden></p>
-  </section>
-</div>
-</div>
 
 <div class="cards3">
     <section class="panel" aria-label="Plano de fase">
@@ -1467,7 +1480,8 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <div class="formula">\[ \mathbf y' = \mathbf f(t,\mathbf y) = \begin{pmatrix} v \\ \dfrac{F(t) - c\,v - k\,x}{m} \end{pmatrix},\qquad t_{n+1} = t_n + h \]</div>
     <div class="formula">\[ \begin{aligned}
       &\textbf{Euler:} && \mathbf y_{n+1} = \mathbf y_n + h\,\mathbf f(t_n,\mathbf y_n)\\
-      &\textbf{Euler mejorado (Heun):} && \mathbf k_1 = \mathbf f(t_n,\mathbf y_n),\ \ \mathbf k_2 = \mathbf f(t_n + h,\ \mathbf y_n + h\mathbf k_1),\ \ \mathbf y_{n+1} = \mathbf y_n + \tfrac h2(\mathbf k_1 + \mathbf k_2)\\
+      &\textbf{Euler mejorado (Heun):} && \mathbf k_1 = \mathbf f(t_n,\mathbf y_n),\ \ \mathbf k_2 = \mathbf f(t_n + h,\ \mathbf y_n + h\mathbf k_1),\\
+      & && \mathbf y_{n+1} = \mathbf y_n + \tfrac h2(\mathbf k_1 + \mathbf k_2)\\
       &\textbf{Runge–Kutta 4:} && \mathbf y_{n+1} = \mathbf y_n + \tfrac h6(\mathbf k_1 + 2\mathbf k_2 + 2\mathbf k_3 + \mathbf k_4)
     \end{aligned} \]</div>
     <p class="hint" style="font-size:14px">El error global es de orden h para Euler, h² para Heun y h⁴ para RK4: al dividir h por 2, el error se divide aproximadamente por 2, 4 y 16.</p>
@@ -1486,6 +1500,19 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <div class="btns"><button type="button" id="hhalf">Dividir h por 2</button><button type="button" id="hdbl">Duplicar h</button></div>
     <div class="tablebox" style="max-height:none"><table class="mtable" id="mtable"></table></div>
     <p class="hint">Error máximo = máx |x<sub>n</sub> − x(t<sub>n</sub>)| sobre los nodos en [0, T]. Con Euler y c = 0, la energía numérica crece en cada paso, como se ve en el gráfico de energía.</p>
+  </div>
+  <div class="algo" id="algo">
+    <div class="algohead"><h3>Algoritmo paso a paso</h3>
+      <div class="viewtabs" id="algotabs" role="group" aria-label="Método">
+        <button type="button" data-m="euler">Euler</button><button type="button" data-m="heun">Heun</button><button type="button" data-m="rk4">Runge–Kutta 4</button>
+      </div></div>
+    <div class="algogrid">
+      <div><h4 class="solh">Pseudocódigo</h4><pre class="algo-code" id="algocode"></pre></div>
+      <div><h4 class="solh">Idea del método</h4><div id="algoidea"></div></div>
+    </div>
+    <h4 class="solh">Primeros pasos con los datos actuales</h4>
+    <div id="algofirst" class="algofirst"></div>
+    <div class="tablebox" style="max-height:none"><table class="mtable" id="algotable"></table></div>
   </div>
 </section>
 </div>
@@ -3016,6 +3043,42 @@ function methodTable(){
   h+='<tr><td>Analítica</td><td>—</td><td>'+fx(SOL.X(E.p.T)[0],6)+'</td><td>—</td></tr>';
   $('#mtable').innerHTML=h+'</tbody>';
 }
+
+/* ---------- algoritmo paso a paso ---------- */
+const ALGO={
+ euler:{code:'<span class="cm">// datos: t₀ = 0, x₀, v₀, paso h, N = T/h</span>\nf(t, x, v) = (F(t) − c·v − k·x) / m      <span class="cm">// aceleración</span>\n<b>para</b> n = 0, 1, …, N−1:\n    aₙ   = f(tₙ, xₙ, vₙ)                 <span class="cm">// pendiente al inicio</span>\n    xₙ₊₁ = xₙ + h·vₙ\n    vₙ₊₁ = vₙ + h·aₙ\n    tₙ₊₁ = tₙ + h',
+  idea:'<p><b>Avanza por la recta tangente.</b> Usa la pendiente al inicio del intervalo como si fuera constante durante todo el paso. Si la solución se curva, el método se sale de ella.</p><p><b>Error:</b> cada paso comete un error de orden h², y al sumar los N = T/h pasos el error global es de orden <b>h</b>. Con h a la mitad, el error baja a la mitad.</p><p><b>Costo:</b> 1 evaluación de f por paso. <b>Cuidado:</b> en oscilaciones sin roce siempre suma energía, y la espiral del plano de fase se abre.</p>'},
+ heun:{code:'<b>para</b> n = 0, 1, …, N−1:\n    k₁ = ( vₙ , f(tₙ, xₙ, vₙ) )            <span class="cm">// pendiente al inicio</span>\n    x̃  = xₙ + h·k₁ₓ ,  ṽ = vₙ + h·k₁ᵥ      <span class="cm">// predicción (un paso de Euler)</span>\n    k₂ = ( ṽ , f(tₙ + h, x̃, ṽ) )            <span class="cm">// pendiente al final</span>\n    xₙ₊₁ = xₙ + (h/2)·(k₁ₓ + k₂ₓ)          <span class="cm">// corrección: promedio</span>\n    vₙ₊₁ = vₙ + (h/2)·(k₁ᵥ + k₂ᵥ)\n    tₙ₊₁ = tₙ + h',
+  idea:'<p><b>Predice y corrige.</b> Da un paso de Euler de prueba, mide la pendiente en el punto al que llegó y avanza con el <i>promedio</i> de la pendiente inicial y la final. Es la regla del trapecio aplicada a la EDO.</p><p><b>Error:</b> el promedio compensa la curvatura, y el error global es de orden <b>h²</b>. Con h a la mitad, el error baja 4 veces.</p><p><b>Costo:</b> 2 evaluaciones de f por paso. Con el mismo trabajo que Euler con paso h/2, suele ser mucho más preciso.</p>'},
+ rk4:{code:'<b>para</b> n = 0, 1, …, N−1:\n    k₁ = f̂(tₙ,        yₙ)                  <span class="cm">// inicio</span>\n    k₂ = f̂(tₙ + h/2,  yₙ + (h/2)·k₁)       <span class="cm">// medio, usando k₁</span>\n    k₃ = f̂(tₙ + h/2,  yₙ + (h/2)·k₂)       <span class="cm">// medio, usando k₂</span>\n    k₄ = f̂(tₙ + h,    yₙ + h·k₃)           <span class="cm">// final</span>\n    yₙ₊₁ = yₙ + (h/6)·(k₁ + 2k₂ + 2k₃ + k₄)\n<span class="cm">// y = (x, v)  y  f̂(t, y) = ( v , f(t, x, v) )</span>',
+  idea:'<p><b>Cuatro pendientes con pesos 1, 2, 2, 1.</b> Mide la pendiente al inicio, dos veces en el punto medio (cada una mejorando la anterior) y al final, y las promedia dando más peso al centro. Es la misma idea que la regla de Simpson para integrales.</p><p><b>Error:</b> de orden <b>h⁴</b>. Con h a la mitad, el error baja 16 veces. Por eso es el método estándar en la práctica (la simulación del péndulo doble lo usa).</p><p><b>Costo:</b> 4 evaluaciones de f por paso. Aun así gana: para la misma precisión necesita muchos menos pasos.</p>'}
+};
+let ALGOM='euler',algoT=null;
+function algoPanel(){
+  const mt=ALGOM,A=ALGO[mt],p=E.p,F=SOL.F,h=E.h,C=ctx(),xn=C.x[0],vn=C.v[0];
+  document.querySelectorAll('#algotabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===mt));
+  $('#algocode').innerHTML=A.code;$('#algoidea').innerHTML=A.idea;
+  const f=(t,x,v)=>(F(t)-p.c*v-p.k*x)/p.m,g=v=>fx(v,5),rows=[],xe1=g(SOL.X(h)[0]);let t=0,x=p.x0,v=p.v0,first='';
+  for(let n=0;n<=5;n++){
+    const ex=SOL.X(t)[0];let cols=[],nx,nv;
+    if(mt==='euler'){const a=f(t,x,v);cols=[g(a)];nx=x+h*v;nv=v+h*a;
+      if(n===0)first='<p><b>Primer paso (n = 0).</b> \\( a_0 = f(0,\\ '+g(x)+',\\ '+g(v)+') = '+g(a)+' \\). Entonces \\( '+xn+'_1 = '+g(x)+' + '+h+'\\cdot('+g(v)+') = '+g(nx)+' \\) y \\( '+vn+'_1 = '+g(v)+' + '+h+'\\cdot('+g(a)+') = '+g(nv)+' \\). El valor exacto es \\( '+xn+'('+h+') = '+xe1+' \\).</p>';}
+    else if(mt==='heun'){const a1=f(t,x,v),xe=x+h*v,ve=v+h*a1,a2=f(t+h,xe,ve);cols=['('+g(v)+', '+g(a1)+')','('+g(xe)+', '+g(ve)+')','('+g(ve)+', '+g(a2)+')'];nx=x+h/2*(v+ve);nv=v+h/2*(a1+a2);
+      if(n===0)first='<p><b>Primer paso (n = 0).</b> Pendiente inicial \\( k_1 = ('+g(v)+',\\ '+g(a1)+') \\). Predicción de Euler: \\( (\\tilde '+xn+',\\ \\tilde '+vn+') = ('+g(xe)+',\\ '+g(ve)+') \\). Pendiente allí: \\( k_2 = ('+g(ve)+',\\ '+g(a2)+') \\). Promedio: \\( '+xn+'_1 = '+g(x)+' + \\tfrac{'+h+'}{2}('+g(v)+' + '+g(ve)+') = '+g(nx)+' \\). El valor exacto es \\( '+xe1+' \\).</p>';}
+    else{const k1=[v,f(t,x,v)],k2=[v+h/2*k1[1],f(t+h/2,x+h/2*k1[0],v+h/2*k1[1])],k3=[v+h/2*k2[1],f(t+h/2,x+h/2*k2[0],v+h/2*k2[1])],k4=[v+h*k3[1],f(t+h,x+h*k3[0],v+h*k3[1])];
+      const P=k=>'('+g(k[0])+', '+g(k[1])+')';cols=[P(k1),P(k2),P(k3),P(k4)];nx=x+h/6*(k1[0]+2*k2[0]+2*k3[0]+k4[0]);nv=v+h/6*(k1[1]+2*k2[1]+2*k3[1]+k4[1]);
+      if(n===0)first='<p><b>Primer paso (n = 0).</b> \\( k_1 = '+P(k1)+',\\ k_2 = '+P(k2)+',\\ k_3 = '+P(k3)+',\\ k_4 = '+P(k4)+' \\). Con la primera componente de cada k: \\( '+xn+'_1 = '+g(x)+' + \\tfrac{'+h+'}{6}\\,('+g(k1[0])+' + 2\\cdot'+g(k2[0])+' + 2\\cdot'+g(k3[0])+' + '+g(k4[0])+') = '+g(nx)+' \\). El valor exacto es \\( '+xe1+' \\).</p>';}
+    rows.push([n,g(t),g(x),g(v)].concat(cols,[g(ex),Math.abs(x-ex).toExponential(2)]));
+    x=nx;v=nv;t+=h;
+  }
+  const hd={euler:['aₙ = f(tₙ, xₙ, vₙ)'],heun:['k₁','predicción (x̃, ṽ)','k₂'],rk4:['k₁','k₂','k₃','k₄']}[mt];
+  let H='<thead><tr><th>n</th><th>tₙ</th><th>'+xn+'ₙ</th><th>'+vn+'ₙ</th>'+hd.map(s=>'<th>'+s+'</th>').join('')+'<th>'+xn+'(tₙ) exacta</th><th>error</th></tr></thead><tbody>';
+  rows.forEach(r=>{H+='<tr><td>'+r.join('</td><td>')+'</td></tr>';});
+  $('#algotable').innerHTML=H+'</tbody>';
+  const el=$('#algofirst');el.innerHTML=first+'<p class="hint">Cada pendiente k es un par: (derivada de '+xn+', derivada de '+vn+') = ('+vn+', aceleración). Paso h = '+h+'. Si cambia h o los parámetros, la tabla se recalcula.</p>';
+  clearTimeout(algoT);algoT=setTimeout(()=>typesetEl(el),150);
+}
+document.querySelectorAll('#algotabs button').forEach(b=>b.addEventListener('click',()=>{ALGOM=b.dataset.m;algoPanel();}));
 function typesetEl(el){ if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetClear&&MathJax.typesetClear([el]);MathJax.typesetPromise([el]).catch(()=>{});} else setTimeout(()=>typesetEl(el),300); }
 
 /* ---------- ciclo ---------- */
@@ -3040,7 +3103,7 @@ function recompute(){
   SOL=solve(E.p); sample();
   NUM=E.method==='none'?null:integrate(E.method,E.h,E.p,SOL.F);
   if(E.t>E.p.T)E.t=0;
-  results(); methodTable(); drawRoots(); drawFR(); hxBuild(); drawDynamic();
+  results(); methodTable(); if(E.method!=='none')ALGOM=E.method; algoPanel(); drawRoots(); drawFR(); hxBuild(); drawDynamic();
 }
 function drawDynamic(){
   if(!SOL)return;
