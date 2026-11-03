@@ -1,0 +1,119 @@
+{
+  "perfil": {
+    "nombre": "Ignacio Ruminot Aburto",
+    "cargo": "Profesor",
+    "unidad": "Departamento de Matemática y Física Aplicadas, Facultad de Ingeniería",
+    "institucion": "Universidad Católica de la Santísima Concepción (UCSC)",
+    "resumen": "Enseño cálculo, álgebra y ecuaciones diferenciales en carreras de ingeniería y arquitectura. Desarrollo material interactivo para que mis estudiantes exploren los conceptos de cada curso.",
+    "foto": "",
+    "correo": "Ignacio.Ruminot@ucsc.cl",
+    "enlaces": [
+      {"nombre": "GitHub", "url": "https://github.com/iruminot"}
+    ]
+  },
+
+  "presentaciones": [],
+
+  "laboratorio": "docencia/laboratorio/",
+
+  "docencia": [
+    {
+      "anio": 2026,
+      "semestres": [
+        {
+          "id": "2026-2",
+          "nombre": "Segundo semestre",
+          "cursos": [
+            {
+              "slug": "calculo-varias-variables",
+              "codigo": "IN1524C",
+              "nombre": "Cálculo en varias variables",
+              "carreras": "Ingenierías Civil, Civil Eléctrica, Civil Industrial y Civil Informática",
+              "rol": "Sección 3",
+              "unidades": [
+                {"titulo": "Funciones de varias variables",
+                 "temas": ["Nociones de topología en ℝⁿ", "Campos escalares y vectoriales", "Gráficas, conjuntos de nivel y secciones", "Límites y continuidad"],
+                 "recursos": []},
+                {"titulo": "Cálculo diferencial",
+                 "temas": ["Derivadas parciales y diferenciabilidad", "Matriz jacobiana y plano tangente", "Gradiente y derivada direccional", "Regla de la cadena", "Matriz hessiana, Taylor y extremos", "Optimización"],
+                 "recursos": []},
+                {"titulo": "Integración múltiple",
+                 "temas": ["Integral doble y sumas de Riemann", "Integrales iteradas y regiones tipo I y II", "Cambio de variable y coordenadas polares", "Integrales triples", "Coordenadas cilíndricas y esféricas", "Aplicaciones: masa, centro de masa, momentos de inercia"],
+                 "recursos": [
+                   {"titulo": "Sumas de Riemann dobles", "lab": "calculo-riemann"},
+                   {"titulo": "Integrales iteradas y regiones (Prácticos 9 y 10)", "lab": "calculo-iteradas"},
+                   {"titulo": "Cambio de variables y jacobiano", "lab": "calculo-cambio"},
+                   {"titulo": "Integrales triples", "lab": "calculo-triples"},
+                   {"titulo": "Cilíndricas, esféricas y aplicaciones físicas", "lab": "calculo-esfericas"},
+                   {"titulo": "Elementos finitos: integrar sobre triángulos", "lab": "calculo-fem"}
+                 ]},
+                {"titulo": "Cálculo vectorial",
+                 "temas": ["Integrales de línea y de trayectoria", "Trabajo y longitud de arco", "Teorema de Green", "Superficies paramétricas e integrales de superficie", "Teoremas de Stokes y de Gauss"],
+                 "recursos": []}
+              ]
+            },
+            {
+              "slug": "ecuaciones-diferenciales",
+              "codigo": "IN1526C",
+              "nombre": "Ecuaciones Diferenciales",
+              "carreras": "Ingenierías Civil, Civil Eléctrica, Civil Geológica, Civil Industrial y Civil Informática",
+              "rol": "Sección 8",
+              "unidades": [
+                {"titulo": "Ecuaciones de primer orden",
+                 "temas": ["Clasificación y tipos de soluciones", "Problema de valor inicial; existencia y unicidad", "Campos de direcciones", "Variables separables, homogéneas, exactas y factor integrante", "Lineales y Bernoulli", "Aplicaciones: trayectorias ortogonales y mezclas"],
+                 "recursos": []},
+                {"titulo": "Ecuaciones de orden superior",
+                 "temas": ["Ecuaciones lineales homogéneas y no homogéneas", "Wronskiano e independencia lineal", "Coeficientes constantes y ecuación característica", "Coeficientes indeterminados y variación de parámetros", "Cauchy-Euler", "Aplicaciones: vibraciones mecánicas y circuitos"],
+                 "recursos": [
+                   {"titulo": "Resortes, circuitos RLC, péndulo y otros modelos (Práctico 11)", "lab": "edo-resortes"}
+                 ]},
+                {"titulo": "Transformada de Laplace",
+                 "temas": ["Definición, existencia y propiedades", "Transformada inversa y resolución de PVI", "Teoremas de traslación; Heaviside y delta de Dirac", "Convolución y ecuaciones integrales"],
+                 "recursos": []},
+                {"titulo": "Sistemas de ecuaciones lineales",
+                 "temas": ["Notación matricial", "Valores y vectores propios; forma de Jordan", "Matriz fundamental", "Sistemas no homogéneos", "Aplicaciones: compartimentos y redes eléctricas"],
+                 "recursos": []}
+              ]
+            },
+            {
+              "slug": "fundamentos-matematicos-2",
+              "codigo": "IN1481C",
+              "nombre": "Fundamentos Matemáticos II",
+              "carreras": "Arquitectura",
+              "rol": "",
+              "unidades": [
+                {"titulo": "Cálculo diferencial",
+                 "temas": ["Límites y asíntotas", "Continuidad", "Derivadas y recta tangente", "Aplicaciones de la derivada"],
+                 "recursos": []},
+                {"titulo": "Cálculo integral",
+                 "temas": ["Antiderivadas; sustitución y por partes", "Integral definida y teorema fundamental", "Áreas entre curvas", "Sólidos de revolución"],
+                 "recursos": [
+                   {"titulo": "Formativa del Certamen 2: volúmenes de revolución", "lab": "fm2-formativa"}
+                 ]},
+                {"titulo": "Vectores y matrices",
+                 "temas": ["Vectores en el plano y el espacio", "Producto punto, proyección y producto cruz", "Matrices y operaciones", "Determinantes e inversa", "Sistemas de ecuaciones lineales"],
+                 "recursos": [
+                   {"titulo": "Formativa del Certamen 2: matrices y vectores en arquitectura", "lab": "fm2-formativa"}
+                 ]}
+              ]
+            },
+            {
+              "slug": "algebra",
+              "codigo": "IN1514C",
+              "nombre": "Álgebra",
+              "carreras": "Ingenierías Civil, Civil Eléctrica, Civil Industrial y Civil Informática",
+              "rol": "",
+              "unidades": [
+                {"titulo": "Lógica y conjuntos", "temas": ["Proposiciones y conectivos", "Tautología, contradicción y contingencia", "Conjuntos y operaciones", "Producto cartesiano"], "recursos": []},
+                {"titulo": "Funciones", "temas": ["Dominio y recorrido", "Inyectividad, sobreyectividad e inversa", "Composición", "Funciones por tramos, pares e impares"], "recursos": []},
+                {"titulo": "Exponencial y logaritmo", "temas": ["Función exponencial", "Función logaritmo", "Ecuaciones e inecuaciones"], "recursos": []},
+                {"titulo": "Polinomios", "temas": ["Raíces y factorización", "Relación entre raíces y coeficientes", "Fracciones parciales"], "recursos": []},
+                {"titulo": "Trigonometría", "temas": ["Funciones trigonométricas", "Identidades", "Teoremas del seno y del coseno", "Ecuaciones trigonométricas"], "recursos": []}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
