@@ -755,6 +755,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
   <button type="button" data-prob="p10">Problema 10<small>Precio con expectativas</small></button>
   <button type="button" data-prob="p11">Problema 11<small>Glucosa en la sangre</small></button>
 </div></div>
+<div class="probgroup"><span class="lbl">Resonancia</span><div class="probbar">
+  <button type="button" data-prob="p12">Problema 12<small>Resonancia pura</small></button>
+  <button type="button" data-prob="p13">Problema 13<small>Pulsaciones</small></button>
+  <button type="button" data-prob="p14">Problema 14<small>Resonancia práctica</small></button>
+</div></div>
 </div>
 
 <div id="sdof" class="edo">
@@ -953,6 +958,59 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     </div>
   </div>
 
+  <div data-prob="p12" hidden>
+    <h2>Problema 12 · Resonancia pura</h2>
+    <p class="stmt">Un cuerpo de 1 kg cuelga de un resorte de constante k = 16 N/m, sin amortiguamiento, y está en reposo en su posición de equilibrio. Desde t = 0, un motor le aplica la fuerza F(t) = 2 cos 4t N. Determine x(t), describa el movimiento y calcule la amplitud de la oscilación a los 10 s.</p>
+    <p class="analog"><b>Por qué importa.</b> La frecuencia natural del resorte es \( \omega_0 = \sqrt{k/m} = 4 \) rad/s, igual a la de la fuerza: cada empujón llega justo cuando el cuerpo va en la misma dirección y le agrega energía. Por eso los soldados rompen el paso al cruzar un puente; se suele citar el colapso del puente de Broughton (Inglaterra, 1831). En el Millennium Bridge de Londres (2000), los peatones sincronizaron sus pasos con una oscilación lateral del puente, y hubo que agregarle amortiguadores. El puente de Tacoma (1940) también se menciona a menudo, pero su caída se debió a un fenómeno aerodinámico (flameo), no a una resonancia forzada simple.</p>
+    <div class="datos"><span>m = 1</span><span>c = 0</span><span>k = 16</span><span>F(t) = 2 cos 4t</span><span>x₀ = 0</span><span>v₀ = 0</span></div>
+    <ol>
+      <li>Ecuación: \( x'' + 16x = 2\cos 4t \). Homogénea: \( x_h = C_1\cos 4t + C_2\operatorname{sen} 4t \).</li>
+      <li>Como \( \cos 4t \) ya es solución de la homogénea, el método de coeficientes indeterminados pide multiplicar por t: \( x_p = t\,(A\cos 4t + B\operatorname{sen} 4t) \).</li>
+      <li>Sustituyendo, \( x_p'' + 16x_p = -8A\operatorname{sen} 4t + 8B\cos 4t = 2\cos 4t \), así que \( A = 0 \) y \( B = \tfrac14 \).</li>
+      <li>Condiciones iniciales: \( x(0) = C_1 = 0 \) y \( x'(0) = 4C_2 = 0 \).</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = \frac{t}{4}\,\operatorname{sen} 4t\ \text{m} \]
+      <p>La oscilación tiene la frecuencia de la fuerza, pero su amplitud \( t/4 \) crece sin cota: a los 10 s ya es 2.5 m (en el gráfico, la envolvente punteada \( \pm t/4 \)). En la tarjeta «Respuesta en frecuencia» se ve que la amplitud estacionaria es infinita justo en \( \omega = \omega_0 \).</p>
+      <p>Pruebe con el control c: con c = 0.2 la amplitud deja de crecer y se estabiliza en \( F_0/(c\,\omega_0) = 2.5 \) m. Con ω = 3.8 aparecen pulsaciones (Problema 13).</p>
+    </div>
+  </div>
+
+  <div data-prob="p13" hidden>
+    <h2>Problema 13 · Pulsaciones (batimiento)</h2>
+    <p class="stmt">Un resorte con m = 1 kg y k = 25 N/m, sin amortiguamiento, parte en reposo en el equilibrio y recibe la fuerza F(t) = 9 cos 4t N. Determine x(t), escríbala como un producto de senos y calcule el período de las pulsaciones.</p>
+    <p class="analog"><b>Dónde aparece.</b> La frecuencia de la fuerza (4 rad/s) está cerca de la natural (5 rad/s), pero no es igual. Las dos oscilaciones se suman y se cancelan alternadamente, y la amplitud sube y baja lentamente. Es lo que se oye al afinar una guitarra: dos cuerdas casi afinadas producen un sonido que «late», y los latidos se hacen más lentos a medida que las frecuencias se acercan.</p>
+    <div class="datos"><span>m = 1</span><span>c = 0</span><span>k = 25</span><span>F(t) = 9 cos 4t</span><span>x₀ = 0</span><span>v₀ = 0</span></div>
+    <ol>
+      <li>Ecuación: \( x'' + 25x = 9\cos 4t \). Homogénea: \( x_h = C_1\cos 5t + C_2\operatorname{sen} 5t \).</li>
+      <li>Como \( \omega = 4 \ne \omega_0 = 5 \), basta \( x_p = A\cos 4t \): \( (25 - 16)A = 9 \), así que \( A = 1 \).</li>
+      <li>Condiciones iniciales: \( x(0) = C_1 + 1 = 0 \Rightarrow C_1 = -1 \), y \( x'(0) = 5C_2 = 0 \Rightarrow C_2 = 0 \). Entonces \( x = \cos 4t - \cos 5t \).</li>
+      <li>Con la identidad \( \cos a - \cos b = 2\operatorname{sen}\frac{a+b}{2}\operatorname{sen}\frac{b-a}{2} \):</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = \cos 4t - \cos 5t = \underbrace{2\operatorname{sen}\frac{t}{2}}_{\text{envolvente lenta}}\ \operatorname{sen}\frac{9t}{2}\ \text{m} \]
+      <p>Es una oscilación rápida (4.5 rad/s, el promedio de las dos frecuencias) dentro de una envolvente lenta \( \pm 2\operatorname{sen}(t/2) \), punteada en el gráfico. La amplitud se anula cada vez que \( \operatorname{sen}(t/2) = 0 \): el período de las pulsaciones es \( 2\pi \approx 6.28 \) s.</p>
+      <p>Acerque ω a 5 con el control: las pulsaciones se hacen más largas y más altas. En el límite \( \omega \to \omega_0 \) se obtiene la resonancia pura del Problema 12.</p>
+    </div>
+  </div>
+
+  <div data-prob="p14" hidden>
+    <h2>Problema 14 · Resonancia práctica: un auto en un camino ondulado</h2>
+    <p class="stmt">Un modelo simple de la suspensión de un auto, por unidad de masa, es \( x'' + 2x' + 26x = 10\cos\omega t \). Aquí x es el desplazamiento vertical de la carrocería, y la fuerza viene de las ondulaciones del camino: si están separadas λ metros y el auto va a velocidad v, entonces \( \omega = 2\pi v/\lambda \). (a) Encuentre la amplitud A(ω) del régimen estacionario. (b) ¿Para qué ω es máxima, y cuánto vale? (c) Si las ondulaciones están cada 5 m, ¿a qué velocidad vibra más el auto?</p>
+    <p class="analog"><b>Resonancia con roce.</b> Con amortiguamiento la amplitud ya no crece sin cota: llega a un régimen estacionario, cuya amplitud depende de ω. El máximo de esa curva es la <b>resonancia práctica</b>, y ocurre un poco antes de la frecuencia natural \( \omega_0 = \sqrt{26} \approx 5.10 \). Es el mismo fenómeno que hace vibrar una lavadora a ciertas velocidades del centrifugado.</p>
+    <div class="datos"><span>m = 1</span><span>c = 2</span><span>k = 26</span><span>F₀ = 10</span><span>ω = √24 ≈ 4.899</span><span>x₀ = v₀ = 0</span></div>
+    <ol>
+      <li>Para la ecuación \( m x'' + c x' + k x = F_0\cos\omega t \), la solución estacionaria es \( x_p = A\cos(\omega t - \delta) \), con \( A(\omega) = \dfrac{F_0}{\sqrt{(k - m\omega^2)^2 + (c\,\omega)^2}} = \dfrac{10}{\sqrt{(26 - \omega^2)^2 + 4\omega^2}} \).</li>
+      <li>A es máxima cuando el denominador es mínimo: \( \dfrac{d}{d\omega}\Big[(26 - \omega^2)^2 + 4\omega^2\Big] = 4\omega(\omega^2 - 24) = 0 \Rightarrow \omega_r = \sqrt{24} \approx 4.899 \) rad/s.</li>
+      <li>\( A(\omega_r) = \dfrac{10}{\sqrt{2^2 + 4\cdot24}} = \dfrac{10}{\sqrt{100}} = 1 \).</li>
+      <li>La parte transitoria tiene raíces \( r = -1 \pm 5i \): decae como \( e^{-t} \), y después de unos 4 s solo queda el régimen estacionario.</li>
+    </ol>
+    <div class="ans">
+      \[ \omega_r = \sqrt{24} \approx 4.90\ \text{rad/s},\qquad A_{\max} = 1,\qquad v = \frac{\omega_r\,\lambda}{2\pi} = \frac{4.90\cdot 5}{2\pi} \approx 3.9\ \text{m/s} \approx 14\ \text{km/h} \]
+      <p>En la tarjeta «Respuesta en frecuencia», haga clic en otros valores de ω: lejos de \( \omega_r \) la amplitud cae rápido. Suba c y verá que la curva se aplana y su máximo se mueve hacia la izquierda; con \( c^2 \ge 2mk \) ya no hay máximo. Si baja c a 0, el pico se vuelve infinito en \( \omega_0 \): es la resonancia pura.</p>
+    </div>
+  </div>
+
   <div data-prob="libre" hidden>
     <h2>Exploración libre</h2>
     <p>Mueva los controles para ver cómo cambia el movimiento. El caso inicial es subamortiguado y forzado por \( F(t) = F_0\cos(\omega t) \):</p>
@@ -1037,6 +1095,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <section class="panel" aria-label="Raíces características">
       <div class="cardhead"><h3>Raíces en el plano complejo</h3></div>
       <div class="canvas-box"><canvas class="chart" id="chroots" height="240"></canvas></div>
+    </section>
+    <section class="panel" aria-label="Respuesta en frecuencia" id="frcard" hidden>
+      <div class="cardhead"><h3>Respuesta en frecuencia A(ω)</h3><span class="hint">Clic para cambiar ω</span></div>
+      <div class="canvas-box"><canvas class="chart" id="chfr" height="240" style="cursor:crosshair"></canvas></div>
+      <p class="hint" id="frnote" style="margin:6px 0 0"></p>
     </section>
 </div>
 
@@ -2057,7 +2120,10 @@ const PROBS={
   p10:{m:1,c:2,k:5,x0:3,v0:1,ft:'none',F0:1,w:2,T:6,ctx:'econ',h:0.05,
       rng:{m:[0.2,3,0.05],c:[-1,6,0.05],k:[0.5,15,0.1],x0:[-5,5,0.05],v0:[-5,5,0.05],F0:[0,5,0.05],w:[0.2,6,0.05],T:[1,20,0.5]}},
   p11:{m:1,c:1.6,k:4,x0:0,v0:150,ft:'none',F0:50,w:1,T:6,ctx:'gluc',h:0.02,
-      rng:{m:[0.5,2,0.05],c:[0,5,0.05],k:[0.5,8,0.05],x0:[-60,60,1],v0:[-300,300,5],F0:[0,200,5],w:[0.2,5,0.05],T:[2,12,0.5]}}
+      rng:{m:[0.5,2,0.05],c:[0,5,0.05],k:[0.5,8,0.05],x0:[-60,60,1],v0:[-300,300,5],F0:[0,200,5],w:[0.2,5,0.05],T:[2,12,0.5]}},
+  p12:{m:1,c:0,k:16,x0:0,v0:0,ft:'cos',F0:2,w:4,T:20,h:0.02,rng:{c:[0,2,0.01],k:[1,40,0.5],F0:[0,10,0.1],w:[0.2,10,0.01],T:[2,60,1]}},
+  p13:{m:1,c:0,k:25,x0:0,v0:0,ft:'cos',F0:9,w:4,T:20,h:0.02,rng:{c:[0,2,0.01],k:[1,40,0.5],F0:[0,20,0.1],w:[0.2,10,0.01],T:[2,60,1]}},
+  p14:{m:1,c:2,k:26,x0:0,v0:0,ft:'cos',F0:10,w:4.898979,T:12,h:0.02,rng:{c:[0,8,0.05],k:[1,40,0.5],F0:[0,20,0.1],w:[0.2,12,0.01],T:[2,40,1]}}
 };
 /* contexto de cada problema: nombres y unidades de las magnitudes */
 const MECH={m:['m','kg'],c:['c','N·s/m'],k:['k','N/m'],x:['x','m'],v:['v','m/s'],a:['a','m/s²'],F:['F','N'],tx:'x',
@@ -2145,7 +2211,11 @@ function solve(p){
   const F=forcing(p);
   const X=t=>{const u=y1(t),w=y2(t),z=xp(t);return [C1*u[0]+C2*w[0]+z[0],C1*u[1]+C2*w[1]+z[1]]};
   const H=hTex(C1,C2), Pt=lin(xpTerms,!!H);
-  return {kind,roots,D,w0,zeta,C1,C2,F,X,Xh:t=>C1*y1(t)[0]+C2*y2(t)[0],resonant,tex:(H+Pt)||'0',env:(kind==='under'&&p.ft==='none')?{R:Math.hypot(C1,C2),g:c/(2*m)}:null};
+  let envF=null;
+  if(p.ft==='cos'&&c===0&&p.F0!==0&&Math.abs(p.x0)<1e-12&&Math.abs(p.v0)<1e-12){
+    if(resonant){const K=p.F0/(2*m*w0);envF={f:t=>K*t,tex:'\\pm\\tfrac{F_0}{2m\\omega_0}t'};}
+    else{const A=p.F0/(k-m*p.w*p.w),d=(w0-p.w)/2;envF={f:t=>Math.abs(2*A*Math.sin(d*t)),tex:'\\pm 2A\\sin'};}}
+  return {kind,roots,D,w0,zeta,C1,C2,F,X,Xh:t=>C1*y1(t)[0]+C2*y2(t)[0],resonant,envF,tex:(H+Pt)||'0',env:(kind==='under'&&p.ft==='none')?{R:Math.hypot(C1,C2),g:c/(2*m)}:null};
 }
 
 /* ---------- métodos numéricos ---------- */
@@ -2510,10 +2580,12 @@ function drawMain(){
   const series=[{pts,color:acc,width:2,range:true,label:V.name+' analítica'}];
   if(E.view==='x'&&SOL.env){const {R,g}=SOL.env;
     series.unshift({pts:SMP.ts.map(t=>[t,R*Math.exp(-g*t)]),color:muted,width:1.2,dash:[5,4]},{pts:SMP.ts.map(t=>[t,-R*Math.exp(-g*t)]),color:muted,width:1.2,dash:[5,4]});}
+  if(E.view==='x'&&SOL.envF){const f=SOL.envF.f;
+    series.unshift({pts:SMP.ts.map(t=>[t,f(t)]),color:muted,width:1.2,dash:[5,4]},{pts:SMP.ts.map(t=>[t,-f(t)]),color:muted,width:1.2,dash:[5,4]});}
   const np=numPts(E.view); if(np)series.push({pts:np,color:num,width:1.5,dots:NUM.n<=160,label:METH_NAME[E.method]});
   const [x,v]=SOL.X(E.t), cur=E.view==='x'?x:E.view==='v'?v:(SOL.F(E.t)-E.p.c*v-E.p.k*x)/E.p.m;
   drawChart(chm,{h:hFor(chm,0.62,260,420),xr:[0,E.p.T],series,xlab:'t ('+ctx().tu+')',ylab:V.lab,zero:true,cursor:E.t,points:[{x:E.t,y:cur,color:acc}],hover:true});
-  $('#legmain').innerHTML='<span><span class="sw acc"></span>Analítica</span>'+(np?'<span><span class="sw num"></span>'+METH_NAME[E.method]+', h = '+fx(NUM.h,4)+'</span>':'')+(SOL.env&&E.view==='x'?'<span><span class="sw env"></span>±Re<sup>−γt</sup></span>':'');
+  $('#legmain').innerHTML='<span><span class="sw acc"></span>Analítica</span>'+(np?'<span><span class="sw num"></span>'+METH_NAME[E.method]+', h = '+fx(NUM.h,4)+'</span>':'')+(SOL.env&&E.view==='x'?'<span><span class="sw env"></span>±Re<sup>−γt</sup></span>':'')+(SOL.envF&&E.view==='x'?'<span><span class="sw env"></span>'+(SOL.resonant?'envolvente ±F₀t/(2mω₀)':'envolvente de las pulsaciones')+'</span>':'');
 }
 function drawPhase(){
   const acc=tok('--accent'),num=tok('--num');
@@ -2596,11 +2668,25 @@ function methodTable(){
 function typesetEl(el){ if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetClear&&MathJax.typesetClear([el]);MathJax.typesetPromise([el]).catch(()=>{});} else setTimeout(()=>typesetEl(el),300); }
 
 /* ---------- ciclo ---------- */
+const chfr=$('#chfr');
+function drawFR(){
+  const card=$('#frcard'),p=E.p;card.hidden=p.ft!=='cos';if(card.hidden||!SOL)return;
+  const {m,c,k,F0,w}=p,w0=Math.sqrt(k/m),A=om=>F0/Math.sqrt((k-m*om*om)**2+(c*om)**2),acc=tok('--accent'),muted=tok('--muted'),num=tok('--num');
+  const xmax=Math.max(2.2*w0,1.3*w),pts=[];for(let i=0;i<=500;i++){const om=xmax*i/500;pts.push([om,A(om)]);}
+  const hasR=c>0&&k/m-c*c/(2*m*m)>0,wr=hasR?Math.sqrt(k/m-c*c/(2*m*m)):null,Aw=A(w);
+  let ymax=c>0?1.15*(hasR?A(wr):A(0)):Math.max(4*F0/k,isFinite(Aw)&&Aw<40*F0/k?1.25*Aw:0);
+  const series=[{pts,color:acc,width:2},{pts:[[w0,0],[w0,ymax]],color:muted,width:1,dash:[4,4]}];
+  const points=[{x:w,y:isFinite(Aw)?Math.min(Aw,ymax*0.98):ymax*0.98,color:num,r:6}];if(hasR)points.unshift({x:wr,y:A(wr),color:acc,r:4});
+  drawChart(chfr,{h:hFor(chfr,0.72,240,340),xr:[0,xmax],yr:[0,ymax],series,xlab:'ω (rad/'+ctx().tu+')',ylab:'A ('+ctx().x[1]+')',points,hover:false,padL:52});
+  $('#frnote').innerHTML='A(ω) = F₀/√((k − mω²)² + (cω)²). Línea punteada: ω₀ = '+fx(w0,3)+'. Punto naranjo: ω actual = '+fx(w,3)+', A = '+(isFinite(Aw)&&Aw<1e6?fx(Aw,3):'∞ (resonancia pura)')+'.'+(hasR?' Máximo en ω<sub>r</sub> = √(k/m − c²/(2m²)) = '+fx(wr,3)+', A<sub>máx</sub> = '+fx(A(wr),3)+'.':c>0?' Con c² ≥ 2mk la curva no tiene máximo: decrece desde ω = 0.':' Sin amortiguamiento el pico es infinito en ω₀.');
+}
+chfr.addEventListener('pointerdown',ev=>{const C=chfr._c;if(!C)return;const r=chfr.getBoundingClientRect(),om=C.x0+(ev.clientX-r.left-C.pad.l)/(C.W-C.pad.l-C.pad.r)*(C.x1-C.x0);
+  if(om<=0||om>C.x1)return;E.p.w=Math.round(om*100)/100;syncCtl();modified();recompute();});
 function recompute(){
   SOL=solve(E.p); sample();
   NUM=E.method==='none'?null:integrate(E.method,E.h,E.p,SOL.F);
   if(E.t>E.p.T)E.t=0;
-  results(); methodTable(); drawRoots(); hxBuild(); drawDynamic();
+  results(); methodTable(); drawRoots(); drawFR(); hxBuild(); drawDynamic();
 }
 function drawDynamic(){
   if(!SOL)return;
@@ -2668,9 +2754,9 @@ $('#hdbl').addEventListener('click',()=>setH(E.h*2));
 $('#emeth').addEventListener('change',e=>{E.method=e.target.value;recompute();});
 
 hookChart(chm,drawMain); hookChart(che,drawEnergy); hookChart(chp,drawPhase);
-const ro=new ResizeObserver(()=>{if(SOL){drawRoots();drawDynamic();}});
-[spr,chm,che,chp,chr].forEach(c=>ro.observe(c.parentElement));
-function retheme(){if(SOL){drawRoots();hxBuild();drawDynamic();}}
+const ro=new ResizeObserver(()=>{if(SOL){drawRoots();drawFR();drawDynamic();}});
+[spr,chm,che,chp,chr,chfr].forEach(c=>ro.observe(c.parentElement));
+function retheme(){if(SOL){drawRoots();drawFR();hxBuild();drawDynamic();}}
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',retheme);}catch(e){}
 new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 window.addEventListener('coursetab',ev=>{ if(ev.detail!=='tab-edo')setPlaying(false); else retheme(); });
