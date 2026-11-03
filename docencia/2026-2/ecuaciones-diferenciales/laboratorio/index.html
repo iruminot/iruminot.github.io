@@ -1,0 +1,1888 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div style="font:500 14px/1.4 'IBM Plex Sans',system-ui,sans-serif;padding:10px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--panel);display:flex;flex-wrap:wrap;gap:6px 18px"><a href="../../../../" style="color:var(--ink);text-decoration:none;font-weight:600">Ignacio Ruminot Aburto</a><a href="../" style="color:var(--accent)">← Ecuaciones Diferenciales: unidades</a><a href="../../../" style="color:var(--accent)">Docencia</a></div>
+<title>Laboratorio · Ecuaciones Diferenciales</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: banco de trabajo — panel de controles fijo a la izquierda, dos vistas (plano / espacio) lado a lado, resultados y convergencia debajo */
+:root{
+  --bg:#f5f6f8; --panel:#ffffff; --ink:#16202c; --muted:#5a6573; --line:#dce1e8;
+  --accent:#2563c9; --accent-weak:#e2ebfa; --edge:#c2410c; --edge-weak:rgba(194,65,12,.55);
+  --region:rgba(37,99,201,.10); --grid:rgba(22,32,44,.22);
+  --display:"Spectral", Georgia, "Times New Roman", serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1318; --panel:#171c23; --ink:#e4e9f0; --muted:#97a2b1; --line:#2a323d;
+  --accent:#6ea6f2; --accent-weak:#1a2940; --edge:#f08a4b; --edge-weak:rgba(240,138,75,.6);
+  --region:rgba(110,166,242,.12); --grid:rgba(228,233,240,.20); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0f1318; --panel:#171c23; --ink:#e4e9f0; --muted:#97a2b1; --line:#2a323d;
+  --accent:#6ea6f2; --accent-weak:#1a2940; --edge:#f08a4b; --edge-weak:rgba(240,138,75,.6);
+  --region:rgba(110,166,242,.12); --grid:rgba(228,233,240,.20); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1440px;margin:0 auto;padding-block:20px 48px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.eyebrow{font:500 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:600 clamp(26px,3.4vw,36px)/1.1 var(--display);margin:6px 0 0;text-wrap:balance}
+h2{font:600 19px/1.25 var(--display);margin:0;text-wrap:balance}
+h3{font:600 13px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:980px){.layout{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+aside.panel{position:sticky;top:12px;display:flex;flex-direction:column;gap:18px}
+@media (max-width:980px){aside.panel{position:static}}
+.group{display:flex;flex-direction:column;gap:8px}
+label{font-size:13px;color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:4px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+input[type=text],select{width:100%;font:15px var(--mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px}
+select{font-family:var(--body)}
+input[type=text]:focus,select:focus,button:focus-visible,input[type=range]:focus-visible,input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+input[type=text].bad{border-color:var(--edge)}
+.err{color:var(--edge);font-size:13px;min-height:0}
+.slider{display:grid;grid-template-columns:auto 1fr 3ch;align-items:center;gap:10px;font:14px var(--mono)}
+.slider output{text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.check{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink)}
+.check input{accent-color:var(--accent);width:16px;height:16px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:500 14px var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.seg button{font-size:13px;padding:6px 8px;text-align:left}
+.seg button[aria-pressed=true]{background:var(--accent-weak);border-color:var(--accent);color:var(--ink)}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.region-desc{font:14px var(--mono);color:var(--ink);background:var(--bg);border-radius:6px;padding:8px 10px;overflow-x:auto}
+
+main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.views{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+.view{display:flex;flex-direction:column;gap:10px;min-width:0}
+.view-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.canvas-box{position:relative;width:100%;min-width:0}
+#c2d{display:block;width:100%;touch-action:none;cursor:crosshair}
+#c3d{display:block;width:100%;height:440px;border-radius:6px;overflow:hidden;cursor:grab}
+#c3d canvas{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+.sw.hatch{background:repeating-linear-gradient(45deg,var(--edge) 0 2px,transparent 2px 5px);border:1px solid var(--edge)}
+.sw.region{background:var(--region);border:1.5px solid var(--ink)}
+.cbar{display:inline-block;width:90px;height:10px;border-radius:2px;vertical-align:middle;margin:0 6px}
+.tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font:12.5px/1.45 var(--mono);color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.12);white-space:nowrap;z-index:5}
+.tip b{font-family:var(--body);font-weight:600}
+
+.results{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px}
+@media (max-width:820px){.results{grid-template-columns:minmax(0,1fr)}}
+.big{font:500 clamp(28px,4vw,40px)/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px;align-items:baseline}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font:14px var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+.pill{display:inline-block;font:500 12px var(--body);padding:2px 8px;border-radius:99px;border:1px solid var(--line)}
+.pill.good{color:#0b7a0b;border-color:#0b7a0b}
+.pill.mid{color:var(--edge);border-color:var(--edge)}
+.formula{overflow-x:auto;overflow-y:hidden;font-size:15px}
+.subst{font:14px var(--mono);color:var(--muted);overflow-x:auto;white-space:nowrap}
+.subst b{color:var(--ink);font-weight:500}
+#conv{display:block;width:100%;height:280px;touch-action:none}
+details summary{cursor:pointer;color:var(--accent);font-size:14px}
+.tablebox{overflow-x:auto;max-height:280px;overflow-y:auto;margin-top:8px}
+table{border-collapse:collapse;font:13px var(--mono);font-variant-numeric:tabular-nums;width:100%}
+th,td{padding:4px 10px;text-align:right;border-bottom:1px solid var(--line)}
+th{font-family:var(--body);font-weight:600;color:var(--muted);position:sticky;top:0;background:var(--panel)}
+tr.cur td{background:var(--accent-weak)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px}
+.notes p{margin:6px 0 0;max-width:65ch}
+.mono{font-family:var(--mono)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+/* ---------- sitio: pestañas ---------- */
+:root{--num:#c4501a;--re:#c4501a;--im:#1f8a5a}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--num:#f39a62;--re:#f39a62;--im:#5cc493} }
+:root[data-theme="dark"]{--num:#f39a62;--re:#f39a62;--im:#5cc493}
+.site-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 24px;margin-bottom:14px}
+.site-head h1{margin-top:4px}
+.coursetabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.coursetabs a{display:flex;flex-direction:column;gap:2px;padding:10px 16px 11px;text-decoration:none;color:var(--muted);border-bottom:2.5px solid transparent;margin-bottom:-1px;border-radius:6px 6px 0 0}
+.coursetabs a .code{font:500 11.5px/1 var(--mono);letter-spacing:.04em}
+.coursetabs a .name{font:600 16px/1.2 var(--display);color:inherit}
+.coursetabs a:hover{color:var(--ink);background:var(--panel)}
+.coursetabs a[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
+.coursetabs a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.topics{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.topics .lbl{font-size:13px;color:var(--muted);margin-right:4px}
+.topics a{font:500 13.5px var(--body);text-decoration:none;color:var(--ink);padding:5px 12px;border:1px solid var(--line);border-radius:99px;background:var(--panel)}
+.topics a[aria-current=page]{background:var(--accent-weak);border-color:var(--accent)}
+.topics .soon{font-size:13px;color:var(--muted);padding:5px 4px}
+.course > header{margin-bottom:20px}
+
+/* ---------- EDO ---------- */
+.edo{display:flex;flex-direction:column;gap:20px}
+.model{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px 28px;align-items:start}
+@media (max-width:900px){.model{grid-template-columns:minmax(0,1fr)}}
+.model p{margin:0 0 8px;max-width:65ch}
+.regimes{width:100%;border-collapse:collapse;font-size:14px}
+.regimes td,.regimes th{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);font-family:var(--body)}
+.regimes th{position:static;background:none}
+.regimes td:first-child{white-space:nowrap}
+.probgroups{display:flex;flex-wrap:wrap;gap:12px 32px}
+.probgroup{display:flex;flex-direction:column;gap:6px;min-width:0}
+.probgroup .lbl{font:500 12px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.probbar{display:flex;flex-wrap:wrap;gap:8px}
+.dp{display:flex;flex-direction:column;gap:20px}
+.dp-grid{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.2fr);gap:20px;align-items:start}
+@media (max-width:1100px){.dp-grid{grid-template-columns:minmax(0,1fr)}}
+#dpc{display:block;width:100%}
+.dp-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px 24px}
+.dp-ctl .slider{grid-template-columns:3.6em 1fr 10ch}
+.dp-ctl .slider output{font-size:12.5px}
+.dpcharts{grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr))}
+#dppre button{font-size:13px;padding:6px 10px}
+.analog{margin:0;padding:10px 14px;border-radius:8px;border:1px dashed var(--accent);max-width:68ch;font-size:14.5px}
+.ctxfig{display:block;width:100%;max-width:270px;height:auto;color:var(--ink);font:italic 600 15px Spectral, Georgia, serif}
+.ctxfig path,.ctxfig circle{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.ctxfig text{fill:var(--ink)}
+.ctxfig text.muted{fill:var(--muted);font:12px "IBM Plex Sans", sans-serif}
+.ctxfig .acc{stroke:var(--accent)}
+.ctxfig .dash{stroke:var(--muted);stroke-dasharray:4 4;stroke-width:1.2}
+.ctxfig circle.bob,.ctxfig rect.body{fill:var(--accent-weak);stroke:var(--ink);stroke-width:2}
+.ctxfig rect.water{fill:var(--accent-weak);stroke:none}
+.analogies{width:100%;border-collapse:collapse;font-size:14px}
+.analogies td,.analogies th{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left;font-family:var(--body);white-space:nowrap}
+.analogies th{position:static;background:none}
+.analogies td:first-child{color:var(--muted)}
+.probbar button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 14px;border-radius:8px;background:var(--panel)}
+.probbar button small{font:12px var(--body);color:var(--muted)}
+.probbar button[aria-pressed=true]{background:var(--accent-weak);border-color:var(--accent)}
+.edo-top{display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1.3fr);gap:20px;align-items:start}
+@media (max-width:1100px){.edo-top{grid-template-columns:minmax(0,1fr)}}
+.worked{display:flex;flex-direction:column;gap:12px}
+.worked .stmt{margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink);font-size:14.5px;max-width:68ch}
+.worked ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px}
+.worked li{max-width:68ch}
+.worked .ans{background:var(--accent-weak);border-radius:8px;padding:10px 14px}
+.worked .ans p{margin:4px 0}
+.worked mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+.datos{display:flex;flex-wrap:wrap;gap:6px}
+.datos span{font:13px var(--mono);padding:3px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--line)}
+.modbanner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:13.5px;padding:8px 12px;border:1px solid var(--num);border-radius:8px;color:var(--ink)}
+.sim{display:flex;flex-direction:column;gap:12px}
+.simgrid{display:grid;grid-template-columns:minmax(170px,0.5fr) minmax(0,1.5fr);gap:14px;align-items:start}
+@media (max-width:560px){.simgrid{grid-template-columns:minmax(0,1fr)}}
+#spring{display:block;width:100%}
+.transport{display:grid;grid-template-columns:auto auto 1fr auto;gap:10px;align-items:center}
+.transport select{width:auto;font:13px var(--body);padding:5px 6px}
+.transport output{font:13px var(--mono);font-variant-numeric:tabular-nums;min-width:8ch;text-align:right}
+.viewtabs{display:flex;gap:4px}
+.viewtabs button{font-size:13px;padding:4px 10px}
+.viewtabs button[aria-pressed=true]{background:var(--accent-weak);border-color:var(--accent)}
+canvas.chart{display:block;width:100%;touch-action:none}
+.edo-mid{display:grid;grid-template-columns:310px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:980px){.edo-mid{grid-template-columns:minmax(0,1fr)}}
+.edo-ctl{display:flex;flex-direction:column;gap:14px}
+.edo-ctl .slider{grid-template-columns:5.2em 1fr 7ch}
+.edo-ctl .slider label{font-family:var(--mono);color:var(--ink);font-size:13px}
+.edo-ctl .slider output{font-size:13px}
+.edo-res{display:flex;flex-direction:column;gap:20px;min-width:0}
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.helix{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:980px){.helix{grid-template-columns:minmax(0,1fr)}}
+.helix-3d{display:flex;flex-direction:column;gap:10px;min-width:0}
+.helix-text{display:flex;flex-direction:column;gap:10px;min-width:0}
+.helix-text p,.helix-text ul{margin:0;max-width:62ch}
+.helix-text ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+#helix3d{width:100%;height:clamp(340px,40vw,540px);border-radius:6px;overflow:hidden;cursor:grab;border:1px solid var(--line)}
+#helix3d canvas{display:block}
+#hxviews button{font-size:13px;padding:6px 10px}
+#hxviews button[aria-pressed=true]{background:var(--accent-weak);border-color:var(--accent)}
+#hxtime{font:13px var(--mono);font-variant-numeric:tabular-nums}
+.cardhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.pill.reg{font-size:13px;padding:3px 10px;border-color:var(--accent);color:var(--ink);background:var(--accent-weak)}
+.warn{font-size:13.5px;color:var(--num);margin:0}
+.methods{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start}
+@media (max-width:900px){.methods{grid-template-columns:minmax(0,1fr)}}
+.methods .formula{font-size:14px}
+.mtable td:first-child,.mtable th:first-child{text-align:left;font-family:var(--body)}
+.mtable tr.sel td{background:var(--accent-weak)}
+.sw.num{background:var(--num)}
+.sw.acc{background:var(--accent)}
+#rescard{display:flex;flex-direction:column;gap:12px}
+#rescard h2{margin:0}
+#rescard h3{margin:14px 0 6px}
+.resgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 32px}
+@media (max-width:980px){.resgrid{grid-template-columns:minmax(0,1fr)}}
+.resgrid p{margin:6px 0;max-width:68ch}
+.reslist{margin:6px 0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.resgrid mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+.rescheck{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-top:10px}
+.rescheck h3{margin-top:0}
+.rq{display:grid;grid-template-columns:minmax(0,1fr) 7em;gap:10px;align-items:center;margin:6px 0;font-size:14px}
+.rq input{font:14px var(--mono);padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.rq input.good{border-color:var(--im)}.rq input.bad{border-color:var(--num)}
+.rqmsg{font-size:13.5px;font-weight:500}
+.worked .solh{font:600 13px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px}
+.worked details.sol ul{margin:4px 0;padding-left:20px;display:flex;flex-direction:column;gap:5px;max-width:68ch}
+.sw.env{background:none;border-top:2px dashed var(--muted);border-radius:0;height:0;width:16px;vertical-align:3px}
+/* ---------- Fundamentos de Matemática 2 ---------- */
+.vf{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;font-size:14px}
+.vf button[aria-pressed=true]{background:var(--accent-weak);border-color:var(--accent)}
+.vfmsg{font-size:13.5px;font-weight:500}
+.vfmsg.ok{color:var(--im)}
+.vfmsg.no{color:var(--num)}
+details.sol{border-top:1px solid var(--line);padding-top:8px}
+details.sol[open] summary{margin-bottom:8px}
+details.sol p{margin:6px 0;max-width:68ch}
+details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+.anscheck{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:end;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.anscheck input{width:10em}
+.anscheck input.good{border-color:var(--im)}
+.box3d{width:100%;height:clamp(320px,36vw,470px);border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:grab}
+.box3d canvas{display:block}
+.fmctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px 22px;align-items:end}
+.fmctl .slider{grid-template-columns:3em 1fr 5ch}
+#fmwidget > div{display:flex;flex-direction:column;gap:12px;min-width:0}
+#fmwidget > div[hidden]{display:none}
+.mrow{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.mlab{font:600 14px var(--body);white-space:nowrap}
+.mtx{width:auto;border-collapse:separate;border-spacing:0;font:13.5px var(--mono);border-left:2px solid var(--ink);border-right:2px solid var(--ink);border-radius:5px}
+.mtx td{border:none;padding:3px 7px;text-align:right;font-variant-numeric:tabular-nums}
+.mtx td.hl{background:var(--accent-weak)}
+.mtx input{width:4.6em;font:13px var(--mono);padding:3px 4px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:4px;text-align:right}
+.mtx input:focus{outline:2px solid var(--accent);outline-offset:0}
+#mQ td{cursor:pointer}
+.mbox{display:flex;align-items:center;gap:8px}
+.bars{display:flex;flex-direction:column;gap:6px;min-width:min(100%,260px);flex:1}
+.bar{display:grid;grid-template-columns:4em 1fr auto;gap:8px;align-items:center;font-size:13px}
+.bar .track{height:10px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar .fill{height:100%;background:var(--accent)}
+.bar b{font:500 13px var(--mono)}
+.bar.total{border-top:1px solid var(--line);padding-top:4px}
+.dimcheck{display:flex;flex-direction:column;gap:6px;padding-top:6px;border-top:1px solid var(--line)}
+.dimcheck select{width:auto}
+.okc{color:var(--im);font-weight:600}
+.noc{color:var(--num);font-weight:600}
+.vecin{display:flex;flex-direction:column;gap:6px}
+.vrow{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font:14px var(--mono)}
+.vrow .mlab{min-width:2.4em}
+.vrow input{width:4.4em;font:13px var(--mono);padding:4px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:4px;text-align:right}
+.vecin button{align-self:flex-start;font-size:13px}
+#detc,#trc,#eqs,#eqd{display:block;width:100%}
+.eqgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.eqh{margin:0 0 6px}
+#eqp{display:block;width:100%}
+.qexp{margin:0;font-size:14px;line-height:1.5;max-width:70ch}
+#revout,#eqout{overflow-x:auto;overflow-y:hidden}
+@media (max-width:700px){.eqgrid{grid-template-columns:minmax(0,1fr)}}
+.site-name{font:600 20px/1.2 var(--display);margin:4px 0 0}
+.methods .slider{grid-template-columns:auto 1fr 7ch}
+/* ---------- Cálculo: temas iteradas / cambio de variables / triples ---------- */
+.cx-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start}
+@media (max-width:1100px){.cx-top{grid-template-columns:minmax(0,1fr)}}
+.cx-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:20px;align-items:start}
+.seg2{display:flex;flex-wrap:wrap;gap:6px}
+.seg2 button{font-size:13px;padding:5px 10px}
+.seg2 button[aria-pressed=true]{background:var(--accent-weak);border-color:var(--accent)}
+.sweep{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
+.sweep output{font:13px var(--mono);font-variant-numeric:tabular-nums;min-width:7ch;text-align:right;white-space:nowrap}
+.sweep button{font-size:13px;padding:5px 10px;min-width:6.5em}
+.worked .stmt mjx-container[display=true],.worked .thm mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+.worked .thm{margin:0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--accent-weak);border-radius:0 8px 8px 0;font-size:14px}
+.worked ol.parts{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.anscheck input.wide{width:13em}
+.libre{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px 12px;align-items:end}
+.libre .err{grid-column:1/-1}
+.cvthm{display:flex;flex-direction:column;gap:12px;min-width:0}
+.cvnums{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:end}
+.big.sm{font-size:clamp(21px,2.4vw,28px)}
+.cvctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px 24px;align-items:center}
+.cvctl .slider{grid-template-columns:4.2em 1fr 3ch}
+.cvpar{display:contents}
+.cvpar .slider{grid-template-columns:2em 1fr 5ch}
+.cvplanes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px;align-items:start}
+@media (max-width:860px){.cvplanes{grid-template-columns:minmax(0,1fr)}}
+.cvplane{display:flex;flex-direction:column;gap:6px;min-width:0}
+#cvuv,#cvxy,#itc{cursor:crosshair}
+.sw.jlo{background:rgba(37,99,201,.16);border:1px solid var(--line)}
+.sw.jhi{background:rgba(37,99,201,.7)}
+.sw.edge{background:var(--edge)}
+.sw.neg{background:var(--num)}
+.sw.pos{background:var(--accent)}
+.sw.imc{background:var(--im)}
+.kv dd.l{text-align:left}
+#itread,#cvread,#trread{white-space:normal;line-height:1.55}
+.bar .track,.bar .fill{display:block}
+.feplanes{display:grid;grid-template-columns:minmax(0,0.7fr) minmax(0,1.3fr);gap:16px;align-items:start}
+@media (max-width:860px){.feplanes{grid-template-columns:minmax(0,1fr)}}
+#femesh,#fepm{cursor:crosshair}
+</style>
+
+
+<div class="wrap"><div class="site-head"><div><div class="eyebrow">Laboratorio interactivo · IN1526C · 2026, segundo semestre</div><p class="site-name">Ecuaciones Diferenciales</p></div></div>
+<section class="course" id="tab-edo" role="tabpanel" aria-labelledby="ctab-edo">
+<nav class="topics" aria-label="Temas de Ecuaciones Diferenciales">
+  <span class="lbl">Tema:</span>
+  <a href="#edo-resortes" aria-current="page">Sistemas masa–resorte</a>
+  <span class="soon">Más temas se agregan durante el semestre</span>
+</nav>
+<header>
+  <div>
+    <div class="eyebrow">Ecuaciones Diferenciales · IN1526C · Práctico 11</div>
+    <h1>Sistemas masa–resorte</h1>
+  </div>
+  <p class="lede">Una masa colgada de un resorte, con o sin amortiguador y con o sin fuerza externa, se modela con una EDO lineal de segundo orden con coeficientes constantes. Aquí resolvemos los problemas del práctico y vemos cómo cambia el movimiento con los parámetros.</p>
+</header>
+
+<div class="edo">
+<section class="panel model" aria-label="Modelo">
+  <div>
+    <h3 style="margin-bottom:6px">El modelo</h3>
+    <div class="formula">\[ m\,x''(t) + c\,x'(t) + k\,x(t) = F(t),\qquad x(0)=x_0,\quad x'(0)=v_0 \]</div>
+    <p><b>m</b> es la masa (kg), <b>c</b> la constante de amortiguamiento (N·s/m), <b>k</b> la constante del resorte (N/m) y <b>F(t)</b> una fuerza externa (N).</p>
+    <p><b>Convención:</b> x(t) mide el desplazamiento desde la posición de equilibrio y es <b>positivo hacia abajo</b>. Así, “4 cm arriba” es x₀ = −0.04 m y “velocidad hacia arriba de 3 m/s” es v₀ = −3 m/s.</p>
+    <p>En un resorte vertical el peso no aparece en la ecuación: en el equilibrio el resorte ya está estirado s metros con k·s = m·g, y esas dos fuerzas se cancelan. Si el enunciado da un peso W y un alargamiento s, entonces k = W/s y m = W/g.</p>
+  </div>
+  <div>
+    <h3 style="margin-bottom:6px">Ecuación característica y régimen</h3>
+    <div class="formula">\[ m\,r^2 + c\,r + k = 0,\qquad \Delta = c^2 - 4mk \]</div>
+    <div style="overflow-x:auto">
+    <table class="regimes">
+      <tr><th>Caso</th><th>Raíces</th><th>Movimiento</th></tr>
+      <tr><td>c = 0</td><td>±iω₀, ω₀ = √(k/m)</td><td>Armónico simple, oscila sin perder amplitud</td></tr>
+      <tr><td>Δ &lt; 0</td><td>−γ ± iω<sub>d</sub></td><td>Subamortiguado: oscila con amplitud que decae</td></tr>
+      <tr><td>Δ = 0</td><td>r doble = −c/(2m)</td><td>Crítico: vuelve al equilibrio lo más rápido posible sin oscilar</td></tr>
+      <tr><td>Δ &gt; 0</td><td>r₁, r₂ &lt; 0 reales</td><td>Sobreamortiguado: vuelve lentamente, sin oscilar</td></tr>
+    </table></div>
+  </div>
+  <div style="grid-column:1/-1;min-width:0">
+    <h3 style="margin-bottom:6px">Una ecuación, muchos contextos</h3>
+    <p>La misma EDO aparece cada vez que hay inercia, algo que empuja de vuelta al equilibrio y algo que frena, también fuera de la física. Por eso cualquiera de estos sistemas se puede leer como un resorte:</p>
+    <div style="overflow-x:auto"><table class="analogies">
+      <tr><th></th><th>Resorte</th><th>Circuito RLC</th><th>Péndulo (θ pequeño)</th><th>Cuerpo flotante</th><th>Mercado</th><th>Glucosa</th></tr>
+      <tr><td>Variable</td><td>posición x</td><td>carga q</td><td>ángulo θ</td><td>hundimiento x</td><td>p = P − P*</td><td>g = G − G₀</td></tr>
+      <tr><td>Su derivada</td><td>velocidad v</td><td>corriente i</td><td>velocidad angular θ′</td><td>velocidad v</td><td>p′</td><td>g′</td></tr>
+      <tr><td>Inercia (m)</td><td>masa m</td><td>inductancia L</td><td>1</td><td>masa m</td><td>1</td><td>1</td></tr>
+      <tr><td>Freno (c)</td><td>amortiguador c</td><td>resistencia R</td><td>roce del aire b</td><td>roce del agua c</td><td>expectativas</td><td>absorción 2α</td></tr>
+      <tr><td>Restitución (k)</td><td>constante k</td><td>1/C</td><td>g/L</td><td>ρgA (Arquímedes)</td><td>pendientes β + δ</td><td>regulación ω₀²</td></tr>
+      <tr><td>Forzamiento F(t)</td><td>fuerza externa</td><td>voltaje E(t)</td><td>torque externo</td><td>oleaje</td><td>shocks externos</td><td>ingesta</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<div class="probgroups" id="probbar" role="group" aria-label="Problema">
+<div class="probgroup"><span class="lbl">Práctico 11</span><div class="probbar">
+  <button type="button" data-prob="p1">Problema 1<small>Amortiguado, crítico</small></button>
+  <button type="button" data-prob="p2">Problema 2<small>Sin amortiguamiento</small></button>
+  <button type="button" data-prob="p3">Problema 3<small>Dato por peso y alargamiento</small></button>
+  <button type="button" data-prob="p4">Problema 4<small>Forzado, sobreamortiguado</small></button>
+  <button type="button" data-prob="libre">Exploración libre<small>Subamortiguado y forzado</small></button>
+</div></div>
+<div class="probgroup"><span class="lbl">Física: otros contextos</span><div class="probbar">
+  <button type="button" data-prob="p5">Problema 5<small>Circuito RLC</small></button>
+  <button type="button" data-prob="p6">Problema 6<small>Péndulo simple</small></button>
+  <button type="button" data-prob="p7">Problema 7<small>Boya flotante</small></button>
+  <button type="button" data-prob="p8">Problema 8<small>Sintonía de una radio</small></button>
+  <button type="button" data-prob="p9">Problema 9<small>Péndulo doble</small></button>
+</div></div>
+<div class="probgroup"><span class="lbl">Economía y biología</span><div class="probbar">
+  <button type="button" data-prob="p10">Problema 10<small>Precio con expectativas</small></button>
+  <button type="button" data-prob="p11">Problema 11<small>Glucosa en la sangre</small></button>
+</div></div>
+<div class="probgroup"><span class="lbl">Resonancia</span><div class="probbar">
+  <button type="button" data-prob="p12">Problema 12<small>Resonancia pura</small></button>
+  <button type="button" data-prob="p13">Problema 13<small>Pulsaciones</small></button>
+  <button type="button" data-prob="p14">Problema 14<small>Resonancia práctica</small></button>
+</div></div>
+</div>
+
+<div id="sdof" class="edo">
+<div class="edo-top">
+<article class="panel worked" id="worked" aria-live="polite">
+  <div class="modbanner" id="modbanner" hidden>
+    <span>Los datos cambiaron. El desarrollo de abajo corresponde a los datos originales del problema; los gráficos y la solución general ya usan los nuevos.</span>
+    <button type="button" id="restore">Volver a los datos del problema</button>
+  </div>
+
+  <div data-prob="p1">
+    <h2>Problema 1 · Resorte con amortiguador</h2>
+    <p class="stmt">Una masa de 0.2 kg se une a un resorte de constante 5 N/m y a un amortiguador de constante 2 N·s/m. Inicialmente la masa se desplaza 0.04 m por debajo del equilibrio y se libera con velocidad 0.1 m/s. Determine a) posición, velocidad y aceleración para t &gt; 0; b) el primer instante en que cruza el equilibrio; c) el primer instante en que la velocidad es cero.</p>
+    <div class="datos"><span>m = 0.2</span><span>c = 2</span><span>k = 5</span><span>x₀ = 0.04</span><span>v₀ = 0.1 (hacia abajo)</span></div>
+    <ol>
+      <li>Ecuación: \( 0.2\,x'' + 2\,x' + 5\,x = 0 \iff x'' + 10x' + 25x = 0. \)</li>
+      <li>Característica: \( r^2 + 10r + 25 = (r+5)^2 = 0 \Rightarrow r = -5 \) doble. Como \( \Delta = 2^2 - 4(0.2)(5) = 0 \), el sistema es <b>críticamente amortiguado</b>.</li>
+      <li>Solución general: \( x(t) = (C_1 + C_2 t)\,e^{-5t}. \) Con \( x(0) = C_1 = 0.04 \) y \( x'(0) = -5C_1 + C_2 = 0.1 \) se obtiene \( C_2 = 0.3 \).</li>
+    </ol>
+    <div class="ans">
+      <p><b>a)</b></p>
+      \[ x(t) = (0.04 + 0.3t)\,e^{-5t}\ \text{m},\quad v(t) = (0.1 - 1.5t)\,e^{-5t}\ \text{m/s},\quad a(t) = (7.5t - 2)\,e^{-5t}\ \text{m/s}^2 \]
+      <p><b>b)</b> \( x(t) = 0 \iff 0.04 + 0.3t = 0 \iff t = -\tfrac{2}{15} &lt; 0. \) La masa <b>no cruza</b> el equilibrio para t &gt; 0: se acerca a él sin alcanzarlo, como es típico del caso crítico.</p>
+      <p><b>c)</b> \( v(t) = 0 \iff t = \tfrac{1}{15} \approx 0.0667 \) s. En ese instante la masa alcanza su máximo descenso, \( x(1/15) \approx 0.0430 \) m.</p>
+    </div>
+  </div>
+
+  <div data-prob="p2" hidden>
+    <h2>Problema 2 · Movimiento libre no amortiguado</h2>
+    <p class="stmt">Un sistema masa-resorte vertical tiene m = 9 kg y k = 25 N/m. La masa se libera desde 4 cm sobre el equilibrio con velocidad hacia abajo de 2 m/s. Determine la posición y la velocidad. ¿Cuál es la posición, la velocidad y la aceleración a los 10 segundos?</p>
+    <div class="datos"><span>m = 9</span><span>c = 0</span><span>k = 25</span><span>x₀ = −0.04 (arriba)</span><span>v₀ = 2 (hacia abajo)</span></div>
+    <ol>
+      <li>Ecuación: \( 9x'' + 25x = 0. \) Característica: \( 9r^2 + 25 = 0 \Rightarrow r = \pm \tfrac{5}{3} i. \)</li>
+      <li>Frecuencia natural \( \omega_0 = \sqrt{k/m} = 5/3 \) rad/s y período \( T = 2\pi/\omega_0 = 6\pi/5 \approx 3.77 \) s.</li>
+      <li>Solución general: \( x(t) = C_1\cos\tfrac{5t}{3} + C_2\sin\tfrac{5t}{3}. \) Con \( x(0) = C_1 = -0.04 \) y \( x'(0) = \tfrac{5}{3}C_2 = 2 \) queda \( C_2 = 1.2 \).</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = -0.04\cos\tfrac{5t}{3} + 1.2\sin\tfrac{5t}{3}\ \text{m},\qquad v(t) = \tfrac{1}{15}\sin\tfrac{5t}{3} + 2\cos\tfrac{5t}{3}\ \text{m/s} \]
+      <p>Amplitud: \( A = \sqrt{0.04^2 + 1.2^2} \approx 1.2007 \) m. Como no hay amortiguamiento, oscila con esa amplitud para siempre.</p>
+      <p><b>En t = 10 s:</b> \( x(10) \approx -0.9592 \) m (0.96 m sobre el equilibrio), \( v(10) \approx -1.2037 \) m/s (subiendo), \( a(10) = -\tfrac{25}{9}x(10) \approx 2.6643 \) m/s².</p>
+    </div>
+  </div>
+
+  <div data-prob="p3" hidden>
+    <h2>Problema 3 · Datos dados por peso y alargamiento</h2>
+    <p class="stmt">Una masa que pesa 2.45 N alarga 0.6125 m un resorte. Actúa una fuerza de amortiguamiento proporcional a la velocidad con c = 2. Determine la ecuación de movimiento si la masa se libera desde el equilibrio con una velocidad ascendente de 3 m/s.</p>
+    <div class="datos"><span>W = 2.45 N</span><span>s = 0.6125 m</span><span>c = 2</span><span>x₀ = 0</span><span>v₀ = −3 (hacia arriba)</span></div>
+    <ol>
+      <li>Parámetros: \( k = W/s = 2.45/0.6125 = 4 \) N/m y \( m = W/g = 2.45/9.8 = 0.25 \) kg.</li>
+      <li>Ecuación: \( 0.25x'' + 2x' + 4x = 0 \iff x'' + 8x' + 16x = 0. \) Característica: \( (r+4)^2 = 0 \Rightarrow r = -4 \) doble: <b>críticamente amortiguado</b>.</li>
+      <li>Solución general \( x(t) = (C_1 + C_2t)e^{-4t} \). Con \( x(0) = C_1 = 0 \) y \( x'(0) = C_2 = -3 \).</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = -3t\,e^{-4t}\ \text{m},\qquad v(t) = (12t - 3)\,e^{-4t}\ \text{m/s} \]
+      <p>La masa sube hasta \( t = 1/4 \) s, donde llega a \( 0.75/e \approx 0.276 \) m sobre el equilibrio, y luego regresa sin cruzarlo.</p>
+    </div>
+  </div>
+
+  <div data-prob="p4" hidden>
+    <h2>Problema 4 · Fuerza externa F(t) = t e<sup>−t</sup></h2>
+    <p class="stmt">Un sistema amortiguado vertical tiene m = 1 kg, k = 8 N/m y c = 6 N·s/m. La masa parte del equilibrio con velocidad de 2 m/s hacia arriba, y sobre ella actúa F(t) = t e<sup>−t</sup>. Determine la posición para todo t &gt; 0.</p>
+    <div class="datos"><span>m = 1</span><span>c = 6</span><span>k = 8</span><span>x₀ = 0</span><span>v₀ = −2 (hacia arriba)</span><span>F(t) = t e⁻ᵗ</span></div>
+    <ol>
+      <li>Ecuación: \( x'' + 6x' + 8x = t\,e^{-t}. \) Característica: \( r^2 + 6r + 8 = (r+2)(r+4) = 0 \Rightarrow r = -2,\,-4 \): <b>sobreamortiguado</b> (Δ = 4 &gt; 0).</li>
+      <li>Homogénea: \( x_h = C_1e^{-2t} + C_2e^{-4t}. \)</li>
+      <li>Coeficientes indeterminados: como −1 no es raíz, se propone \( x_p = (At + B)e^{-t} \). Al sustituir, \( (3At + 4A + 3B)\,e^{-t} = t\,e^{-t} \), así que \( A = \tfrac13,\ B = -\tfrac49 \).</li>
+      <li>Condiciones iniciales: \( C_1 + C_2 = \tfrac49 \) y \( -2C_1 - 4C_2 + \tfrac79 = -2 \), de donde \( C_1 = -\tfrac12,\ C_2 = \tfrac{17}{18} \).</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = -\tfrac12 e^{-2t} + \tfrac{17}{18} e^{-4t} + \left(\tfrac{t}{3} - \tfrac49\right)e^{-t}\ \text{m} \]
+      <p>La masa sube hasta unos 0.247 m sobre el equilibrio en t ≈ 0.34 s. Después la fuerza externa la empuja hacia abajo: cruza el equilibrio en t ≈ 1.61 s, baja hasta 0.029 m en t ≈ 2.56 s y vuelve a x = 0 cuando la fuerza se extingue.</p>
+    </div>
+  </div>
+
+  <div data-prob="p5" hidden>
+    <h2>Problema 5 · Circuito RLC en serie</h2>
+    <svg class="ctxfig" viewBox="0 0 260 122" role="img" aria-label="Circuito con resistencia R, inductancia L y capacitor C en serie">
+      <path d="M20 20 H58 L64 11 L71 29 L78 11 L85 29 L92 11 L99 29 L104 20 H140 a7.5 7.5 0 0 1 15 0 a7.5 7.5 0 0 1 15 0 a7.5 7.5 0 0 1 15 0 a7.5 7.5 0 0 1 15 0 H240 V54 M226 54 H254 M226 64 H254 M240 64 V102 H20 Z"/>
+      <text x="81" y="48">R</text><text x="168" y="44">L</text><text x="220" y="63" text-anchor="end">C</text>
+      <text x="130" y="94" text-anchor="middle" class="muted">i(t) = q′(t)</text>
+    </svg>
+    <p class="stmt">Un circuito en serie tiene inductancia L = 0.05 H, resistencia R = 2 Ω y un capacitor de C = 0.01 F, sin fuente: E(t) = 0. Al inicio el capacitor tiene una carga de 5 C y no circula corriente. Determine la carga q(t) y la corriente i(t). ¿Cuál es la carga a los 0.01 s?</p>
+    <p class="analog"><b>Lectura como resorte.</b> Por la ley de voltajes de Kirchhoff, \( L\,q'' + R\,q' + \tfrac1C\,q = E(t) \). Es la ecuación del resorte con L en el papel de la masa, R en el del amortiguador, 1/C en el de la constante k, la carga q como posición y la corriente i = q′ como velocidad.</p>
+    <div class="datos"><span>L = 0.05 ↔ m</span><span>R = 2 ↔ c</span><span>1/C = 100 ↔ k</span><span>q₀ = 5</span><span>i₀ = 0</span></div>
+    <ol>
+      <li>Ecuación: \( 0.05\,q'' + 2\,q' + 100\,q = 0 \iff q'' + 40q' + 2000q = 0. \)</li>
+      <li>Característica: \( r^2 + 40r + 2000 = 0 \Rightarrow r = -20 \pm 40i \). Como \( \Delta = 2^2 - 4(0.05)(100) = -16 &lt; 0 \), el circuito es <b>subamortiguado</b>.</li>
+      <li>Solución general \( q(t) = e^{-20t}(C_1\cos 40t + C_2\sin 40t) \). Con \( q(0) = C_1 = 5 \) y \( q'(0) = -20C_1 + 40C_2 = 0 \) queda \( C_2 = 2.5 \).</li>
+    </ol>
+    <div class="ans">
+      \[ q(t) = e^{-20t}\left(5\cos 40t + 2.5\sin 40t\right)\ \text{C},\qquad i(t) = q'(t) = -250\,e^{-20t}\sin 40t\ \text{A} \]
+      <p><b>En t = 0.01 s:</b> \( q(0.01) \approx 4.568 \) C.</p>
+      <p>La carga oscila entre las placas mientras el capacitor se descarga, con cuasiperíodo \( 2\pi/40 \approx 0.157 \) s. La energía se disipa como calor en la resistencia, igual que en el amortiguador del resorte. Como las raíces son complejas, la hélice de abajo muestra este caso.</p>
+    </div>
+  </div>
+
+  <div data-prob="p6" hidden>
+    <h2>Problema 6 · Péndulo simple</h2>
+    <svg class="ctxfig" viewBox="0 0 200 140" role="img" aria-label="Péndulo de longitud L desviado un ángulo theta de la vertical">
+      <path d="M60 10 H140"/><path d="M100 10 V128" class="dash"/>
+      <path d="M100 10 L146.5 109.7"/><circle cx="146.5" cy="109.7" r="9" class="bob"/>
+      <path d="M100 50 A40 40 0 0 0 116.9 46.3" class="acc"/>
+      <text x="104" y="66">θ</text><text x="132" y="58">L</text><text x="160" y="128" class="muted">m</text>
+    </svg>
+    <p class="stmt">Un péndulo simple de longitud L = 2.45 m se suelta desde un ángulo de 0.1 rad (unos 5.7°) sin velocidad inicial. Usando la aproximación sen θ ≈ θ y g = 9.8 m/s², determine θ(t), el período y la velocidad angular máxima.</p>
+    <p class="analog"><b>Lectura como resorte.</b> En la dirección tangente, \( mL\,\theta'' = -mg\sin\theta \approx -mg\,\theta \). Dividiendo por mL: \( \theta'' + \tfrac{g}{L}\,\theta = 0 \). Es un resorte sin amortiguamiento con “masa” 1, constante k = g/L y el ángulo θ como posición. La gravedad hace el papel del resorte.</p>
+    <div class="datos"><span>1 ↔ m</span><span>b = 0 ↔ c</span><span>g/L = 4 ↔ k</span><span>θ₀ = 0.1 rad</span><span>θ′₀ = 0</span></div>
+    <ol>
+      <li>Ecuación: \( \theta'' + 4\theta = 0 \). Característica: \( r^2 + 4 = 0 \Rightarrow r = \pm 2i \), así que \( \omega_0 = \sqrt{g/L} = 2 \) rad/s.</li>
+      <li>Período \( T = 2\pi/\omega_0 = \pi \approx 3.14 \) s. No depende de la masa, y en la aproximación lineal tampoco del ángulo inicial.</li>
+      <li>Solución general \( \theta = C_1\cos 2t + C_2\sin 2t \). Con \( \theta(0) = 0.1 \) y \( \theta'(0) = 0 \): \( C_1 = 0.1,\ C_2 = 0 \).</li>
+    </ol>
+    <div class="ans">
+      \[ \theta(t) = 0.1\cos 2t\ \text{rad},\qquad \theta'(t) = -0.2\sin 2t\ \text{rad/s} \]
+      <p>La velocidad angular máxima es 0.2 rad/s y se alcanza en el punto más bajo, donde la rapidez de la masa es \( L\cdot 0.2 = 0.49 \) m/s. Por ejemplo, \( \theta(1) = 0.1\cos 2 \approx -0.0416 \) rad.</p>
+      <p>La aproximación es buena: \( \sin(0.1) = 0.09983 \), un error de 0.17 %. Pruebe a agregar resistencia del aire con el control b.</p>
+    </div>
+  </div>
+
+  <div data-prob="p7" hidden>
+    <h2>Problema 7 · Boya flotante</h2>
+    <svg class="ctxfig" viewBox="0 0 220 140" role="img" aria-label="Boya cilíndrica parcialmente sumergida en agua">
+      <rect x="0" y="70" width="220" height="70" class="water"/>
+      <path d="M0 70 Q13.75 64 27.5 70 T55 70 T82.5 70 T110 70 T137.5 70 T165 70 T192.5 70 T220 70" class="acc"/>
+      <rect x="85" y="30" width="50" height="84" rx="3" class="body"/>
+      <path d="M150 70 V96 M146 90 L150 96 L154 90" class="acc"/>
+      <text x="158" y="88">x</text><text x="110" y="62" text-anchor="middle">A</text><text x="10" y="130" class="muted">agua, ρ = 1000 kg/m³</text>
+    </svg>
+    <p class="stmt">Una boya cilíndrica de 10 kg, con sección transversal A = 0.05 m², flota en agua (ρ = 1000 kg/m³). Se hunde 10 cm desde su posición de equilibrio y se suelta. El agua ejerce una resistencia proporcional a la velocidad con c = 20 N·s/m. Determine el movimiento de la boya y cuánto tarda la amplitud en bajar de 1 cm.</p>
+    <p class="analog"><b>Lectura como resorte.</b> Si la boya se hunde x metros más que en el equilibrio, desplaza un volumen extra A·x y el empuje de Arquímedes aumenta en ρgA·x. Es una fuerza restauradora proporcional a x, como la de un resorte de constante k = ρgA.</p>
+    <div class="datos"><span>m = 10</span><span>c = 20</span><span>k = ρgA = 490</span><span>x₀ = 0.1 (abajo)</span><span>v₀ = 0</span></div>
+    <ol>
+      <li>Constante: \( k = 1000\cdot 9.8\cdot 0.05 = 490 \) N/m. Ecuación: \( 10x'' + 20x' + 490x = 0 \iff x'' + 2x' + 49x = 0 \).</li>
+      <li>Característica: \( r = -1 \pm i\sqrt{48} \approx -1 \pm 6.928i \): <b>subamortiguado</b>.</li>
+      <li>Solución general \( x = e^{-t}(C_1\cos\sqrt{48}\,t + C_2\sin\sqrt{48}\,t) \). Con \( C_1 = 0.1 \) y \( -C_1 + \sqrt{48}\,C_2 = 0 \): \( C_2 = 0.1/\sqrt{48} \approx 0.01443 \).</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = e^{-t}\left(0.1\cos 6.928t + 0.01443\sin 6.928t\right)\ \text{m} \]
+      <p>La boya oscila con cuasiperíodo \( 2\pi/\sqrt{48} \approx 0.907 \) s. Su amplitud es \( R\,e^{-t} \) con \( R = \sqrt{0.1^2 + 0.01443^2} \approx 0.1010 \) m, y \( R\,e^{-t} &lt; 0.01 \iff t &gt; \ln(10.10) \approx 2.31 \) s.</p>
+    </div>
+  </div>
+
+  <div data-prob="p8" hidden>
+    <h2>Problema 8 · Sintonizar una radio</h2>
+    <svg class="ctxfig" viewBox="0 0 260 122" role="img" aria-label="Circuito LC con fuente sinusoidal y capacitor variable">
+      <path d="M20 50 V20 H140 a7.5 7.5 0 0 1 15 0 a7.5 7.5 0 0 1 15 0 a7.5 7.5 0 0 1 15 0 a7.5 7.5 0 0 1 15 0 H240 V54 M226 54 H254 M226 64 H254 M240 64 V102 H20 V74"/>
+      <circle cx="20" cy="62" r="12"/><path d="M12 62 q4 -8 8 0 t8 0" class="acc"/>
+      <path d="M222 74 L258 44 M250 44 H258 V52" class="acc"/>
+      <text x="38" y="66">E(t)</text><text x="168" y="44">L</text><text x="220" y="63" text-anchor="end">C</text>
+    </svg>
+    <p class="stmt">El circuito de sintonía de una radio es un circuito LC sin resistencia, con L = 1 H y C = 0.25 F (valores didácticos). Recibe la señal de una emisora, E(t) = cos 2t V. El capacitor parte descargado y sin corriente. Determine q(t) y explique qué ocurre.</p>
+    <p class="analog"><b>Lectura como resorte.</b> \( L\,q'' + \tfrac1C\,q = E(t) \) es un resorte sin amortiguamiento empujado por una fuerza periódica. Su frecuencia natural es \( \omega_0 = 1/\sqrt{LC} = 2 \) rad/s, igual a la de la señal: hay <b>resonancia</b>. Sintonizar una radio consiste en ajustar C para que esto ocurra con la emisora deseada.</p>
+    <div class="datos"><span>L = 1 ↔ m</span><span>R = 0 ↔ c</span><span>1/C = 4 ↔ k</span><span>E(t) = cos 2t ↔ F(t)</span><span>q₀ = 0</span><span>i₀ = 0</span></div>
+    <ol>
+      <li>Ecuación: \( q'' + 4q = \cos 2t \). Homogénea: \( q_h = C_1\cos 2t + C_2\sin 2t \).</li>
+      <li>Como \( \cos 2t \) ya es solución de la homogénea, se propone \( q_p = t\,(A\cos 2t + B\sin 2t) \). Al sustituir, \( -4A\sin 2t + 4B\cos 2t = \cos 2t \), así que \( A = 0,\ B = \tfrac14 \).</li>
+      <li>Condiciones iniciales: \( q(0) = C_1 = 0 \) y \( q'(0) = 2C_2 = 0 \).</li>
+    </ol>
+    <div class="ans">
+      \[ q(t) = \frac{t}{4}\,\sin 2t\ \text{C} \]
+      <p>La amplitud crece linealmente con el tiempo: el circuito amplifica la emisora sintonizada. En un circuito real hay resistencia. Ponga R = 0.2 Ω en el control R y la amplitud se estabiliza en \( E_0/(R\omega) = 2.5 \) C. Si cambia 1/C, ω₀ deja de ser 2 y aparecen pulsaciones: la radio queda “desintonizada”.</p>
+    </div>
+  </div>
+
+  <div data-prob="p10" hidden>
+    <h2>Problema 10 · Precio con expectativas</h2>
+    <p class="stmt">En un mercado, la demanda depende del precio P y también de cómo los compradores esperan que cambie: \( Q_d = 40 - 2P - 2P' - P'' \). La oferta es \( Q_s = -5 + 3P \). El precio se ajusta para que oferta y demanda coincidan en todo instante (t en meses). Si P(0) = 12 $ y P′(0) = 1 $/mes, determine P(t) y diga si el mercado es estable.</p>
+    <p class="analog"><b>Lectura como resorte.</b> Al igualar \( Q_d = Q_s \) se obtiene \( P'' + 2P' + 5P = 45 \). La desviación \( p = P - P^* \) respecto del precio de equilibrio cumple \( p'' + 2p' + 5p = 0 \), un resorte amortiguado. El exceso de oferta o de demanda empuja el precio de vuelta al equilibrio, y el término de expectativas \( P' \) hace de amortiguador. Modelo tomado de A. Chiang, <i>Métodos fundamentales de economía matemática</i>.</p>
+    <div class="datos"><span>1 ↔ m</span><span>2 ↔ c</span><span>β + δ = 5 ↔ k</span><span>p₀ = 12 − 9 = 3</span><span>p′₀ = 1</span></div>
+    <ol>
+      <li>\( Q_d = Q_s \iff -P'' - 2P' - 2P + 40 = -5 + 3P \iff P'' + 2P' + 5P = 45. \)</li>
+      <li>Precio de equilibrio: la solución constante es \( P^* = 45/5 = 9 \) $. Con \( p = P - 9 \): \( p'' + 2p' + 5p = 0 \).</li>
+      <li>\( r^2 + 2r + 5 = 0 \Rightarrow r = -1 \pm 2i \): <b>subamortiguado</b>. Entonces \( p = e^{-t}(C_1\cos 2t + C_2\sin 2t) \), con \( C_1 = p(0) = 3 \) y \( -C_1 + 2C_2 = 1 \Rightarrow C_2 = 2 \).</li>
+    </ol>
+    <div class="ans">
+      \[ P(t) = 9 + e^{-t}\left(3\cos 2t + 2\sin 2t\right)\ \text{\$} \]
+      <p>El precio oscila alrededor de 9 $ con una amplitud que decae como \( \sqrt{13}\,e^{-t} \). El mercado es <b>dinámicamente estable</b> porque las dos raíces tienen parte real negativa.</p>
+      <p>Pruebe c &lt; 0, que corresponde a expectativas que refuerzan la tendencia del precio: las oscilaciones crecen y el mercado se vuelve inestable. En el plano complejo, las raíces pasan al semiplano derecho.</p>
+    </div>
+  </div>
+
+  <div data-prob="p11" hidden>
+    <h2>Problema 11 · Prueba de tolerancia a la glucosa</h2>
+    <p class="stmt">En la prueba de tolerancia a la glucosa, un paciente en ayunas bebe una dosis de glucosa y se mide su concentración en la sangre durante varias horas. El modelo de Ackerman y colaboradores (1965) describe la desviación \( g(t) = G(t) - G_0 \) respecto del nivel basal \( G_0 = 90 \) mg/dL mediante \( g'' + 2\alpha g' + \omega_0^2 g = 0 \). Para un paciente con α = 0.8 h⁻¹ y ω₀ = 2 h⁻¹, la glucosa parte del nivel basal y sube a razón de 150 mg/dL por hora. Determine g(t) y el nivel máximo, y diga si el paciente es normal según el criterio T₀ = 2π/ω₀ &lt; 4 h.</p>
+    <p class="analog"><b>Lectura como resorte.</b> La insulina y otras hormonas actúan como un resorte que devuelve la glucosa a su nivel basal, y la absorción de los tejidos hace de amortiguador. El diagnóstico se basa en la frecuencia natural de ese resorte: si el período natural T₀ supera unas 4 horas, la regulación es lenta y se sospecha diabetes (M. Braun, <i>Ecuaciones diferenciales y sus aplicaciones</i>, sección 2.7).</p>
+    <div class="datos"><span>1 ↔ m</span><span>2α = 1.6 ↔ c</span><span>ω₀² = 4 ↔ k</span><span>g₀ = 0</span><span>g′₀ = 150 mg/dL/h</span></div>
+    <ol>
+      <li>Ecuación: \( g'' + 1.6g' + 4g = 0 \), con \( g(0) = 0,\ g'(0) = 150 \).</li>
+      <li>\( r^2 + 1.6r + 4 = 0 \Rightarrow r = -0.8 \pm i\sqrt{3.36} \approx -0.8 \pm 1.833i \): <b>subamortiguado</b>.</li>
+      <li>\( g = e^{-0.8t}(C_1\cos 1.833t + C_2\sin 1.833t) \), con \( C_1 = 0 \) y \( 1.833\,C_2 = 150 \Rightarrow C_2 \approx 81.83 \).</li>
+    </ol>
+    <div class="ans">
+      \[ g(t) \approx 81.83\,e^{-0.8t}\sin(1.833t)\ \text{mg/dL},\qquad G(t) = 90 + g(t) \]
+      <p>La glucosa llega a su máximo, unos 135 mg/dL, a las 0.63 h (38 minutos). Después baja un poco por debajo del nivel basal, hasta unos 78.5 mg/dL a las 2.35 h, y vuelve a 90.</p>
+      <p><b>Diagnóstico:</b> \( T_0 = 2\pi/\omega_0 = \pi \approx 3.14 \) h &lt; 4 h, así que el paciente es normal. Si baja ω₀² por debajo de \( (2\pi/4)^2 \approx 2.47 \) h⁻², el criterio indica sospecha de diabetes.</p>
+    </div>
+  </div>
+
+  <div data-prob="p12" hidden>
+    <h2>Problema 12 · Resonancia pura</h2>
+    <p class="stmt">Un cuerpo de 1 kg cuelga de un resorte de constante k = 16 N/m, sin amortiguamiento, y está en reposo en su posición de equilibrio. Desde t = 0, un motor le aplica la fuerza F(t) = 2 cos 4t N. Determine x(t), describa el movimiento y calcule la amplitud de la oscilación a los 10 s.</p>
+    <p class="analog"><b>Por qué importa.</b> La frecuencia natural del resorte es \( \omega_0 = \sqrt{k/m} = 4 \) rad/s, igual a la de la fuerza: cada empujón llega justo cuando el cuerpo va en la misma dirección y le agrega energía. Por eso los soldados rompen el paso al cruzar un puente; se suele citar el colapso del puente de Broughton (Inglaterra, 1831). En el Millennium Bridge de Londres (2000), los peatones sincronizaron sus pasos con una oscilación lateral del puente, y hubo que agregarle amortiguadores. El puente de Tacoma (1940) también se menciona a menudo, pero su caída se debió a un fenómeno aerodinámico (flameo), no a una resonancia forzada simple.</p>
+    <div class="datos"><span>m = 1</span><span>c = 0</span><span>k = 16</span><span>F(t) = 2 cos 4t</span><span>x₀ = 0</span><span>v₀ = 0</span></div>
+    <ol>
+      <li>Ecuación: \( x'' + 16x = 2\cos 4t \). Homogénea: \( x_h = C_1\cos 4t + C_2\operatorname{sen} 4t \).</li>
+      <li>Como \( \cos 4t \) ya es solución de la homogénea, el método de coeficientes indeterminados pide multiplicar por t: \( x_p = t\,(A\cos 4t + B\operatorname{sen} 4t) \).</li>
+      <li>Sustituyendo, \( x_p'' + 16x_p = -8A\operatorname{sen} 4t + 8B\cos 4t = 2\cos 4t \), así que \( A = 0 \) y \( B = \tfrac14 \).</li>
+      <li>Condiciones iniciales: \( x(0) = C_1 = 0 \) y \( x'(0) = 4C_2 = 0 \).</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = \frac{t}{4}\,\operatorname{sen} 4t\ \text{m} \]
+      <p>La oscilación tiene la frecuencia de la fuerza, pero su amplitud \( t/4 \) crece sin cota: a los 10 s ya es 2.5 m (en el gráfico, la envolvente punteada \( \pm t/4 \)). En la tarjeta «Respuesta en frecuencia» se ve que la amplitud estacionaria es infinita justo en \( \omega = \omega_0 \).</p>
+      <p>Pruebe con el control c: con c = 0.2 la amplitud deja de crecer y se estabiliza en \( F_0/(c\,\omega_0) = 2.5 \) m. Con ω = 3.8 aparecen pulsaciones (Problema 13).</p>
+    </div>
+  </div>
+
+  <div data-prob="p13" hidden>
+    <h2>Problema 13 · Pulsaciones (batimiento)</h2>
+    <p class="stmt">Un resorte con m = 1 kg y k = 25 N/m, sin amortiguamiento, parte en reposo en el equilibrio y recibe la fuerza F(t) = 9 cos 4t N. Determine x(t), escríbala como un producto de senos y calcule el período de las pulsaciones.</p>
+    <p class="analog"><b>Dónde aparece.</b> La frecuencia de la fuerza (4 rad/s) está cerca de la natural (5 rad/s), pero no es igual. Las dos oscilaciones se suman y se cancelan alternadamente, y la amplitud sube y baja lentamente. Es lo que se oye al afinar una guitarra: dos cuerdas casi afinadas producen un sonido que «late», y los latidos se hacen más lentos a medida que las frecuencias se acercan.</p>
+    <div class="datos"><span>m = 1</span><span>c = 0</span><span>k = 25</span><span>F(t) = 9 cos 4t</span><span>x₀ = 0</span><span>v₀ = 0</span></div>
+    <ol>
+      <li>Ecuación: \( x'' + 25x = 9\cos 4t \). Homogénea: \( x_h = C_1\cos 5t + C_2\operatorname{sen} 5t \).</li>
+      <li>Como \( \omega = 4 \ne \omega_0 = 5 \), basta \( x_p = A\cos 4t \): \( (25 - 16)A = 9 \), así que \( A = 1 \).</li>
+      <li>Condiciones iniciales: \( x(0) = C_1 + 1 = 0 \Rightarrow C_1 = -1 \), y \( x'(0) = 5C_2 = 0 \Rightarrow C_2 = 0 \). Entonces \( x = \cos 4t - \cos 5t \).</li>
+      <li>Con la identidad \( \cos a - \cos b = 2\operatorname{sen}\frac{a+b}{2}\operatorname{sen}\frac{b-a}{2} \):</li>
+    </ol>
+    <div class="ans">
+      \[ x(t) = \cos 4t - \cos 5t = \underbrace{2\operatorname{sen}\frac{t}{2}}_{\text{envolvente lenta}}\ \operatorname{sen}\frac{9t}{2}\ \text{m} \]
+      <p>Es una oscilación rápida (4.5 rad/s, el promedio de las dos frecuencias) dentro de una envolvente lenta \( \pm 2\operatorname{sen}(t/2) \), punteada en el gráfico. La amplitud se anula cada vez que \( \operatorname{sen}(t/2) = 0 \): el período de las pulsaciones es \( 2\pi \approx 6.28 \) s.</p>
+      <p>Acerque ω a 5 con el control: las pulsaciones se hacen más largas y más altas. En el límite \( \omega \to \omega_0 \) se obtiene la resonancia pura del Problema 12.</p>
+    </div>
+  </div>
+
+  <div data-prob="p14" hidden>
+    <h2>Problema 14 · Resonancia práctica: un auto en un camino ondulado</h2>
+    <p class="stmt">Un modelo simple de la suspensión de un auto, por unidad de masa, es \( x'' + 2x' + 26x = 10\cos\omega t \). Aquí x es el desplazamiento vertical de la carrocería, y la fuerza viene de las ondulaciones del camino: si están separadas λ metros y el auto va a velocidad v, entonces \( \omega = 2\pi v/\lambda \). (a) Encuentre la amplitud A(ω) del régimen estacionario. (b) ¿Para qué ω es máxima, y cuánto vale? (c) Si las ondulaciones están cada 5 m, ¿a qué velocidad vibra más el auto?</p>
+    <p class="analog"><b>Resonancia con roce.</b> Con amortiguamiento la amplitud ya no crece sin cota: llega a un régimen estacionario, cuya amplitud depende de ω. El máximo de esa curva es la <b>resonancia práctica</b>, y ocurre un poco antes de la frecuencia natural \( \omega_0 = \sqrt{26} \approx 5.10 \). Es el mismo fenómeno que hace vibrar una lavadora a ciertas velocidades del centrifugado.</p>
+    <div class="datos"><span>m = 1</span><span>c = 2</span><span>k = 26</span><span>F₀ = 10</span><span>ω = √24 ≈ 4.899</span><span>x₀ = v₀ = 0</span></div>
+    <ol>
+      <li>Para la ecuación \( m x'' + c x' + k x = F_0\cos\omega t \), la solución estacionaria es \( x_p = A\cos(\omega t - \delta) \), con \( A(\omega) = \dfrac{F_0}{\sqrt{(k - m\omega^2)^2 + (c\,\omega)^2}} = \dfrac{10}{\sqrt{(26 - \omega^2)^2 + 4\omega^2}} \).</li>
+      <li>A es máxima cuando el denominador es mínimo: \( \dfrac{d}{d\omega}\Big[(26 - \omega^2)^2 + 4\omega^2\Big] = 4\omega(\omega^2 - 24) = 0 \Rightarrow \omega_r = \sqrt{24} \approx 4.899 \) rad/s.</li>
+      <li>\( A(\omega_r) = \dfrac{10}{\sqrt{2^2 + 4\cdot24}} = \dfrac{10}{\sqrt{100}} = 1 \).</li>
+      <li>La parte transitoria tiene raíces \( r = -1 \pm 5i \): decae como \( e^{-t} \), y después de unos 4 s solo queda el régimen estacionario.</li>
+    </ol>
+    <div class="ans">
+      \[ \omega_r = \sqrt{24} \approx 4.90\ \text{rad/s},\qquad A_{\max} = 1,\qquad v = \frac{\omega_r\,\lambda}{2\pi} = \frac{4.90\cdot 5}{2\pi} \approx 3.9\ \text{m/s} \approx 14\ \text{km/h} \]
+      <p>En la tarjeta «Respuesta en frecuencia», haga clic en otros valores de ω: lejos de \( \omega_r \) la amplitud cae rápido. Suba c y verá que la curva se aplana y su máximo se mueve hacia la izquierda; con \( c^2 \ge 2mk \) ya no hay máximo. Si baja c a 0, el pico se vuelve infinito en \( \omega_0 \): es la resonancia pura.</p>
+    </div>
+  </div>
+
+  <div data-prob="libre" hidden>
+    <h2>Exploración libre</h2>
+    <p>Mueva los controles para ver cómo cambia el movimiento. El caso inicial es subamortiguado y forzado por \( F(t) = F_0\cos(\omega t) \):</p>
+    <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;max-width:66ch">
+      <li>La solución es \( x = x_h + x_p \). La parte homogénea \( x_h \) es el <b>transiente</b>: decae porque las raíces tienen parte real negativa.</li>
+      <li>La parte particular \( x_p = A\cos\omega t + B\sin\omega t \) es el <b>régimen estacionario</b>: oscila con la frecuencia de la fuerza, no con la del resorte.</li>
+      <li>Ponga c = 0 y ω = ω₀ = √(k/m) para ver <b>resonancia</b>: \( x_p = \frac{F_0}{2m\omega_0}\,t\sin\omega_0 t \) crece sin cota.</li>
+      <li>Aumente c hasta \( c^2 = 4mk \) para pasar de subamortiguado a crítico, y siga subiendo para llegar a sobreamortiguado. Las raíces en el plano complejo muestran el cambio.</li>
+    </ul>
+  </div>
+</article>
+
+<section class="panel sim" aria-label="Simulación">
+  <div class="view-head"><h2>Simulación</h2><span class="hint">Clic en un gráfico para mover el tiempo</span></div>
+  <div class="simgrid">
+    <div class="canvas-box"><canvas id="spring" aria-label="Animación del sistema masa-resorte"></canvas></div>
+    <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+      <div class="view-head">
+        <div class="viewtabs" id="viewtabs" role="group" aria-label="Magnitud">
+          <button type="button" data-view="x" aria-pressed="true">x(t)</button>
+          <button type="button" data-view="v" aria-pressed="false">v(t)</button>
+          <button type="button" data-view="a" aria-pressed="false">a(t)</button>
+        </div>
+        <div class="legend" id="legmain"></div>
+      </div>
+      <div class="canvas-box"><canvas class="chart" id="chmain" height="300"></canvas><div class="tip" hidden></div></div>
+    </div>
+  </div>
+  <div class="transport">
+    <button type="button" id="eplay" class="primary">Reproducir</button>
+    <select id="espeed" aria-label="Velocidad de reproducción">
+      <option value="0.02">0.02×</option><option value="0.1">0.1×</option><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option>
+    </select>
+    <input type="range" id="etime" min="0" max="1000" value="0" aria-label="Tiempo">
+    <output id="otime">t = 0.00 s</output>
+  </div>
+</section>
+</div>
+
+<div class="edo-mid">
+<aside class="panel edo-ctl" aria-label="Parámetros">
+  <h3>Parámetros</h3>
+  <div class="slider"><label for="pm" id="lpm">m (kg)</label><input type="range" id="pm" min="0.05" max="10" step="0.05"><output id="om_"></output></div>
+  <div class="slider"><label for="pc" id="lpc">c (N·s/m)</label><input type="range" id="pc" min="0" max="12" step="0.05"><output id="oc_"></output></div>
+  <div class="slider"><label for="pk" id="lpk">k (N/m)</label><input type="range" id="pk" min="0.5" max="30" step="0.1"><output id="ok_"></output></div>
+  <div class="slider"><label for="px0" id="lpx0">x₀ (m)</label><input type="range" id="px0" min="-1" max="1" step="0.01"><output id="ox0"></output></div>
+  <div class="slider"><label for="pv0" id="lpv0">v₀ (m/s)</label><input type="range" id="pv0" min="-5" max="5" step="0.05"><output id="ov0"></output></div>
+  <div class="field">
+    <label for="pft" id="lpft">Fuerza externa F(t)</label>
+    <select id="pft">
+      <option value="none">Sin fuerza: F(t) = 0</option>
+      <option value="cos">F(t) = F₀ cos(ωt)</option>
+      <option value="texp">F(t) = F₀ t e⁻ᵗ</option>
+    </select>
+  </div>
+  <div class="slider" id="rowF0"><label for="pF0" id="lpF0">F₀ (N)</label><input type="range" id="pF0" min="0" max="5" step="0.05"><output id="oF0"></output></div>
+  <div class="slider" id="roww"><label for="pw">ω (rad/s)</label><input type="range" id="pw" min="0.1" max="10" step="0.01"><output id="ow"></output></div>
+  <button type="button" id="setres" hidden>Poner ω = ω₀ (resonancia)</button>
+  <div class="slider"><label for="pT">T (s)</label><input type="range" id="pT" min="1" max="40" step="0.5"><output id="oT"></output></div>
+  <p class="hint">T es el intervalo [0, T] que se grafica y se anima.</p>
+</aside>
+
+<div class="edo-res">
+  <section class="panel" aria-label="Solución con los datos actuales">
+    <div class="cardhead"><h3>Solución con los datos actuales</h3><span class="pill reg" id="regime"></span></div>
+    <div class="formula" id="esol"></div>
+    <dl class="kv" id="ekv" style="margin-top:10px"></dl>
+    <p class="warn" id="ewarn" hidden></p>
+  </section>
+</div>
+</div>
+
+<div class="cards3">
+    <section class="panel" aria-label="Plano de fase">
+      <div class="cardhead"><h3>Plano de fase (x, v)</h3></div>
+      <div class="canvas-box"><canvas class="chart" id="chphase" height="240"></canvas><div class="tip" hidden></div></div>
+    </section>
+    <section class="panel" aria-label="Energía">
+      <div class="cardhead"><h3 id="enTitle">Energía E(t) = ½mv² + ½kx²</h3></div>
+      <div class="canvas-box"><canvas class="chart" id="chen" height="240"></canvas><div class="tip" hidden></div></div>
+    </section>
+    <section class="panel" aria-label="Raíces características">
+      <div class="cardhead"><h3>Raíces en el plano complejo</h3></div>
+      <div class="canvas-box"><canvas class="chart" id="chroots" height="240"></canvas></div>
+    </section>
+    <section class="panel" aria-label="Respuesta en frecuencia" id="frcard" hidden>
+      <div class="cardhead"><h3>Respuesta en frecuencia A(ω)</h3><span class="hint">Clic para cambiar ω</span></div>
+      <div class="canvas-box"><canvas class="chart" id="chfr" height="240" style="cursor:crosshair"></canvas></div>
+      <p class="hint" id="frnote" style="margin:6px 0 0"></p>
+    </section>
+</div>
+<section class="panel rescard" id="rescard" aria-label="Cómo reconocer la resonancia">
+  <h2>¿Cómo saber, mirando la ecuación, si habrá resonancia?</h2>
+  <div class="resgrid">
+    <div>
+      <p>Para \( m\,x'' + c\,x' + k\,x = F_0\cos\omega t \), todo depende del <b>polinomio característico</b> \( P(r) = m r^2 + c r + k \) y del número que «trae» la fuerza:</p>
+      \[ F_0\cos\omega t = \operatorname{Re}\!\left(F_0\,e^{i\omega t}\right)\quad\longleftrightarrow\quad r = i\omega . \]
+      <p>Al buscar \( x_p = \operatorname{Re}\!\left(A\,e^{i\omega t}\right) \) y sustituir, aparece \( P(i\omega)\,A = F_0 \). Entonces:</p>
+      \[ A = \frac{F_0}{P(i\omega)},\qquad |A| = \frac{F_0}{|P(i\omega)|} = \frac{F_0}{\sqrt{(k - m\omega^2)^2 + (c\,\omega)^2}} . \]
+      <ol class="reslist">
+        <li><b>Resonancia pura: \( i\omega \) es raíz de \( P \).</b> Entonces \( P(i\omega) = (k - m\omega^2) + i\,c\,\omega = 0 \), lo que exige <b>las dos condiciones a la vez</b>:
+          \[ c = 0\qquad\text{y}\qquad \omega = \sqrt{k/m} = \omega_0 . \]
+          No se puede dividir por \( P(i\omega) \). El método de coeficientes indeterminados dice: si el número de la fuerza es raíz de multiplicidad s, se multiplica la propuesta por \( t^s \). Por eso \( x_p = t\,(A\cos\omega_0 t + B\operatorname{sen}\omega_0 t) \), y el factor t hace crecer la amplitud sin cota.</li>
+        <li><b>Pulsaciones: \( c = 0 \) y \( \omega \) cerca de \( \omega_0 \), pero distinto.</b> \( P(i\omega) = k - m\omega^2 \) es pequeño pero no cero: la amplitud es grande y acotada, y la suma con la solución homogénea produce batimiento.</li>
+        <li><b>Resonancia práctica: \( c &gt; 0 \).</b> Las raíces tienen parte real \( -c/(2m) &lt; 0 \), así que \( i\omega \) nunca es raíz y no hay resonancia pura. Pero \( |P(i\omega)| \) es mínimo en \( \omega_r = \sqrt{\omega_0^2 - \tfrac{c^2}{2m^2}} \) (si \( c^2 &lt; 2mk \)), y ahí la amplitud tiene su pico.</li>
+      </ol>
+    </div>
+    <div>
+      <p><b>Lectura geométrica.</b> Si \( r_1, r_2 \) son las raíces, \( P(i\omega) = m\,(i\omega - r_1)(i\omega - r_2) \), así que</p>
+      \[ |A| = \frac{F_0}{m\;d_1\,d_2},\qquad d_j = |\,i\omega - r_j\,| . \]
+      <p>En la tarjeta «Raíces en el plano complejo», el punto naranjo \( i\omega \) se mueve por el eje imaginario, y las líneas punteadas son \( d_1 \) y \( d_2 \). La amplitud es grande cuando \( i\omega \) pasa cerca de una raíz. Si la toca, \( d_1 = 0 \): eso es la resonancia pura, y solo puede ocurrir si las raíces están <i>sobre</i> el eje imaginario, es decir, si \( c = 0 \).</p>
+      <h3>Receta</h3>
+      <ol class="reslist">
+        <li>Escriba \( P(r) \) a partir de la parte homogénea.</li>
+        <li>Identifique el número de la fuerza: \( \cos\omega t,\ \operatorname{sen}\omega t \to i\omega \); \( e^{at} \to a \); \( e^{at}\cos bt \to a + ib \).</li>
+        <li>Si ese número es raíz de \( P \): hay que multiplicar por t (resonancia). Para fuerzas \( \cos\omega t \), esto ocurre si y solo si \( c = 0 \) y \( m\omega^2 = k \).</li>
+      </ol>
+      <h3>Ejemplos</h3>
+      <ul class="reslist">
+        <li>\( x'' + 9x = \operatorname{sen} 3t \): \( P(3i) = -9 + 9 = 0 \) → <b>resonancia</b>.</li>
+        <li>\( x'' + 9x = \cos 2t \): \( P(2i) = 5 \ne 0 \) → sin resonancia (pulsaciones, porque 2 está cerca de 3).</li>
+        <li>\( x'' + 2x' + 9x = \cos 3t \): \( P(3i) = 6i \ne 0 \) → sin resonancia pura: el roce la impide.</li>
+        <li>\( L q'' + R q' + q/C = E_0\cos\omega t \): resonancia pura si y solo si \( R = 0 \) y \( \omega = 1/\sqrt{LC} \) (la radio del Problema 8).</li>
+      </ul>
+      <div class="rescheck">
+        <h3>Pruebe</h3>
+        <div class="rq"><label for="rq1">¿Para qué ω hay resonancia en \( 4x'' + 25x = \cos\omega t \)?</label><input type="text" id="rq1" data-v="2.5" autocomplete="off"></div>
+        <div class="rq"><label for="rq2">¿Qué k produce resonancia en \( 2x'' + kx = 5\cos 3t \)?</label><input type="text" id="rq2" data-v="18" autocomplete="off"></div>
+        <div class="rq"><label for="rq3">En \( x'' + 16x = \cos 4t \), ¿cuánto vale B en \( x_p = t(A\cos 4t + B\operatorname{sen}4t) \)?</label><input type="text" id="rq3" data-v="0.125" autocomplete="off"></div>
+        <button type="button" id="rqgo">Comprobar</button> <span class="rqmsg" id="rqmsg" role="status"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="panel helix" aria-label="La solución en el plano complejo">
+  <div class="helix-3d">
+    <div class="view-head"><h2>La solución en el plano complejo</h2><span class="hint">Arrastre para girar, rueda para acercar</span></div>
+    <div class="btns" id="hxviews" role="group" aria-label="Vista de la hélice">
+      <button type="button" data-v="iso" aria-pressed="true">Vista 3D</button>
+      <button type="button" data-v="top" aria-pressed="false">Desde arriba: Re z → coseno</button>
+      <button type="button" data-v="front" aria-pressed="false">De frente: Im z → seno</button>
+      <button type="button" data-v="end" aria-pressed="false">A lo largo de t: plano complejo</button>
+    </div>
+    <div id="helix3d"></div>
+    <div class="transport" style="grid-template-columns:auto 1fr auto">
+      <button type="button" id="hxplay" class="primary">Reproducir</button>
+      <div class="legend" id="hxleg"></div>
+      <output id="hxtime">t = 0.00 s</output>
+    </div>
+  </div>
+  <div class="helix-text">
+    <h3>Fórmula de Euler</h3>
+    <div class="formula">\[ e^{rt} = e^{(-\gamma + i\omega)t} = e^{-\gamma t}\big(\cos\omega t + i\,\sin\omega t\big) \]</div>
+    <p>Cuando las raíces son complejas, \( r = -\gamma \pm i\omega \), la función \( z(t) = e^{rt} \) toma valores complejos. Si dibujamos los puntos \( (t,\ \operatorname{Re} z,\ \operatorname{Im} z) \), el punto gira alrededor del eje t con velocidad angular ω mientras avanza: la curva es una <b>hélice</b>. Si γ &gt; 0, el radio decrece como \( e^{-\gamma t} \) y la hélice se cierra en espiral.</p>
+    <ul>
+      <li><b>Desde arriba</b> se ve el plano (t, Re z): la sombra es \( e^{-\gamma t}\cos\omega t \).</li>
+      <li><b>De frente</b> se ve el plano (t, Im z): la sombra es \( e^{-\gamma t}\sin\omega t \).</li>
+      <li><b>A lo largo de t</b> se ve el plano complejo: una circunferencia si γ = 0, una espiral si γ &gt; 0.</li>
+    </ul>
+    <div class="field">
+      <label for="hxmode">Curva</label>
+      <select id="hxmode">
+        <option value="unit">z(t) = e^{rt}: seno y coseno puros</option>
+        <option value="sol">z(t) = (C₁ − iC₂)e^{rt}: su parte real es la solución x_h(t)</option>
+      </select>
+    </div>
+    <label class="check"><input type="checkbox" id="hxwalls" checked> Paredes con las proyecciones</label>
+    <p class="hint" id="hxinfo"></p>
+    <p class="warn" id="hxwarn" hidden></p>
+  </div>
+</section>
+
+<section class="panel methods" aria-label="Métodos numéricos">
+  <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+    <h2>Métodos numéricos</h2>
+    <p class="hint" style="font-size:14px">Para resolver numéricamente, se escribe la EDO como un sistema de primer orden con y = (x, v):</p>
+    <div class="formula">\[ \mathbf y' = \mathbf f(t,\mathbf y) = \begin{pmatrix} v \\ \dfrac{F(t) - c\,v - k\,x}{m} \end{pmatrix},\qquad t_{n+1} = t_n + h \]</div>
+    <div class="formula">\[ \begin{aligned}
+      &\textbf{Euler:} && \mathbf y_{n+1} = \mathbf y_n + h\,\mathbf f(t_n,\mathbf y_n)\\
+      &\textbf{Euler mejorado (Heun):} && \mathbf k_1 = \mathbf f(t_n,\mathbf y_n),\ \ \mathbf k_2 = \mathbf f(t_n + h,\ \mathbf y_n + h\mathbf k_1),\ \ \mathbf y_{n+1} = \mathbf y_n + \tfrac h2(\mathbf k_1 + \mathbf k_2)\\
+      &\textbf{Runge–Kutta 4:} && \mathbf y_{n+1} = \mathbf y_n + \tfrac h6(\mathbf k_1 + 2\mathbf k_2 + 2\mathbf k_3 + \mathbf k_4)
+    \end{aligned} \]</div>
+    <p class="hint" style="font-size:14px">El error global es de orden h para Euler, h² para Heun y h⁴ para RK4: al dividir h por 2, el error se divide aproximadamente por 2, 4 y 16.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+    <div class="field">
+      <label for="emeth">Método superpuesto en los gráficos</label>
+      <select id="emeth">
+        <option value="none">Ninguno (solo la solución analítica)</option>
+        <option value="euler" selected>Euler</option>
+        <option value="heun">Euler mejorado (Heun)</option>
+        <option value="rk4">Runge–Kutta 4</option>
+      </select>
+    </div>
+    <div class="slider"><label for="eh">h</label><input type="range" id="eh" min="0" max="400" step="1" value="270"><output id="oh" style="min-width:7ch"></output></div>
+    <div class="btns"><button type="button" id="hhalf">Dividir h por 2</button><button type="button" id="hdbl">Duplicar h</button></div>
+    <div class="tablebox" style="max-height:none"><table class="mtable" id="mtable"></table></div>
+    <p class="hint">Error máximo = máx |x<sub>n</sub> − x(t<sub>n</sub>)| sobre los nodos en [0, T]. Con Euler y c = 0, la energía numérica crece en cada paso, como se ve en el gráfico de energía.</p>
+  </div>
+</section>
+</div>
+<div id="dpwrap" class="dp" hidden>
+<div class="dp-grid">
+<article class="panel worked">
+  <h2>Problema 9 · Péndulo doble</h2>
+  <p class="stmt">Dos péndulos iguales (masa m y longitud L = 2.45 m) cuelgan uno del otro. θ₁ es el ángulo del brazo de arriba con la vertical y θ₂ el del brazo de abajo. Se sueltan desde θ₁ = 0.1 rad y θ₂ = 0, sin velocidad. a) Escriba las ecuaciones linealizadas. b) Encuentre las frecuencias de los modos normales. c) Determine θ₁(t) y θ₂(t). d) ¿Qué pasa con ángulos grandes?</p>
+  <p class="analog"><b>Lectura como resorte.</b> Al linealizar, el péndulo doble es un sistema de dos masas acopladas por resortes: \( M\boldsymbol\theta'' + K\boldsymbol\theta = \mathbf 0 \). Ya no hay una sola frecuencia, sino dos <b>modos normales</b>, y cada uno se comporta como un resorte simple.</p>
+  <div class="datos"><span>g/L = 4</span><span>θ₁(0) = 0.1</span><span>θ₂(0) = 0</span><span>θ′₁(0) = θ′₂(0) = 0</span></div>
+  <ol>
+    <li>Las ecuaciones de Lagrange, con \( \sin\theta \approx \theta \), \( \cos(\theta_1 - \theta_2) \approx 1 \) y sin términos cuadráticos en las velocidades, dan
+      \[ \begin{aligned} 2\theta_1'' + \theta_2'' + 2\tfrac{g}{L}\theta_1 &= 0\\ \theta_1'' + \theta_2'' + \tfrac{g}{L}\theta_2 &= 0 \end{aligned} \qquad M = \begin{pmatrix}2&1\\1&1\end{pmatrix},\quad K = \tfrac{g}{L}\begin{pmatrix}2&0\\0&1\end{pmatrix} \]</li>
+    <li>Proponiendo \( \boldsymbol\theta = \mathbf v\cos\omega t \): \( \det(K - \omega^2 M) = 2(a - \omega^2)^2 - \omega^4 = 0 \) con \( a = g/L = 4 \). Entonces \( \omega^2 = (2 \mp \sqrt2)\,a \):
+      \( \omega_1 \approx 1.531 \) rad/s con modo \( \mathbf v_1 = (1, \sqrt2) \) (en fase), y \( \omega_2 \approx 3.696 \) rad/s con \( \mathbf v_2 = (1, -\sqrt2) \) (en oposición).</li>
+    <li>Sin velocidad inicial, \( \boldsymbol\theta = c_1\mathbf v_1\cos\omega_1 t + c_2\mathbf v_2\cos\omega_2 t \). Con \( c_1 + c_2 = 0.1 \) y \( \sqrt2(c_1 - c_2) = 0 \) se obtiene \( c_1 = c_2 = 0.05 \).</li>
+  </ol>
+  <div class="ans">
+    \[ \theta_1(t) = 0.05\left(\cos 1.531t + \cos 3.696t\right),\qquad \theta_2(t) = 0.0707\left(\cos 1.531t - \cos 3.696t\right) \]
+    <p>Como \( \omega_2/\omega_1 = 1 + \sqrt2 \) es irracional, el movimiento no es periódico y la energía pasa de un péndulo al otro. Si en cambio se parte de un modo normal, con \( \theta_2(0) = \pm\sqrt2\,\theta_1(0) \), ambos oscilan con una sola frecuencia (botones Modo 1 y Modo 2).</p>
+    <p><b>d)</b> Con ángulos grandes la linealización no vale y el péndulo doble es <b>caótico</b>. Dos péndulos que parten con 0.001 rad de diferencia terminan moviéndose de forma completamente distinta. La simulación resuelve las ecuaciones no lineales completas con RK4.</p>
+  </div>
+</article>
+<section class="panel sim" aria-label="Simulación del péndulo doble">
+  <div class="view-head"><h2>Simulación</h2><span class="hint">No lineal, RK4 con h = 0.002 s</span></div>
+  <div class="btns" id="dppre" role="group" aria-label="Condiciones iniciales">
+    <button type="button" data-pre="p9">Datos del problema</button>
+    <button type="button" data-pre="m1">Modo 1: en fase</button>
+    <button type="button" data-pre="m2">Modo 2: en oposición</button>
+    <button type="button" data-pre="caos">Ángulos grandes: caos</button>
+  </div>
+  <div class="canvas-box"><canvas id="dpc" aria-label="Animación del péndulo doble"></canvas></div>
+  <div class="legend" id="dpleg"></div>
+  <div class="transport">
+    <button type="button" id="dpplay" class="primary">Reproducir</button>
+    <select id="dpspeed" aria-label="Velocidad"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+    <input type="range" id="dptime" min="0" max="1000" value="0" aria-label="Tiempo">
+    <output id="odptime">t = 0.00 s</output>
+  </div>
+  <div class="dp-ctl">
+    <div class="slider"><label for="dpL">L</label><input type="range" id="dpL" min="0.5" max="5" step="0.05"><output id="odpL"></output></div>
+    <div class="slider"><label for="dpT">T</label><input type="range" id="dpT" min="5" max="60" step="1"><output id="odpT"></output></div>
+    <div class="slider"><label for="dpt1">θ₁(0)</label><input type="range" id="dpt1" min="-3.1" max="3.1" step="0.01"><output id="odpt1"></output></div>
+    <div class="slider"><label for="dpt2">θ₂(0)</label><input type="range" id="dpt2" min="-3.1" max="3.1" step="0.01"><output id="odpt2"></output></div>
+    <label class="check"><input type="checkbox" id="dplin"> Modelo lineal (fantasma)</label>
+    <label class="check"><input type="checkbox" id="dpshadow"> Sombra con θ₁(0) + 0.001 rad</label>
+  </div>
+  <p class="hint" id="dpinfo"></p>
+</section>
+</div>
+<div class="cards3 dpcharts">
+  <section class="panel"><div class="cardhead"><h3>θ₁(t): brazo de arriba</h3></div><div class="canvas-box"><canvas class="chart" id="dpc1"></canvas><div class="tip" hidden></div></div></section>
+  <section class="panel"><div class="cardhead"><h3>θ₂(t): brazo de abajo</h3></div><div class="canvas-box"><canvas class="chart" id="dpc2"></canvas><div class="tip" hidden></div></div></section>
+</div>
+</div>
+</div>
+</section>
+
+
+</div>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'},startup:{typeset:true}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js" async></script>
+<script>
+/* ---------- pestañas por curso (ruta en el #) ---------- */
+(function(){
+  const ROUTES={'calculo-riemann':'tab-calculo','calculo-iteradas':'tab-calculo','calculo-cambio':'tab-calculo','calculo-triples':'tab-calculo','calculo-esfericas':'tab-calculo','calculo-fem':'tab-calculo','edo-resortes':'tab-edo','calc2-sucesiones':'tab-calc2','calc2-series':'tab-calc2','calc2-potencias':'tab-calc2','calc2-taylor':'tab-calc2','fm2-formativa':'tab-fm2'}, DEF='edo-resortes';
+  function show(h){
+    if(!ROUTES[h]||!document.getElementById(ROUTES[h]))h=DEF; const id=ROUTES[h];
+    document.querySelectorAll('.course').forEach(s=>s.hidden=s.id!==id);
+    document.querySelectorAll('.coursetabs a').forEach(a=>a.setAttribute('aria-selected',a.getAttribute('aria-controls')===id));
+    if(id==='tab-calculo'){
+      document.querySelectorAll('#tab-calculo .ctopic').forEach(d=>d.hidden=d.dataset.route!==h);
+      document.querySelectorAll('#tab-calculo .topics a').forEach(a=>{if(a.getAttribute('href')==='#'+h)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+      const ctc=document.getElementById('ctab-calculo');if(ctc)ctc.setAttribute('href','#'+h);
+    }
+    window.dispatchEvent(new CustomEvent('coursetab',{detail:id}));
+    if(id==='tab-calculo')window.dispatchEvent(new CustomEvent('calctopic',{detail:h}));
+  }
+  document.querySelectorAll('.coursetabs a, .topics a').forEach(a=>a.addEventListener('click',()=>show(a.getAttribute('href').slice(1))));
+  window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+  show(location.hash.slice(1));
+})();
+</script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hFor=(cv,r,lo,hi)=>Math.round(Math.max(lo,Math.min(hi,cv.parentElement.clientWidth*r)));
+
+/* ---------- problemas del práctico ---------- */
+const PROBS={
+  p1:{m:0.2,c:2,k:5,x0:0.04,v0:0.1,ft:'none',F0:1,w:2,T:2},
+  p2:{m:9,c:0,k:25,x0:-0.04,v0:2,ft:'none',F0:1,w:2,T:15},
+  p3:{m:0.25,c:2,k:4,x0:0,v0:-3,ft:'none',F0:1,w:2,T:2.5},
+  p4:{m:1,c:6,k:8,x0:0,v0:-2,ft:'texp',F0:1,w:2,T:8},
+  libre:{m:1,c:0.6,k:9,x0:0.3,v0:0,ft:'cos',F0:1,w:2.2,T:25},
+  p5:{m:0.05,c:2,k:100,x0:5,v0:0,ft:'none',F0:10,w:40,T:0.3,ctx:'rlc',h:0.002,speed:0.02,
+      rng:{m:[0.01,0.5,0.01],c:[0,10,0.1],k:[10,400,1],x0:[-10,10,0.1],v0:[-100,100,1],F0:[0,100,1],w:[1,100,0.5],T:[0.05,1,0.01]}},
+  p6:{m:1,c:0,k:4,x0:0.1,v0:0,ft:'none',F0:0.5,w:2,T:12,ctx:'pend',h:0.05,
+      rng:{m:[0.2,3,0.05],c:[0,2,0.01],k:[0.5,20,0.1],v0:[-2,2,0.01]}},
+  p7:{m:10,c:20,k:490,x0:0.1,v0:0,ft:'none',F0:50,w:7,T:5,ctx:'buoy',h:0.01,speed:0.5,
+      rng:{m:[1,40,0.5],c:[0,100,1],k:[50,1500,5],x0:[-0.3,0.3,0.005],v0:[-2,2,0.01],F0:[0,200,1],w:[0.5,20,0.1],T:[1,20,0.5]}},
+  p8:{m:1,c:0,k:4,x0:0,v0:0,ft:'cos',F0:1,w:2,T:30,ctx:'rlc',h:0.05,
+      rng:{m:[0.1,3,0.05],c:[0,2,0.01],k:[0.5,10,0.05],x0:[-2,2,0.01],v0:[-2,2,0.01],F0:[0,3,0.05],w:[0.1,5,0.01],T:[5,60,1]}},
+  p10:{m:1,c:2,k:5,x0:3,v0:1,ft:'none',F0:1,w:2,T:6,ctx:'econ',h:0.05,
+      rng:{m:[0.2,3,0.05],c:[-1,6,0.05],k:[0.5,15,0.1],x0:[-5,5,0.05],v0:[-5,5,0.05],F0:[0,5,0.05],w:[0.2,6,0.05],T:[1,20,0.5]}},
+  p11:{m:1,c:1.6,k:4,x0:0,v0:150,ft:'none',F0:50,w:1,T:6,ctx:'gluc',h:0.02,
+      rng:{m:[0.5,2,0.05],c:[0,5,0.05],k:[0.5,8,0.05],x0:[-60,60,1],v0:[-300,300,5],F0:[0,200,5],w:[0.2,5,0.05],T:[2,12,0.5]}},
+  p12:{m:1,c:0,k:16,x0:0,v0:0,ft:'cos',F0:2,w:4,T:20,h:0.02,rng:{c:[0,2,0.01],k:[1,40,0.5],F0:[0,10,0.1],w:[0.2,10,0.01],T:[2,60,1]}},
+  p13:{m:1,c:0,k:25,x0:0,v0:0,ft:'cos',F0:9,w:4,T:20,h:0.02,rng:{c:[0,2,0.01],k:[1,40,0.5],F0:[0,20,0.1],w:[0.2,10,0.01],T:[2,60,1]}},
+  p14:{m:1,c:2,k:26,x0:0,v0:0,ft:'cos',F0:10,w:4.898979,T:12,h:0.02,rng:{c:[0,8,0.05],k:[1,40,0.5],F0:[0,20,0.1],w:[0.2,12,0.01],T:[2,40,1]}}
+};
+/* contexto de cada problema: nombres y unidades de las magnitudes */
+const MECH={m:['m','kg'],c:['c','N·s/m'],k:['k','N/m'],x:['x','m'],v:['v','m/s'],a:['a','m/s²'],F:['F','N'],tx:'x',
+  en:'Energía E(t) = ½mv² + ½kx²',enU:'J',w0:'√(k/m)',ftl:'Fuerza externa F(t)',blk:'m',analog:false,tu:'s'};
+const CTX={
+  mech:MECH,
+  buoy:{...MECH,k:['ρgA','N/m'],analog:true},
+  rlc:{m:['L','H'],c:['R','Ω'],k:['1/C','1/F'],x:['q','C'],v:['i','A'],a:['i′','A/s'],F:['E','V'],tx:'q',
+    en:'Energía E(t) = ½Li² + q²/(2C)',enU:'J',w0:'1/√(LC)',ftl:'Voltaje de la fuente E(t)',blk:'L',analog:true,tu:'s'},
+  pend:{m:['coef.',''],c:['b','1/s'],k:['g/L','1/s²'],x:['θ','rad'],v:['θ′','rad/s'],a:['θ″','rad/s²'],F:['M','1/s²'],tx:'\\theta',
+    en:'Energía por unidad de mL²: ½θ′² + ½(g/L)θ²',enU:'1/s²',w0:'√(g/L)',ftl:'Torque externo (por unidad de mL²)',blk:'m',analog:true,tu:'s'},
+  econ:{m:['coef.',''],c:['coef. p′',''],k:['β+δ',''],x:['p','$'],v:['p′','$/mes'],a:['p″','$/mes²'],F:['F','$/mes²'],tx:'p',
+    en:'Análogo de la energía: ½p′² + ½(β+δ)p²',enU:'—',w0:'√(β+δ)',ftl:'Shock externo F(t)',blk:'P',analog:true,tu:'mes'},
+  gluc:{m:['coef.',''],c:['2α','1/h'],k:['ω₀²','1/h²'],x:['g','mg/dL'],v:['g′','mg/dL/h'],a:['g″','mg/dL/h²'],F:['S','mg/dL/h²'],tx:'g',
+    en:'Análogo de la energía: ½g′² + ½ω₀²g²',enU:'—',w0:'√(ω₀²)',ftl:'Ingesta externa S(t)',blk:'g',analog:true,tu:'h'}
+};
+const ctx=()=>CTX[PROBS[E.prob].ctx||'mech'];
+const DEFR={m:[0.05,10,0.05],c:[0,12,0.05],k:[0.5,30,0.1],x0:[-1,1,0.01],v0:[-5,5,0.05],F0:[0,5,0.05],w:[0.1,10,0.01],T:[1,40,0.5]};
+const E={prob:'p1',p:{...PROBS.p1},method:'euler',h:0.05,view:'x',t:0,playing:false,speed:1};
+let SOL=null, SMP=null, NUM=null, ERRS=null;
+
+/* ---------- formato ---------- */
+function fx(v,d){ if(v==null||!isFinite(v))return '—'; const a=Math.abs(v); if(a!==0&&(a<1e-4||a>=1e6))return v.toExponential(3); return v.toFixed(d??4); }
+function nn(v){ // número para TeX, 4 cifras significativas
+  if(!isFinite(v))return '\\infty'; if(Math.abs(v)<1e-12)return '0';
+  let s=String(Number(v.toPrecision(4)));
+  if(s.includes('e')){const [a,b]=s.split('e');return a+'\\times 10^{'+Number(b)+'}';}
+  return s;
+}
+function lin(terms,lead){ // suma de términos c·cuerpo con signos limpios
+  let s='';
+  terms.forEach(([c,b])=>{ if(!isFinite(c)||Math.abs(c)<1e-10)return;
+    const neg=c<0, a=Math.abs(c), coef=(b&&Math.abs(a-1)<1e-10)?'':nn(a), piece=coef+(coef&&b?'\\,':'')+b;
+    s+= (s||lead)?(neg?' - ':' + ')+piece:(neg?'-':'')+piece; });
+  return s;
+}
+const ex=r=>Math.abs(r-1)<1e-12?'e^{t}':Math.abs(r+1)<1e-12?'e^{-t}':'e^{'+nn(r)+'t}';
+const trig=(f,w)=>'\\'+f+'('+(Math.abs(w-1)<1e-12?'':nn(w))+'t)';
+
+/* ---------- solución analítica ---------- */
+function forcing(p){
+  if(p.ft==='cos')return t=>p.F0*Math.cos(p.w*t);
+  if(p.ft==='texp')return t=>p.F0*t*Math.exp(-t);
+  return ()=>0;
+}
+function solve(p){
+  const {m,c,k}=p, D=c*c-4*m*k, tol=1e-9*(c*c+4*m*k);
+  let kind,roots,y1,y2,hTex;
+  const w0=Math.sqrt(k/m), zeta=c/(2*Math.sqrt(m*k));
+  if(Math.abs(D)<=tol){
+    kind='crit'; const r=-c/(2*m); roots=[[r,0],[r,0]];
+    y1=t=>{const e=Math.exp(r*t);return [e,r*e]}; y2=t=>{const e=Math.exp(r*t);return [t*e,(1+r*t)*e]};
+    hTex=(C1,C2)=>{const s=lin([[C1,''],[C2,'t']]);return s?(Math.abs(C1)>1e-10&&Math.abs(C2)>1e-10?'\\left('+s+'\\right)':s)+ex(r):''};
+  }else if(D>0){
+    kind='over'; const s=Math.sqrt(D), r1=(-c+s)/(2*m), r2=(-c-s)/(2*m); roots=[[r1,0],[r2,0]];
+    y1=t=>{const e=Math.exp(r1*t);return [e,r1*e]}; y2=t=>{const e=Math.exp(r2*t);return [e,r2*e]};
+    hTex=(C1,C2)=>lin([[C1,ex(r1)],[C2,ex(r2)]]);
+  }else{
+    const g=c/(2*m), wd=Math.sqrt(-D)/(2*m); kind=c===0?'free':'under'; roots=[[-g,wd],[-g,-wd]];
+    y1=t=>{const e=Math.exp(-g*t),C=Math.cos(wd*t),S=Math.sin(wd*t);return [e*C,e*(-g*C-wd*S)]};
+    y2=t=>{const e=Math.exp(-g*t),C=Math.cos(wd*t),S=Math.sin(wd*t);return [e*S,e*(-g*S+wd*C)]};
+    hTex=(C1,C2)=>{const s=lin([[C1,trig('cos',wd)],[C2,trig('sin',wd)]]); if(!s)return ''; return g===0?s:ex(-g)+'\\left('+s+'\\right)';};
+  }
+  // particular
+  let xp=()=>[0,0], xpTerms=[], resonant=false;
+  if(p.ft==='cos'&&p.F0!==0){
+    const w=p.w, a=k-m*w*w, b=c*w, den=a*a+b*b;
+    if(den<1e-10*(k*k+1)){ resonant=true; const K=p.F0/(2*m*w0);
+      xp=t=>{const S=Math.sin(w0*t),C=Math.cos(w0*t);return [K*t*S,K*(S+w0*t*C)]}; xpTerms=[[K,'t'+trig('sin',w0)]]; }
+    else{ const A=p.F0*a/den, B=p.F0*b/den;
+      xp=t=>{const S=Math.sin(w*t),C=Math.cos(w*t);return [A*C+B*S,w*(-A*S+B*C)]}; xpTerms=[[A,trig('cos',w)],[B,trig('sin',w)]]; }
+  }else if(p.ft==='texp'&&p.F0!==0){
+    const P=m-c+k, dP=c-2*m; let q;
+    if(Math.abs(P)>1e-9){const A=p.F0/P;q=[-dP*A/P,A,0,0];}
+    else if(Math.abs(dP)>1e-9){resonant=true;const A=p.F0/(2*dP);q=[0,-2*m*A/dP,A,0];}
+    else{resonant=true;q=[0,0,0,p.F0/(6*m)];}
+    const Q=t=>q[0]+t*(q[1]+t*(q[2]+t*q[3])), dQ=t=>q[1]+t*(2*q[2]+3*t*q[3]);
+    xp=t=>{const e=Math.exp(-t),qv=Q(t);return [qv*e,(dQ(t)-qv)*e]};
+    xpTerms=[[q[3],'t^3e^{-t}'],[q[2],'t^2e^{-t}'],[q[1],'t\\,e^{-t}'],[q[0],'e^{-t}']];
+  }
+  // constantes
+  const a0=y1(0),b0=y2(0),p0=xp(0), det=a0[0]*b0[1]-b0[0]*a0[1];
+  const r1=p.x0-p0[0], r2=p.v0-p0[1];
+  const C1=(r1*b0[1]-b0[0]*r2)/det, C2=(a0[0]*r2-r1*a0[1])/det;
+  const F=forcing(p);
+  const X=t=>{const u=y1(t),w=y2(t),z=xp(t);return [C1*u[0]+C2*w[0]+z[0],C1*u[1]+C2*w[1]+z[1]]};
+  const H=hTex(C1,C2), Pt=lin(xpTerms,!!H);
+  let envF=null;
+  if(p.ft==='cos'&&c===0&&p.F0!==0&&Math.abs(p.x0)<1e-12&&Math.abs(p.v0)<1e-12){
+    if(resonant){const K=p.F0/(2*m*w0);envF={f:t=>K*t,tex:'\\pm\\tfrac{F_0}{2m\\omega_0}t'};}
+    else{const A=p.F0/(k-m*p.w*p.w),d=(w0-p.w)/2;envF={f:t=>Math.abs(2*A*Math.sin(d*t)),tex:'\\pm 2A\\sin'};}}
+  return {kind,roots,D,w0,zeta,C1,C2,F,X,Xh:t=>C1*y1(t)[0]+C2*y2(t)[0],resonant,envF,tex:(H+Pt)||'0',env:(kind==='under'&&p.ft==='none')?{R:Math.hypot(C1,C2),g:c/(2*m)}:null};
+}
+
+/* ---------- métodos numéricos ---------- */
+function integrate(meth,h,p,F){
+  const n=Math.min(100000,Math.max(1,Math.round(p.T/h))), hh=p.T/n, {m,c,k}=p;
+  const f=(t,x,v)=>(F(t)-c*v-k*x)/m;
+  const T=new Float64Array(n+1),Xs=new Float64Array(n+1),Vs=new Float64Array(n+1);
+  let x=p.x0,v=p.v0,t=0,div=false; T[0]=0;Xs[0]=x;Vs[0]=v;
+  for(let i=1;i<=n;i++){
+    if(meth==='euler'){const a=f(t,x,v);x+=hh*v;v+=hh*a;}
+    else if(meth==='heun'){const a1=f(t,x,v),xe=x+hh*v,ve=v+hh*a1,a2=f(t+hh,xe,ve);x+=hh/2*(v+ve);v+=hh/2*(a1+a2);}
+    else{const k1x=v,k1v=f(t,x,v),k2x=v+hh/2*k1v,k2v=f(t+hh/2,x+hh/2*k1x,v+hh/2*k1v),
+      k3x=v+hh/2*k2v,k3v=f(t+hh/2,x+hh/2*k2x,v+hh/2*k2v),k4x=v+hh*k3v,k4v=f(t+hh,x+hh*k3x,v+hh*k3v);
+      x+=hh/6*(k1x+2*k2x+2*k3x+k4x);v+=hh/6*(k1v+2*k2v+2*k3v+k4v);}
+    t=i*hh;
+    if(!isFinite(x)||Math.abs(x)>1e8){div=true;for(let j=i;j<=n;j++){T[j]=j*hh;Xs[j]=NaN;Vs[j]=NaN;}break;}
+    T[i]=t;Xs[i]=x;Vs[i]=v;
+  }
+  return {T,X:Xs,V:Vs,n,h:hh,div};
+}
+function maxErr(N,S){ if(N.div)return Infinity; let e=0; for(let i=0;i<=N.n;i++){e=Math.max(e,Math.abs(N.X[i]-S.X(N.T[i])[0]));} return e; }
+
+/* ---------- muestreo ---------- */
+function sample(){
+  const p=E.p, n=800, ts=[],xs=[],vs=[],as=[],es=[];
+  let mx=0,mv=0;
+  for(let i=0;i<=n;i++){const t=p.T*i/n,[x,v]=SOL.X(t),a=(SOL.F(t)-p.c*v-p.k*x)/p.m;
+    ts.push(t);xs.push(x);vs.push(v);as.push(a);es.push(0.5*p.m*v*v+0.5*p.k*x*x);
+    mx=Math.max(mx,Math.abs(x));mv=Math.max(mv,Math.abs(v));}
+  SMP={ts,xs,vs,as,es,mx:mx||1e-3,mv:mv||1e-3};
+}
+
+/* ---------- gráficos genéricos ---------- */
+function niceTicks(lo,hi,count){
+  const span=hi-lo; if(!(span>0))return [lo];
+  const step0=span/count, mag=Math.pow(10,Math.floor(Math.log10(step0))), r=step0/mag;
+  const step=(r<1.5?1:r<3?2:r<7?5:10)*mag, out=[];
+  for(let v=Math.ceil(lo/step)*step;v<=hi+step*1e-9;v+=step)out.push(Math.abs(v)<step*1e-9?0:v);
+  return out;
+}
+const tickFmt=(v,step)=>{const d=Math.max(0,-Math.floor(Math.log10(step||1)+1e-9));return Math.abs(v)>=1e5||(v!==0&&Math.abs(v)<1e-4)?v.toExponential(1):v.toFixed(Math.min(6,d));};
+function drawChart(cv,o){
+  const W=cv.parentElement.clientWidth; if(W<40)return;
+  const H=o.h, dpr=window.devicePixelRatio||1;
+  cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.height=H+'px';
+  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const pad={l:o.padL||56,r:12,t:14,b:32};
+  let [x0,x1]=o.xr, y0=Infinity,y1=-Infinity;
+  if(o.yr){[y0,y1]=o.yr;}else{o.series.forEach(s=>{if(!s.range)return;s.pts.forEach(p=>{if(isFinite(p[1])){y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1])}})});
+    if(o.zero){y0=Math.min(y0,0);y1=Math.max(y1,0);} if(!(y1>y0)){y0-=1;y1+=1;} const s=(y1-y0)*0.08;y0-=s;y1+=s;}
+  if(o.equal){ // misma escala en ambos ejes (plano de fase no la usa)
+  }
+  const X=x=>pad.l+(x-x0)/(x1-x0)*(W-pad.l-pad.r), Y=y=>pad.t+(y1-y)/(y1-y0)*(H-pad.t-pad.b);
+  cv._c={o,X,Y,x0,x1,y0,y1,pad,W,H};
+  const muted=tok('--muted'),line=tok('--line'),ink=tok('--ink'),panel=tok('--panel');
+  g.font='11.5px "IBM Plex Mono", monospace';g.lineWidth=1;
+  const ty=niceTicks(y0,y1,Math.max(3,Math.floor((H-pad.t-pad.b)/48))), sty=ty.length>1?ty[1]-ty[0]:1;
+  g.textAlign='right';g.textBaseline='middle';
+  ty.forEach(v=>{const p=Math.round(Y(v))+.5;g.strokeStyle=line;g.beginPath();g.moveTo(pad.l,p);g.lineTo(W-pad.r,p);g.stroke();g.fillStyle=muted;g.fillText(tickFmt(v,sty),pad.l-6,p)});
+  const tx=niceTicks(x0,x1,Math.max(3,Math.floor((W-pad.l-pad.r)/70))), stx=tx.length>1?tx[1]-tx[0]:1;
+  g.textAlign='center';g.textBaseline='top';
+  tx.forEach(v=>{const p=X(v);g.strokeStyle=line;g.beginPath();g.moveTo(p,H-pad.b);g.lineTo(p,H-pad.b+4);g.stroke();g.fillStyle=muted;g.fillText(tickFmt(v,stx),p,H-pad.b+7)});
+  if(y0<0&&y1>0){g.strokeStyle=muted;g.globalAlpha=.6;g.beginPath();g.moveTo(pad.l,Math.round(Y(0))+.5);g.lineTo(W-pad.r,Math.round(Y(0))+.5);g.stroke();g.globalAlpha=1;}
+  if(o.vzero&&x0<0&&x1>0){g.strokeStyle=muted;g.globalAlpha=.6;g.beginPath();g.moveTo(Math.round(X(0))+.5,pad.t);g.lineTo(Math.round(X(0))+.5,H-pad.b);g.stroke();g.globalAlpha=1;}
+  g.fillStyle=muted;g.textAlign='right';g.textBaseline='bottom';g.fillText(o.xlab||'',W-pad.r,H-pad.b-3);
+  g.textAlign='left';g.textBaseline='top';g.fillText(o.ylab||'',pad.l+6,pad.t);
+  g.save();g.beginPath();g.rect(pad.l,pad.t-2,W-pad.l-pad.r,H-pad.t-pad.b+4);g.clip();
+  o.series.forEach(s=>{
+    g.strokeStyle=s.color;g.lineWidth=s.width||2;g.setLineDash(s.dash||[]);g.globalAlpha=s.alpha||1;
+    g.beginPath();let pen=false;
+    s.pts.forEach(p=>{if(!isFinite(p[1])||!isFinite(p[0])){pen=false;return;}const px=X(p[0]),py=Y(p[1]);if(pen)g.lineTo(px,py);else{g.moveTo(px,py);pen=true;}});
+    g.stroke();g.setLineDash([]);
+    if(s.dots){g.fillStyle=s.color;s.pts.forEach(p=>{if(isFinite(p[1])){g.beginPath();g.arc(X(p[0]),Y(p[1]),2.6,0,7);g.fill();}});}
+    g.globalAlpha=1;
+  });
+  if(o.cursor!=null){g.strokeStyle=ink;g.globalAlpha=.35;g.lineWidth=1;g.beginPath();g.moveTo(Math.round(X(o.cursor))+.5,pad.t);g.lineTo(Math.round(X(o.cursor))+.5,H-pad.b);g.stroke();g.globalAlpha=1;}
+  (o.points||[]).forEach(p=>{if(!isFinite(p.y))return;g.beginPath();g.arc(X(p.x),Y(p.y),p.r||5,0,7);g.fillStyle=p.color;g.fill();g.strokeStyle=panel;g.lineWidth=2;g.stroke();});
+  if(cv._hx!=null&&o.hover){const hx=cv._hx;g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(Math.round(X(hx))+.5,pad.t);g.lineTo(Math.round(X(hx))+.5,H-pad.b);g.stroke();
+    o.series.forEach(s=>{if(!s.label)return;const y=interp(s.pts,hx);if(isFinite(y)){g.beginPath();g.arc(X(hx),Y(y),3.5,0,7);g.fillStyle=s.color;g.fill();}});}
+  g.restore();
+}
+function interp(pts,x){
+  let lo=0,hi=pts.length-1; if(!pts.length||x<pts[0][0]||x>pts[hi][0])return NaN;
+  while(hi-lo>1){const mid=(lo+hi)>>1;if(pts[mid][0]<=x)lo=mid;else hi=mid;}
+  const a=pts[lo],b=pts[hi];if(b[0]===a[0])return a[1];return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0]);
+}
+function hookChart(cv,redraw){
+  const tip=cv.parentElement.querySelector('.tip');
+  cv.addEventListener('pointermove',ev=>{const C=cv._c;if(!C||!C.o.hover)return;
+    const r=cv.getBoundingClientRect(),mx=ev.clientX-r.left;
+    const x=C.x0+(mx-C.pad.l)/(C.W-C.pad.l-C.pad.r)*(C.x1-C.x0);
+    if(x<C.x0||x>C.x1){cv._hx=null;if(tip)tip.hidden=true;redraw();return;}
+    cv._hx=x;redraw();
+    if(tip){let h='<b>t = '+x.toFixed(3)+' '+ctx().tu+'</b>';C.o.series.forEach(s=>{if(s.label){const y=interp(s.pts,x);h+='<br>'+s.label+': '+fx(y,4);}});
+      tip.innerHTML=h;tip.hidden=false;const tw=tip.offsetWidth;let lx=mx+12;if(lx+tw>C.W)lx=mx-tw-12;tip.style.left=Math.max(0,lx)+'px';tip.style.top=(C.pad.t+4)+'px';}
+  });
+  cv.addEventListener('pointerleave',()=>{cv._hx=null;if(tip)tip.hidden=true;redraw();});
+  cv.addEventListener('click',()=>{if(cv._hx!=null){E.t=cv._hx;setPlaying(false);drawDynamic();}});
+}
+
+/* ---------- dibujo del resorte ---------- */
+const spr=$('#spring');
+function drawSpring(){
+  const W=spr.parentElement.clientWidth; if(W<40)return;
+  const H=Math.max(340,hFor(chm,0.62,260,420)+44),dpr=window.devicePixelRatio||1;
+  spr.width=Math.round(W*dpr);spr.height=H*dpr;spr.style.height=H+'px';
+  const g=spr.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const scene=PROBS[E.prob].ctx;
+  if(scene==='pend'){drawPend(g,W,H);return;}
+  if(scene==='buoy'){drawBuoy(g,W,H);return;}
+  if(scene==='rlc'){drawCircuit(g,W,H);return;}
+  if(scene==='econ'){drawMarket(g,W,H);return;}
+  if(scene==='gluc'){drawGluc(g,W,H);return;}
+  const ink=tok('--ink'),muted=tok('--muted'),acc=tok('--accent'),accW=tok('--accent-weak'),line=tok('--line'),num=tok('--num');
+  const p=E.p,t=E.t,[x,v]=SOL.X(t),Fv=SOL.F(t);
+  const ruleX=W-34, cx=Math.min(W*0.42,ruleX-70), ceilY=22, eqY=H*0.53, sc=(H*0.30)/SMP.mx;
+  const bw=Math.min(76,W*0.36),bh=42, by=eqY+x*sc; // centro del bloque
+  // techo
+  g.strokeStyle=ink;g.lineWidth=2;g.beginPath();g.moveTo(cx-bw*0.9,ceilY);g.lineTo(cx+bw*0.9,ceilY);g.stroke();
+  g.lineWidth=1;g.strokeStyle=muted;g.beginPath();for(let k=cx-bw*0.9;k<cx+bw*0.9;k+=8){g.moveTo(k,ceilY);g.lineTo(k+8,ceilY-8);}g.stroke();
+  const top=by-bh/2, hasD=p.c>0, sx=hasD?cx-bw*0.22:cx;
+  // resorte
+  {const lead=10,len=top-ceilY-2*lead,coils=12,amp=11;g.strokeStyle=ink;g.lineWidth=1.8;g.beginPath();g.moveTo(sx,ceilY);g.lineTo(sx,ceilY+lead);
+   for(let i=1;i<=coils*2;i++){g.lineTo(sx+(i%2?amp:-amp),ceilY+lead+len*(i-0.5)/(coils*2));}
+   g.lineTo(sx,top-lead);g.lineTo(sx,top);g.stroke();}
+  // amortiguador
+  if(hasD){const dx=cx+bw*0.24,cylTop=ceilY+0.30*(eqY-ceilY),cylH=0.42*(eqY-ceilY),cw=16;
+    g.strokeStyle=ink;g.lineWidth=1.8;g.beginPath();g.moveTo(dx,ceilY);g.lineTo(dx,cylTop);g.stroke();
+    g.beginPath();g.moveTo(dx-cw/2,cylTop);g.lineTo(dx+cw/2,cylTop);g.moveTo(dx-cw/2,cylTop);g.lineTo(dx-cw/2,cylTop+cylH);g.moveTo(dx+cw/2,cylTop);g.lineTo(dx+cw/2,cylTop+cylH);g.stroke();
+    const piston=Math.max(cylTop+6,Math.min(cylTop+cylH-4,top-(eqY-bh/2-(cylTop+cylH*0.55))));
+    g.lineWidth=3;g.beginPath();g.moveTo(dx-cw/2+3,piston);g.lineTo(dx+cw/2-3,piston);g.stroke();
+    g.lineWidth=1.8;g.beginPath();g.moveTo(dx,piston);g.lineTo(dx,top);g.stroke();
+    g.fillStyle=muted;g.font='11px "IBM Plex Sans", sans-serif';g.textAlign='left';g.textBaseline='middle';g.fillText('c',dx+cw/2+4,cylTop+cylH/2);}
+  // equilibrio
+  g.setLineDash([5,4]);g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(8,eqY);g.lineTo(ruleX,eqY);g.stroke();g.setLineDash([]);
+  g.fillStyle=muted;g.font='11px "IBM Plex Sans", sans-serif';g.textAlign='left';g.textBaseline='bottom';g.fillText('equilibrio',8,eqY-3);
+  // bloque
+  g.fillStyle=accW;g.strokeStyle=ink;g.lineWidth=1.8;
+  const r=5;g.beginPath();g.moveTo(cx-bw/2+r,top);g.arcTo(cx+bw/2,top,cx+bw/2,top+bh,r);g.arcTo(cx+bw/2,top+bh,cx-bw/2,top+bh,r);g.arcTo(cx-bw/2,top+bh,cx-bw/2,top,r);g.arcTo(cx-bw/2,top,cx+bw/2,top,r);g.closePath();g.fill();g.stroke();
+  g.fillStyle=ink;g.font='italic 600 17px Spectral, Georgia, serif';g.textAlign='center';g.textBaseline='middle';g.fillText(ctx().blk,cx,by);
+  // flecha de velocidad
+  function arrow(x0,y0,y1,col,lab){ if(Math.abs(y1-y0)<3)return; g.strokeStyle=col;g.fillStyle=col;g.lineWidth=2.2;g.beginPath();g.moveTo(x0,y0);g.lineTo(x0,y1);g.stroke();
+    const d=Math.sign(y1-y0);g.beginPath();g.moveTo(x0,y1+d*2);g.lineTo(x0-5,y1-d*7);g.lineTo(x0+5,y1-d*7);g.closePath();g.fill();
+    g.font='600 12px "IBM Plex Sans", sans-serif';g.textAlign='right';g.textBaseline='middle';g.fillText(lab,x0-7,(y0+y1)/2);}
+  arrow(cx-bw/2-12,by,by+v/SMP.mv*H*0.16,acc,'v');
+  if(p.ft!=='none'){const fm=Math.max(1e-9,Math.abs(p.F0));arrow(cx-bw/2-34,by,by+Fv/fm*H*0.12,num,'F');}
+  // regla
+  g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(ruleX,eqY-SMP.mx*sc*1.08);g.lineTo(ruleX,eqY+SMP.mx*sc*1.08);g.stroke();
+  const tks=niceTicks(-SMP.mx,SMP.mx,4),st=tks.length>1?tks[1]-tks[0]:1;g.font='10.5px "IBM Plex Mono", monospace';g.textAlign='left';g.textBaseline='middle';g.fillStyle=muted;
+  tks.forEach(vv=>{const yy=eqY+vv*sc;g.beginPath();g.moveTo(ruleX-4,yy);g.lineTo(ruleX,yy);g.stroke();g.fillText(tickFmt(vv,st),ruleX+3,yy);});
+  g.fillStyle=ink;g.beginPath();g.moveTo(ruleX-2,by);g.lineTo(ruleX-10,by-5);g.lineTo(ruleX-10,by+5);g.closePath();g.fill();
+  g.strokeStyle=ink;g.globalAlpha=.25;g.setLineDash([2,3]);g.beginPath();g.moveTo(cx+bw/2,by);g.lineTo(ruleX-10,by);g.stroke();g.setLineDash([]);g.globalAlpha=1;
+  g.fillStyle=muted;g.textAlign='right';g.textBaseline='bottom';g.fillText(ctx().x[0]+' ('+ctx().x[1]+') ↓',W-4,H-4);
+  // lecturas
+  g.font='12px "IBM Plex Mono", monospace';g.fillStyle=ink;g.textAlign='left';g.textBaseline='top';
+  const CX=ctx(),rd=['t = '+t.toFixed(CX.tx==='q'&&E.p.T<2?3:2)+' s',CX.x[0]+' = '+fx(x,4)+' '+CX.x[1],CX.v[0]+' = '+fx(v,4)+' '+CX.v[1]];
+  if(CX.analog){g.fillStyle=tok('--muted');g.font='11.5px "IBM Plex Sans", sans-serif';g.textAlign='left';g.textBaseline='top';g.fillText('análogo mecánico',8,ceilY+8);g.font='12px "IBM Plex Mono", monospace';g.fillStyle=ink;}
+  rd.forEach((s,i)=>g.fillText(s,8,H-58+i*17));
+}
+
+/* ---------- escenas propias: péndulo y boya ---------- */
+function arrow2(g,x0,y0,x1,y1,col,lab,side){
+  const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy);if(L<4)return;
+  const ux=dx/L,uy=dy/L;
+  g.strokeStyle=col;g.fillStyle=col;g.lineWidth=2.2;g.beginPath();g.moveTo(x0,y0);g.lineTo(x1-ux*6,y1-uy*6);g.stroke();
+  g.beginPath();g.moveTo(x1,y1);g.lineTo(x1-ux*9-uy*5,y1-uy*9+ux*5);g.lineTo(x1-ux*9+uy*5,y1-uy*9-ux*5);g.closePath();g.fill();
+  if(lab){g.font='600 12px "IBM Plex Sans", sans-serif';g.textAlign=side==='right'?'left':'right';g.textBaseline='middle';
+    g.fillText(lab,(x0+x1)/2+(side==='right'?8:-8),(y0+y1)/2);}
+}
+function readouts(g,H,lines){
+  g.font='12px "IBM Plex Mono", monospace';g.fillStyle=tok('--ink');g.textAlign='left';g.textBaseline='top';
+  lines.forEach((s,i)=>g.fillText(s,8,H-17*lines.length-6+i*17));
+}
+function drawPend(g,W,H){
+  const ink=tok('--ink'),muted=tok('--muted'),acc=tok('--accent'),accW=tok('--accent-weak'),num=tok('--num');
+  const p=E.p,t=E.t,[th,om]=SOL.X(t),Fv=SOL.F(t);
+  const px=W/2,py=26,mx=Math.min(SMP.mx,Math.PI);
+  const L=Math.max(60,Math.min(H-120,(W/2-26)/Math.max(0.12,Math.sin(Math.min(mx,Math.PI/2)))));
+  // techo y pivote
+  g.strokeStyle=ink;g.lineWidth=2;g.beginPath();g.moveTo(px-50,py);g.lineTo(px+50,py);g.stroke();
+  g.lineWidth=1;g.strokeStyle=muted;g.beginPath();for(let k=px-50;k<px+50;k+=8){g.moveTo(k,py);g.lineTo(k+8,py-8);}g.stroke();
+  // vertical de equilibrio y rango de oscilación
+  g.setLineDash([5,4]);g.strokeStyle=muted;g.beginPath();g.moveTo(px,py);g.lineTo(px,py+L+26);g.stroke();
+  g.setLineDash([2,4]);g.beginPath();g.arc(px,py,L,Math.PI/2-mx,Math.PI/2+mx);g.stroke();g.setLineDash([]);
+  g.fillStyle=muted;g.font='11px "IBM Plex Sans", sans-serif';g.textAlign='center';g.textBaseline='top';g.fillText('θ = 0',px,py+L+28);
+  const bx=px+L*Math.sin(th),by=py+L*Math.cos(th);
+  // ángulo
+  const ra=Math.min(54,L*0.33);
+  if(Math.abs(th)>0.005){g.strokeStyle=acc;g.lineWidth=1.8;g.beginPath();g.arc(px,py,ra,Math.PI/2,Math.PI/2-th,th>0);g.stroke();
+    const am=Math.PI/2-th/2;g.fillStyle=acc;g.font='italic 600 15px Spectral, Georgia, serif';g.textAlign='center';g.textBaseline='middle';
+    g.fillText('θ',px+(ra+12)*Math.cos(am),py+(ra+12)*Math.sin(am));}
+  // hilo, pivote y masa
+  g.strokeStyle=ink;g.lineWidth=1.8;g.beginPath();g.moveTo(px,py);g.lineTo(bx,by);g.stroke();
+  g.fillStyle=ink;g.beginPath();g.arc(px,py,3.5,0,7);g.fill();
+  g.fillStyle=muted;g.font='italic 600 14px Spectral, Georgia, serif';g.textAlign='left';g.textBaseline='middle';
+  g.fillText('L',px+L*0.55*Math.sin(th)+8,py+L*0.55*Math.cos(th));
+  g.beginPath();g.arc(bx,by,14,0,7);g.fillStyle=accW;g.fill();g.strokeStyle=ink;g.lineWidth=1.8;g.stroke();
+  g.fillStyle=ink;g.font='italic 600 15px Spectral, Georgia, serif';g.textAlign='center';g.fillText('m',bx,by+1);
+  // velocidad tangencial y torque externo
+  const tx=Math.cos(th),ty=-Math.sin(th),lv=om/SMP.mv*H*0.16;
+  arrow2(g,bx+tx*16*Math.sign(lv),by+ty*16*Math.sign(lv),bx+tx*(16*Math.sign(lv)+lv),by+ty*(16*Math.sign(lv)+lv),acc,'v',ty*lv>0?'right':'left');
+  if(p.ft!=='none'){const fm=Math.max(1e-9,Math.abs(p.F0)),lf=Fv/fm*H*0.1;arrow2(g,bx,by+18,bx+tx*lf,by+18+ty*lf,num,'M');}
+  readouts(g,H,['t = '+t.toFixed(2)+' s','θ = '+fx(th,4)+' rad ('+fx(th*180/Math.PI,1)+'°)','θ′ = '+fx(om,4)+' rad/s']);
+}
+function drawBuoy(g,W,H){
+  const ink=tok('--ink'),muted=tok('--muted'),acc=tok('--accent'),accW=tok('--accent-weak'),num=tok('--num'),panel=tok('--panel');
+  const p=E.p,t=E.t,[x,v]=SOL.X(t);
+  const ruleX=W-34,cx=Math.min(W*0.44,ruleX-72),wl=Math.round(H*0.40),sc=(H*0.17)/SMP.mx;
+  const bw=Math.min(80,W*0.34),bh=Math.round(H*0.42),above=Math.round(bh*0.44);
+  const top0=wl-above,top=top0+x*sc,bot=top+bh,L=cx-bw/2,Rr=cx+bw/2;
+  // agua
+  g.fillStyle=accW;g.fillRect(0,wl,W,H-wl);
+  // boya
+  g.fillStyle=panel;g.strokeStyle=ink;g.lineWidth=1.8;g.fillRect(L,top,bw,bh);g.strokeRect(L,top,bw,bh);
+  g.fillStyle=num;g.globalAlpha=.85;g.fillRect(L+1,top+1,bw-2,Math.min(16,bh*0.1));g.globalAlpha=1;
+  g.strokeStyle=ink;g.lineWidth=1.5;g.beginPath();g.moveTo(cx,top);g.lineTo(cx,top-22);g.stroke();
+  g.fillStyle=num;g.beginPath();g.moveTo(cx,top-22);g.lineTo(cx+14,top-17);g.lineTo(cx,top-12);g.closePath();g.fill();
+  // parte sumergida vista a través del agua
+  g.fillStyle=accW;g.globalAlpha=.55;g.fillRect(L+1,wl,bw-2,Math.max(0,bot-wl-1));g.globalAlpha=1;
+  // superficie con ondas que dependen de la velocidad
+  const rip=Math.min(6,Math.abs(v)/SMP.mv*6);
+  g.strokeStyle=acc;g.lineWidth=2;
+  [[0,L],[Rr,W]].forEach(([a,b])=>{g.beginPath();for(let X=a;X<=b;X+=3){const d=Math.min(Math.abs(X-L),Math.abs(X-Rr));
+    const y=wl+rip*Math.exp(-d/70)*Math.sin(d/9-t*8);X===a?g.moveTo(X,y):g.lineTo(X,y);}g.stroke();});
+  // equilibrio
+  g.setLineDash([5,4]);g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(L-26,top0);g.lineTo(ruleX,top0);g.stroke();g.setLineDash([]);
+  g.fillStyle=muted;g.font='11px "IBM Plex Sans", sans-serif';g.textAlign='left';g.textBaseline='bottom';g.fillText('equilibrio',4,top0-3);
+  g.textBaseline='top';g.fillText('agua',4,wl+6);
+  // flechas: velocidad y empuje extra de Arquímedes (−ρgA·x)
+  arrow2(g,L-12,top+bh*0.3,L-12,top+bh*0.3+v/SMP.mv*H*0.15,acc,'v');
+  arrow2(g,Rr+12,bot-8,Rr+12,bot-8-x/SMP.mx*H*0.13,num,'−ρgAx','right');
+  // regla
+  g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(ruleX,top0-SMP.mx*sc*1.08);g.lineTo(ruleX,top0+SMP.mx*sc*1.08);g.stroke();
+  const tks=niceTicks(-SMP.mx,SMP.mx,4),st=tks.length>1?tks[1]-tks[0]:1;g.font='10.5px "IBM Plex Mono", monospace';g.textAlign='left';g.textBaseline='middle';g.fillStyle=muted;
+  tks.forEach(vv=>{const yy=top0+vv*sc;g.beginPath();g.moveTo(ruleX-4,yy);g.lineTo(ruleX,yy);g.stroke();g.fillText(tickFmt(vv,st),ruleX+3,yy);});
+  g.fillStyle=ink;g.beginPath();g.moveTo(ruleX-2,top);g.lineTo(ruleX-10,top-5);g.lineTo(ruleX-10,top+5);g.closePath();g.fill();
+  g.fillStyle=muted;g.textAlign='right';g.textBaseline='bottom';g.fillText('x (m) ↓',W-4,H-4);
+  readouts(g,H,['t = '+t.toFixed(2)+' s','x = '+fx(x,4)+' m','v = '+fx(v,4)+' m/s']);
+}
+
+function drawCircuit(g,W,H){
+  const ink=tok('--ink'),muted=tok('--muted'),acc=tok('--accent'),num=tok('--num'),im=tok('--im');
+  const p=E.p,t=E.t,[q,i]=SOL.X(t),Ev=SOL.F(t),forced=p.ft!=='none'&&p.F0!==0,hasR=p.c>0;
+  const x0=30,x1=W-30,y0=40,y1=Math.round(H*0.50),xm=(x0+x1)/2,ym=(y0+y1)/2;
+  const qa=Math.min(1,Math.abs(q)/SMP.mx),ia=Math.min(1,Math.abs(i)/SMP.mv);
+  const rw=Math.min(34,(x1-x0)/4),lh=Math.min(40,(y1-y0)/3.2),cw=Math.min(22,(x1-x0)/6),gap=6;
+  g.lineCap='round';g.lineJoin='round';
+  // calor en la resistencia y campo magnético en la bobina: intensidad ∝ i²
+  if(hasR&&ia>0.02){g.strokeStyle=num;g.globalAlpha=Math.min(.55,ia*ia*.6);g.lineWidth=14;g.beginPath();g.moveTo(xm-rw,y0);g.lineTo(xm+rw,y0);g.stroke();g.globalAlpha=1;}
+  if(ia>0.02){g.strokeStyle=acc;g.lineWidth=1.2;g.globalAlpha=Math.min(.75,ia*.85);[1,1.7].forEach(f=>{g.beginPath();g.ellipse(x1+4,ym,12*f,lh*0.85*f,0,0,7);g.stroke();});g.globalAlpha=1;}
+  // cables y componentes
+  g.strokeStyle=ink;g.lineWidth=2;g.beginPath();
+  g.moveTo(x0,ym-gap);g.lineTo(x0,y0);
+  if(hasR){g.lineTo(xm-rw,y0);for(let k=1;k<8;k++)g.lineTo(xm-rw+2*rw*k/8,y0+(k%2?-7:7));g.lineTo(xm+rw,y0);}
+  g.lineTo(x1,y0);g.lineTo(x1,ym-lh);
+  const nb=4,bh=2*lh/nb;for(let k=0;k<nb;k++)g.arc(x1,ym-lh+bh*(k+0.5),bh/2,-Math.PI/2,Math.PI/2,false);
+  g.lineTo(x1,y1);
+  if(forced){g.lineTo(xm+14,y1);g.moveTo(xm-14,y1);}
+  g.lineTo(x0,y1);g.lineTo(x0,ym+gap);g.stroke();
+  g.lineWidth=3.2;g.beginPath();g.moveTo(x0-cw,ym-gap);g.lineTo(x0+cw,ym-gap);g.moveTo(x0-cw,ym+gap);g.lineTo(x0+cw,ym+gap);g.stroke();
+  if(forced){g.lineWidth=2;g.beginPath();g.arc(xm,y1,14,0,7);g.stroke();g.strokeStyle=num;g.beginPath();for(let k=0;k<=20;k++){const u=k/20;g[k?'lineTo':'moveTo'](xm-8+16*u,y1-6*Math.sin(2*Math.PI*u));}g.stroke();}
+  // cargas en las placas y campo eléctrico: ∝ q
+  const n=Math.round(qa*5),top=q>=0?'+':'−',bot=q>=0?'−':'+';
+  g.font='600 12px "IBM Plex Mono", monospace';g.textAlign='center';g.textBaseline='middle';
+  for(let k=0;k<n;k++){const xx=x0-cw+(k+0.5)*(2*cw/5);g.fillStyle=top==='+'?acc:num;g.fillText(top,xx,ym-gap-8);g.fillStyle=bot==='+'?acc:num;g.fillText(bot,xx,ym+gap+9);}
+  if(qa>0.05){g.strokeStyle=muted;g.globalAlpha=qa;g.lineWidth=1;g.beginPath();[-0.5,0,0.5].forEach(f=>{g.moveTo(x0+f*cw,ym-gap+2);g.lineTo(x0+f*cw,ym+gap-2);});g.stroke();g.globalAlpha=1;}
+  // corriente: puntos que se desplazan con la carga que pasa (desplazamiento ∝ q)
+  const wT=x1-x0,hT=y1-y0,Per=2*(wT+hT),sp=18,off=-(q/SMP.mx)*sp*1.6;
+  g.fillStyle=acc;
+  for(let k=0;k<Math.ceil(Per/sp);k++){let s=((k*sp+off)%Per+Per)%Per,X,Y;
+    if(s<wT){X=x0+s;Y=y0;}else if(s<wT+hT){X=x1;Y=y0+(s-wT);}else if(s<2*wT+hT){X=x1-(s-wT-hT);Y=y1;}else{X=x0;Y=y1-(s-2*wT-hT);}
+    if(X===x0&&Math.abs(Y-ym)<gap+3)continue; if(X===x1&&Math.abs(Y-ym)<lh+2)continue; if(forced&&Y===y1&&Math.abs(X-xm)<16)continue;
+    g.beginPath();g.arc(X,Y,2.6,0,7);g.fill();}
+  if(ia>0.03){const dir=i>0?-1:1,ax=xm+(hasR?0:0),ay=y0+16;arrow2(g,ax-dir*16,ay,ax+dir*16,ay,acc,'');g.fillStyle=acc;g.font='600 12px "IBM Plex Sans", sans-serif';g.textAlign='center';g.textBaseline='top';g.fillText('i',ax,ay+5);}
+  // rótulos
+  g.fillStyle=ink;g.font='12px "IBM Plex Mono", monospace';g.textBaseline='bottom';g.textAlign='center';
+  if(hasR)g.fillText('R = '+fx(p.c,2)+' Ω',xm,y0-12);
+  g.textAlign='right';g.textBaseline='middle';g.fillText('L = '+fx(p.m,3)+' H',x1-10,ym);
+  g.textAlign='left';g.fillText('C = '+fx(1/p.k,4)+' F',x0+cw+6,ym);
+  if(forced){g.textAlign='center';g.textBaseline='top';g.fillText('E = '+fx(Ev,2)+' V',xm,y1+16);}
+  // energía: capacitor ↔ bobina (↔ calor)
+  const Em=Math.max(...SMP.es)||1,EC=0.5*p.k*q*q,EL=0.5*p.m*i*i,Ed=Math.max(0,SMP.es[0]-EC-EL);
+  const rows=[['Capacitor  q²/(2C)',EC,acc],['Bobina  ½Li²',EL,im]];if(!forced&&hasR)rows.push(['Disipado en R',Ed,num]);
+  let by=y1+(forced?40:26);const bw=x1-x0+20,bx=x0-10;
+  g.font='11px "IBM Plex Sans", sans-serif';
+  rows.forEach(([lab,val,col])=>{g.fillStyle=tok('--muted');g.textAlign='left';g.textBaseline='top';g.fillText(lab,bx,by);g.textAlign='right';g.fillText(fx(val,3)+' J',bx+bw,by);
+    g.fillStyle=tok('--line');g.fillRect(bx,by+14,bw,7);g.fillStyle=col;g.fillRect(bx,by+14,bw*Math.min(1,val/Em),7);by+=28;});
+  g.font='12px "IBM Plex Mono", monospace';g.fillStyle=ink;g.textAlign='left';g.textBaseline='top';g.fillText('t = '+t.toFixed(3)+' s',4,4);
+  readouts(g,H,['q = '+fx(q,4)+' C','i = '+fx(i,4)+' A']);
+}
+function drawMarket(g,W,H){
+  const ink=tok('--ink'),muted=tok('--muted'),acc=tok('--accent'),num=tok('--num'),im=tok('--im'),line=tok('--line');
+  const t=E.t,[x,v]=SOL.X(t),Ps=9,P=Ps+x,mx=SMP.mx;
+  const pad={l:42,r:14,t:28,b:96};
+  const p0=Math.max(0,Ps-1.5*mx),p1=Ps+1.5*mx,Qs=P=>-5+3*P,Qd=P=>40-2*P;
+  let q0=Math.min(Qs(p0),Qd(p1)),q1=Math.max(Qs(p1),Qd(p0));const qp=(q1-q0)*0.08;q0-=qp;q1+=qp;
+  const X=q=>pad.l+(q-q0)/(q1-q0)*(W-pad.l-pad.r),Y=P=>pad.t+(p1-P)/(p1-p0)*(H-pad.t-pad.b);
+  g.font='10.5px "IBM Plex Mono", monospace';g.fillStyle=muted;g.strokeStyle=line;g.lineWidth=1;
+  const ty=niceTicks(p0,p1,4),st=ty.length>1?ty[1]-ty[0]:1;g.textAlign='right';g.textBaseline='middle';
+  ty.forEach(P=>{g.beginPath();g.moveTo(pad.l,Y(P));g.lineTo(W-pad.r,Y(P));g.stroke();g.fillText(tickFmt(P,st),pad.l-5,Y(P));});
+  g.strokeStyle=muted;g.beginPath();g.moveTo(pad.l,pad.t);g.lineTo(pad.l,H-pad.b);g.lineTo(W-pad.r,H-pad.b);g.stroke();
+  g.textAlign='left';g.textBaseline='bottom';g.fillText('P ($)',pad.l+4,pad.t-6);g.textAlign='right';g.textBaseline='top';g.fillText('Q',W-pad.r,H-pad.b+4);
+  g.save();g.beginPath();g.rect(pad.l,pad.t,W-pad.l-pad.r,H-pad.t-pad.b);g.clip();
+  g.lineWidth=2;g.strokeStyle=num;g.beginPath();g.moveTo(X(Qs(p0)),Y(p0));g.lineTo(X(Qs(p1)),Y(p1));g.stroke();
+  g.strokeStyle=im;g.beginPath();g.moveTo(X(Qd(p0)),Y(p0));g.lineTo(X(Qd(p1)),Y(p1));g.stroke();
+  g.setLineDash([4,4]);g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(pad.l,Y(Ps));g.lineTo(X(22),Y(Ps));g.stroke();g.setLineDash([]);
+  g.fillStyle=ink;g.beginPath();g.arc(X(22),Y(Ps),4,0,7);g.fill();
+  const yP=Y(Math.max(p0,Math.min(p1,P))),a=X(Qs(P)),b=X(Qd(P));
+  g.strokeStyle=ink;g.lineWidth=1;g.beginPath();g.moveTo(pad.l,yP);g.lineTo(W-pad.r,yP);g.stroke();
+  g.strokeStyle=b>a?acc:num;g.lineWidth=6;g.globalAlpha=.55;g.beginPath();g.moveTo(a,yP);g.lineTo(b,yP);g.stroke();g.globalAlpha=1;
+  [a,b].forEach(z=>{g.fillStyle=ink;g.beginPath();g.arc(z,yP,3.5,0,7);g.fill();});
+  g.restore();
+  g.font='11px "IBM Plex Sans", sans-serif';g.textBaseline='bottom';
+  g.fillStyle=num;g.textAlign='right';g.fillText('oferta',Math.min(W-pad.r,X(Qs(p1))),Y(p1)+14);
+  g.fillStyle=im;g.textAlign='left';g.fillText('demanda',Math.max(pad.l+4,X(Qd(p1))),Y(p1)+14);
+  g.fillStyle=muted;g.textAlign='left';g.textBaseline='top';g.fillText('P* = 9',pad.l+4,Y(Ps)+3);
+  g.fillStyle=ink;g.beginPath();g.moveTo(pad.l-1,yP);g.lineTo(pad.l-8,yP-5);g.lineTo(pad.l-8,yP+5);g.closePath();g.fill();
+  g.font='12px "IBM Plex Sans", sans-serif';g.fillStyle=ink;g.textAlign='left';g.textBaseline='top';
+  const msg=Math.abs(b-a)<1.5?'Equilibrio: Q_d = Q_s':(b>a?'Exceso de demanda: el precio tiende a subir':'Exceso de oferta: el precio tiende a bajar');
+  g.fillText(msg,8,H-pad.b+22);
+  readouts(g,H,['t = '+t.toFixed(2)+' meses','P = '+fx(P,3)+' $','P′ = '+fx(v,3)+' $/mes']);
+}
+function drawGluc(g,W,H){
+  const ink=tok('--ink'),muted=tok('--muted'),acc=tok('--accent'),num=tok('--num'),im=tok('--im'),panel=tok('--panel'),line=tok('--line');
+  const p=E.p,t=E.t,[x,v]=SOL.X(t),G0=90,G=G0+x;
+  const gmin=Math.min(40,G0-1.3*SMP.mx),gmax=Math.max(160,G0+1.3*SMP.mx);
+  const tx=Math.round(Math.min(W*0.32,90)),tw=30,top=46,bot=H-84;
+  const Y=v=>bot-(Math.max(gmin,Math.min(gmax,v))-gmin)/(gmax-gmin)*(bot-top);
+  const band=(a,b,col,lab)=>{g.fillStyle=col;g.globalAlpha=.12;g.fillRect(tx-8,Y(b),W-tx,Y(a)-Y(b));g.globalAlpha=1;
+    g.fillStyle=muted;g.font='11px "IBM Plex Sans", sans-serif';g.textAlign='right';g.textBaseline='top';g.fillText(lab,W-6,Y(b)+3);};
+  band(gmin,70,num,'hipoglucemia');band(70,140,im,'rango normal');band(140,gmax,num,'hiperglucemia');
+  g.font='10.5px "IBM Plex Mono", monospace';g.fillStyle=muted;g.textAlign='right';g.textBaseline='middle';g.strokeStyle=muted;g.lineWidth=1;
+  const ty=niceTicks(gmin,gmax,6),st=ty.length>1?ty[1]-ty[0]:1;ty.forEach(v=>{g.beginPath();g.moveTo(tx-12,Y(v));g.lineTo(tx-8,Y(v));g.stroke();g.fillText(tickFmt(v,st),tx-14,Y(v));});
+  g.textAlign='left';g.textBaseline='bottom';g.fillText('G (mg/dL)',4,top-12);
+  // tubo
+  g.fillStyle=panel;g.strokeStyle=ink;g.lineWidth=1.8;g.fillRect(tx,top,tw,bot-top);
+  g.fillStyle=acc;g.globalAlpha=.85;g.fillRect(tx+2,Y(G),tw-4,bot-Y(G));g.globalAlpha=1;g.strokeRect(tx,top,tw,bot-top);
+  g.setLineDash([5,4]);g.strokeStyle=ink;g.lineWidth=1;g.beginPath();g.moveTo(tx-8,Y(G0));g.lineTo(W-6,Y(G0));g.stroke();g.setLineDash([]);
+  g.fillStyle=ink;g.font='11px "IBM Plex Sans", sans-serif';g.textAlign='left';g.textBaseline='bottom';g.fillText('basal G₀ = 90',tx+tw+8,Y(G0)-2);
+  g.beginPath();g.moveTo(tx+tw+2,Y(G));g.lineTo(tx+tw+10,Y(G)-5);g.lineTo(tx+tw+10,Y(G)+5);g.closePath();g.fill();
+  g.font='600 13px "IBM Plex Mono", monospace';g.textBaseline='middle';g.fillText(fx(G,1)+' mg/dL',tx+tw+14,Y(G));
+  // criterio diagnóstico
+  const T0=2*Math.PI/Math.sqrt(p.k),ok=T0<4;
+  g.font='600 12px "IBM Plex Sans", sans-serif';const txt='T₀ = 2π/ω₀ = '+fx(T0,2)+' h · '+(ok?'normal':'sospecha de diabetes');
+  const tw2=g.measureText(txt).width+16;g.fillStyle=ok?im:num;g.globalAlpha=.15;g.fillRect(4,6,Math.min(W-8,tw2),22);g.globalAlpha=1;
+  g.strokeStyle=ok?im:num;g.strokeRect(4.5,6.5,Math.min(W-8,tw2)-1,21);g.fillStyle=ink;g.textAlign='left';g.textBaseline='middle';g.fillText(txt,12,17);
+  readouts(g,H,['t = '+t.toFixed(2)+' h ('+Math.round(t*60)+' min)','g = G − G₀ = '+fx(x,2)+' mg/dL','g′ = '+fx(v,2)+' mg/dL/h']);
+}
+/* ---------- gráficos de la simulación ---------- */
+const chm=$('#chmain'),chp=$('#chphase'),che=$('#chen'),chr=$('#chroots');
+function VIEWF(k){const q=ctx()[k];return {key:k+'s',lab:q[0]+' ('+q[1]+')',name:q[0]+'(t)'};}
+function numPts(kind){
+  if(!NUM)return null;const p=E.p,out=[];
+  for(let i=0;i<=NUM.n;i++){const t=NUM.T[i],x=NUM.X[i],v=NUM.V[i];
+    const y=kind==='x'?x:kind==='v'?v:kind==='a'?(SOL.F(t)-p.c*v-p.k*x)/p.m:0.5*p.m*v*v+0.5*p.k*x*x;out.push([t,y]);}
+  return out;
+}
+const METH_NAME={euler:'Euler',heun:'Heun',rk4:'RK4'};
+function drawMain(){
+  const V=VIEWF(E.view),acc=tok('--accent'),num=tok('--num'),muted=tok('--muted');
+  const pts=SMP.ts.map((t,i)=>[t,SMP[V.key][i]]);
+  const series=[{pts,color:acc,width:2,range:true,label:V.name+' analítica'}];
+  if(E.view==='x'&&SOL.env){const {R,g}=SOL.env;
+    series.unshift({pts:SMP.ts.map(t=>[t,R*Math.exp(-g*t)]),color:muted,width:1.2,dash:[5,4]},{pts:SMP.ts.map(t=>[t,-R*Math.exp(-g*t)]),color:muted,width:1.2,dash:[5,4]});}
+  if(E.view==='x'&&SOL.envF){const f=SOL.envF.f;
+    series.unshift({pts:SMP.ts.map(t=>[t,f(t)]),color:muted,width:1.2,dash:[5,4]},{pts:SMP.ts.map(t=>[t,-f(t)]),color:muted,width:1.2,dash:[5,4]});}
+  const np=numPts(E.view); if(np)series.push({pts:np,color:num,width:1.5,dots:NUM.n<=160,label:METH_NAME[E.method]});
+  const [x,v]=SOL.X(E.t), cur=E.view==='x'?x:E.view==='v'?v:(SOL.F(E.t)-E.p.c*v-E.p.k*x)/E.p.m;
+  drawChart(chm,{h:hFor(chm,0.62,260,420),xr:[0,E.p.T],series,xlab:'t ('+ctx().tu+')',ylab:V.lab,zero:true,cursor:E.t,points:[{x:E.t,y:cur,color:acc}],hover:true});
+  $('#legmain').innerHTML='<span><span class="sw acc"></span>Analítica</span>'+(np?'<span><span class="sw num"></span>'+METH_NAME[E.method]+', h = '+fx(NUM.h,4)+'</span>':'')+(SOL.env&&E.view==='x'?'<span><span class="sw env"></span>±Re<sup>−γt</sup></span>':'')+(SOL.envF&&E.view==='x'?'<span><span class="sw env"></span>'+(SOL.resonant?'envolvente ±F₀t/(2mω₀)':'envolvente de las pulsaciones')+'</span>':'');
+}
+function drawPhase(){
+  const acc=tok('--accent'),num=tok('--num');
+  const pts=SMP.xs.map((x,i)=>[x,SMP.vs[i]]);
+  const series=[{pts,color:acc,width:2,range:false}];
+  const mx=SMP.mx*1.12,mv=SMP.mv*1.12;
+  if(NUM){const q=[];for(let i=0;i<=NUM.n;i++)q.push([NUM.X[i],NUM.V[i]]);series.push({pts:q,color:num,width:1.3,alpha:.85});}
+  const [x,v]=SOL.X(E.t);
+  // dibujar como curva paramétrica: interp no aplica, se desactiva hover
+  drawChart(chp,{h:hFor(chp,0.72,240,340),xr:[-mx,mx],yr:[-mv,mv],series:series.map(s=>({...s,pts:s.pts})),xlab:ctx().x[0]+' ('+ctx().x[1]+')',ylab:ctx().v[0]+' ('+ctx().v[1]+')',vzero:true,points:[{x:x,y:v,color:acc},{x:E.p.x0,y:E.p.v0,color:tok('--ink'),r:3.5}],hover:false,padL:52});
+}
+function drawEnergy(){
+  const acc=tok('--accent'),num=tok('--num');
+  const series=[{pts:SMP.ts.map((t,i)=>[t,SMP.es[i]]),color:acc,width:2,range:true,label:'E analítica'}];
+  const np=numPts('E'); if(np)series.push({pts:np,color:num,width:1.5,label:'E '+METH_NAME[E.method]});
+  const [x,v]=SOL.X(E.t);
+  drawChart(che,{h:hFor(che,0.72,240,340),xr:[0,E.p.T],series,xlab:'t ('+ctx().tu+')',ylab:'E ('+ctx().enU+')',zero:true,cursor:E.t,points:[{x:E.t,y:0.5*E.p.m*v*v+0.5*E.p.k*x*x,color:acc}],hover:true,padL:52});
+}
+function drawRoots(){
+  const W=chr.parentElement.clientWidth; if(W<40)return;
+  const H=hFor(chr,0.72,240,340),dpr=window.devicePixelRatio||1;chr.width=Math.round(W*dpr);chr.height=H*dpr;chr.style.height=H+'px';
+  const g=chr.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const muted=tok('--muted'),line=tok('--line'),ink=tok('--ink'),acc=tok('--accent'),accW=tok('--accent-weak'),panel=tok('--panel');
+  const rs=SOL.roots, w0=SOL.w0;
+  let R=Math.max(w0,E.p.ft==='cos'?E.p.w:0,...rs.map(r=>Math.hypot(r[0],r[1])))*1.2||1;
+  const pad=22,cx=W*0.62,cy=H/2,sc=Math.min((cx-pad),(H/2-pad))/R;
+  const X=a=>cx+a*sc,Y=b=>cy-b*sc;
+  g.fillStyle=accW;g.globalAlpha=.6;g.fillRect(0,0,cx,H);g.globalAlpha=1;
+  g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(4,cy);g.lineTo(W-4,cy);g.moveTo(cx,4);g.lineTo(cx,H-4);g.stroke();
+  // círculo |r| = ω0 (raíces subamortiguadas viven ahí)
+  g.setLineDash([4,4]);g.strokeStyle=line;g.beginPath();g.arc(cx,cy,w0*sc,0,7);g.stroke();g.setLineDash([]);
+  g.font='11px "IBM Plex Mono", monospace';g.fillStyle=muted;g.textAlign='left';g.textBaseline='top';
+  g.fillText('Im',cx+4,6);g.textAlign='right';g.fillText('Re',W-6,cy+4);
+  g.textAlign='left';g.fillText('|r| = ω₀',X(w0*0.72)+2,Y(w0*0.72));
+  g.fillStyle=muted;g.textAlign='left';g.textBaseline='bottom';g.font='11px "IBM Plex Sans", sans-serif';g.fillText('Re r < 0: estable',6,H-4);
+  if(E.p.ft==='cos'){const om=E.p.w,nc=tok('--num'),d=rs.map(r=>Math.hypot(r[0],om-r[1]));
+    g.strokeStyle=nc;g.setLineDash([4,3]);g.lineWidth=1.3;rs.forEach(r=>{g.beginPath();g.moveTo(X(0),Y(om));g.lineTo(X(r[0]),Y(r[1]));g.stroke();});g.setLineDash([]);
+    [om,-om].forEach((b,j)=>{g.beginPath();g.arc(X(0),Y(b),j?4:6,0,7);g.fillStyle=j?panel:nc;g.fill();g.strokeStyle=nc;g.lineWidth=2;g.stroke();});
+    g.fillStyle=nc;g.font='12px "IBM Plex Mono", monospace';g.textAlign='right';g.textBaseline='middle';g.fillText('iω',X(0)-9,Y(om));
+    const P=E.p.m*d[0]*d[1];g.textAlign='left';g.textBaseline='top';g.font='11px "IBM Plex Sans", sans-serif';
+    g.fillText(P<1e-9?'iω es raíz: resonancia pura':'|P(iω)| = m·d₁·d₂ = '+fx(P,3),6,6);}
+  rs.forEach((r,i)=>{g.beginPath();g.arc(X(r[0]),Y(r[1]),6,0,7);g.fillStyle=acc;g.fill();g.strokeStyle=panel;g.lineWidth=2;g.stroke();});
+  g.fillStyle=ink;g.font='12px "IBM Plex Mono", monospace';g.textAlign='left';g.textBaseline='middle';
+  if(rs[0][1]!==0){g.fillText(fmtRoot(rs[0]),Math.min(X(rs[0][0])+9,W-110),Y(rs[0][1]));g.fillText(fmtRoot(rs[1]),Math.min(X(rs[1][0])+9,W-110),Y(rs[1][1]));}
+  else if(Math.abs(rs[0][0]-rs[1][0])<1e-9){g.fillText('r = '+fx(rs[0][0],3)+' (doble)',Math.max(4,X(rs[0][0])-60),cy-16);}
+  else{g.textAlign='center';g.fillText('r₁ = '+fx(rs[0][0],3),X(rs[0][0]),cy-16);g.fillText('r₂ = '+fx(rs[1][0],3),X(rs[1][0]),cy+16);}
+}
+const fmtRoot=r=>fx(r[0],3)+(r[1]>=0?' + ':' − ')+fx(Math.abs(r[1]),3)+'i';
+
+/* ---------- panel de resultados ---------- */
+const KIND={free:'Sin amortiguamiento',under:'Subamortiguado',crit:'Críticamente amortiguado',over:'Sobreamortiguado'};
+let texT=null;
+function results(){
+  const p=E.p,S=SOL;
+  $('#regime').textContent=KIND[S.kind];
+  const Ft=p.ft==='cos'?lin([[p.F0,trig('cos',p.w)]])||'0':p.ft==='texp'?lin([[p.F0,'t\\,e^{-t}']])||'0':'0';
+  const tx=ctx().tx, eq=lin([[p.m,tx+"''"],[p.c,tx+"'"],[p.k,tx]])+' = '+Ft;
+  const ce=lin([[p.m,'r^2'],[p.c,'r'],[p.k,'']])+' = 0';
+  $('#esol').innerHTML='\\['+eq+',\\qquad '+tx+'(0) = '+nn(p.x0)+',\\ '+tx+'\'(0) = '+nn(p.v0)+'\\]\\['+ce+'\\]\\['+tx+'(t) = '+S.tex+'\\]';
+  clearTimeout(texT);texT=setTimeout(()=>typesetEl($('#esol')),120);
+  const rs=S.roots, rtxt=rs[0][1]!==0?fmtRoot(rs[0])+', '+fmtRoot(rs[1]):Math.abs(rs[0][0]-rs[1][0])<1e-9?fx(rs[0][0],4)+' (doble)':fx(rs[0][0],4)+', '+fx(rs[1][0],4);
+  const CX=ctx();
+  let kv='<dt>ω₀ = '+CX.w0+'</dt><dd>'+fx(S.w0,4)+' rad/'+CX.tu+'</dd>'+
+    '<dt>Δ = c² − 4mk</dt><dd>'+fx(S.D,4)+'</dd>'+
+    '<dt>Razón de amortiguamiento ζ = c / (2√(mk))</dt><dd>'+fx(S.zeta,4)+'</dd>'+
+    '<dt>Raíces</dt><dd>'+rtxt+'</dd>';
+  if(S.kind==='free'||S.kind==='under'){const wd=Math.abs(rs[0][1]);kv+='<dt>Período '+(S.kind==='free'?'2π/ω₀':'2π/ω_d')+'</dt><dd>'+fx(2*Math.PI/wd,4)+' '+CX.tu+'</dd>';}
+  kv+='<dt>C₁, C₂</dt><dd>'+fx(S.C1,4)+', '+fx(S.C2,4)+'</dd>';
+  const [xT,vT]=S.X(p.T);kv+='<dt>'+CX.x[0]+'(T), '+CX.v[0]+'(T) con T = '+fx(p.T,2)+' '+CX.tu+'</dt><dd>'+fx(xT,4)+' '+CX.x[1]+', '+fx(vT,4)+' '+CX.v[1]+'</dd>';
+  const cx0=PROBS[E.prob].ctx;
+  if(cx0==='gluc'){const T0=2*Math.PI/S.w0;kv+='<dt>Criterio T₀ = 2π/ω₀</dt><dd>'+fx(T0,3)+' h · '+(T0<4?'normal (&lt; 4 h)':'sospecha de diabetes (&gt; 4 h)')+'</dd><dt>Glucosa máxima G₀ + máx g</dt><dd>'+fx(90+Math.max(...SMP.xs),4)+' mg/dL</dd>';}
+  if(cx0==='econ'){kv+='<dt>Precio de equilibrio P*</dt><dd>9 $ (P = 9 + p)</dd><dt>Estabilidad</dt><dd>'+(rs[0][0]<0?'estable: Re r &lt; 0':'inestable: Re r ≥ 0')+'</dd>';}
+  $('#ekv').innerHTML=kv;
+  const w=$('#ewarn');
+  if(S.resonant){w.textContent='Resonancia: la frecuencia de la fuerza coincide con una raíz de la ecuación característica, así que la solución particular lleva un factor t extra'+(p.c===0?' y la amplitud crece sin cota.':'.');w.hidden=false;}
+  else if(p.ft==='cos'&&p.c>0&&Math.abs(p.w-S.w0)/S.w0<0.1&&S.zeta<0.3){w.textContent='Cerca de resonancia: ω ≈ ω₀ y el amortiguamiento es bajo, por eso la amplitud estacionaria es grande.';w.hidden=false;}
+  else w.hidden=true;
+}
+function methodTable(){
+  const rows=['euler','heun','rk4'].map(mt=>{const N=integrate(mt,E.h,E.p,SOL.F);return {mt,N,err:maxErr(N,SOL)};});
+  let h='<thead><tr><th>Método</th><th>Pasos</th><th>'+ctx().x[0]+'(T) numérico</th><th>Error máximo</th></tr></thead><tbody>';
+  rows.forEach(r=>{h+='<tr'+(r.mt===E.method?' class="sel"':'')+'><td>'+({euler:'Euler',heun:'Euler mejorado (Heun)',rk4:'Runge–Kutta 4'})[r.mt]+'</td><td>'+r.N.n+'</td><td>'+(r.N.div?'diverge':fx(r.N.X[r.N.n],6))+'</td><td>'+(isFinite(r.err)?r.err.toExponential(2):'diverge')+'</td></tr>';});
+  h+='<tr><td>Analítica</td><td>—</td><td>'+fx(SOL.X(E.p.T)[0],6)+'</td><td>—</td></tr>';
+  $('#mtable').innerHTML=h+'</tbody>';
+}
+function typesetEl(el){ if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetClear&&MathJax.typesetClear([el]);MathJax.typesetPromise([el]).catch(()=>{});} else setTimeout(()=>typesetEl(el),300); }
+
+/* ---------- ciclo ---------- */
+const chfr=$('#chfr');
+function drawFR(){
+  const card=$('#frcard'),p=E.p;card.hidden=p.ft!=='cos';$('#rescard').hidden=p.ft!=='cos';if(card.hidden||!SOL)return;
+  const {m,c,k,F0,w}=p,w0=Math.sqrt(k/m),A=om=>F0/Math.sqrt((k-m*om*om)**2+(c*om)**2),acc=tok('--accent'),muted=tok('--muted'),num=tok('--num');
+  const xmax=Math.max(2.2*w0,1.3*w),pts=[];for(let i=0;i<=500;i++){const om=xmax*i/500;pts.push([om,A(om)]);}
+  const hasR=c>0&&k/m-c*c/(2*m*m)>0,wr=hasR?Math.sqrt(k/m-c*c/(2*m*m)):null,Aw=A(w);
+  let ymax=c>0?1.15*(hasR?A(wr):A(0)):Math.max(4*F0/k,isFinite(Aw)&&Aw<40*F0/k?1.25*Aw:0);
+  const series=[{pts,color:acc,width:2},{pts:[[w0,0],[w0,ymax]],color:muted,width:1,dash:[4,4]}];
+  const points=[{x:w,y:isFinite(Aw)?Math.min(Aw,ymax*0.98):ymax*0.98,color:num,r:6}];if(hasR)points.unshift({x:wr,y:A(wr),color:acc,r:4});
+  drawChart(chfr,{h:hFor(chfr,0.72,240,340),xr:[0,xmax],yr:[0,ymax],series,xlab:'ω (rad/'+ctx().tu+')',ylab:'A ('+ctx().x[1]+')',points,hover:false,padL:52});
+  $('#frnote').innerHTML='A(ω) = F₀/√((k − mω²)² + (cω)²). Línea punteada: ω₀ = '+fx(w0,3)+'. Punto naranjo: ω actual = '+fx(w,3)+', A = '+(isFinite(Aw)&&Aw<1e6?fx(Aw,3):'∞ (resonancia pura)')+'.'+(hasR?' Máximo en ω<sub>r</sub> = √(k/m − c²/(2m²)) = '+fx(wr,3)+', A<sub>máx</sub> = '+fx(A(wr),3)+'.':c>0?' Con c² ≥ 2mk la curva no tiene máximo: decrece desde ω = 0.':' Sin amortiguamiento el pico es infinito en ω₀.');
+}
+$('#rqgo').addEventListener('click',()=>{let ok=0;const ins=document.querySelectorAll('#rescard .rq input');
+  ins.forEach(i=>{const s=i.value.trim().replace(',','.');let v=NaN;try{v=Number(math.evaluate(s));}catch(e){}const g=isFinite(v)&&Math.abs(v-(+i.dataset.v))<1e-6+1e-3*Math.abs(+i.dataset.v);i.classList.toggle('good',g);i.classList.toggle('bad',!g&&!!s);if(g)ok++;});
+  const m=$('#rqmsg');m.textContent=ok===ins.length?'Todo correcto.':ok+' de '+ins.length+' correctas. Pista: resonancia ⇔ c = 0 y mω² = k; y para B, 8B = 1.';m.style.color=ok===ins.length?'var(--im)':'var(--num)';});
+chfr.addEventListener('pointerdown',ev=>{const C=chfr._c;if(!C)return;const r=chfr.getBoundingClientRect(),om=C.x0+(ev.clientX-r.left-C.pad.l)/(C.W-C.pad.l-C.pad.r)*(C.x1-C.x0);
+  if(om<=0||om>C.x1)return;E.p.w=Math.round(om*100)/100;syncCtl();modified();recompute();});
+function recompute(){
+  SOL=solve(E.p); sample();
+  NUM=E.method==='none'?null:integrate(E.method,E.h,E.p,SOL.F);
+  if(E.t>E.p.T)E.t=0;
+  results(); methodTable(); drawRoots(); drawFR(); hxBuild(); drawDynamic();
+}
+function drawDynamic(){
+  if(!SOL)return;
+  drawSpring(); drawMain(); drawPhase(); drawEnergy(); hxUpdate();
+  $('#etime').value=Math.round(E.t/E.p.T*1000); $('#otime').textContent='t = '+E.t.toFixed(2)+' '+ctx().tu;
+}
+let last=null,raf=null;
+function frame(ts){
+  if(!E.playing){last=null;raf=null;return;}
+  if(last!=null){E.t+=(ts-last)/1000*E.speed; if(E.t>E.p.T)E.t=0;}
+  last=ts; drawDynamic(); raf=requestAnimationFrame(frame);
+}
+function setPlaying(on){ E.playing=on; $('#eplay').textContent=on?'Pausar':'Reproducir'; $('#hxplay').textContent=on?'Pausar':'Reproducir'; if(on&&!raf)raf=requestAnimationFrame(frame); }
+$('#eplay').addEventListener('click',()=>setPlaying(!E.playing));
+$('#espeed').addEventListener('change',e=>{E.speed=+e.target.value});
+$('#etime').addEventListener('input',e=>{setPlaying(false);E.t=E.p.T*e.target.value/1000;drawDynamic();});
+// pausar si la pestaña no se ve
+document.addEventListener('visibilitychange',()=>{if(document.hidden)setPlaying(false)});
+
+/* ---------- controles ---------- */
+const CTL=[['pm','m',v=>fx(v,2)],['pc','c',v=>fx(v,2)],['pk','k',v=>fx(v,1)],['px0','x0',v=>fx(v,2)],['pv0','v0',v=>fx(v,2)],['pF0','F0',v=>fx(v,2)],['pw','w',v=>fx(v,2)],['pT','T',v=>fx(v,2)]];
+const OUT={pm:'om_',pc:'oc_',pk:'ok_',px0:'ox0',pv0:'ov0',pF0:'oF0',pw:'ow',pT:'oT'};
+function applyCtx(){
+  const C=ctx(),rg=Object.assign({},DEFR,PROBS[E.prob].rng||{});
+  CTL.forEach(([id,key])=>{const el=$('#'+id),r=rg[key];el.min=r[0];el.max=r[1];el.step=r[2];});
+  const L=(a,sub)=>a[0]+(sub||'')+(a[1]?' ('+a[1]+')':'');
+  $('#lpm').textContent=L(C.m);$('#lpc').textContent=L(C.c);$('#lpk').textContent=L(C.k);
+  $('#lpx0').textContent=L(C.x,'₀');$('#lpv0').textContent=L(C.v,'₀');$('#lpF0').textContent=L(C.F,'₀');$('#lpft').textContent=C.ftl;
+  document.querySelectorAll('#viewtabs button').forEach(b=>{b.textContent=C[b.dataset.view][0]+'(t)';});
+  $('#enTitle').textContent=C.en;
+}
+function syncCtl(){
+  applyCtx();
+  CTL.forEach(([id,key,f])=>{$('#'+id).value=E.p[key];$('#'+OUT[id]).textContent=f(E.p[key]);});
+  $('#pft').value=E.p.ft; $('#rowF0').hidden=E.p.ft==='none'; $('#roww').hidden=E.p.ft!=='cos'; $('#setres').hidden=E.p.ft!=='cos';
+}
+function modified(){
+  if(E.prob==='libre'){$('#modbanner').hidden=true;return;}
+  const o=PROBS[E.prob],p=E.p;
+  const keys=['m','c','k','x0','v0','ft','T'].concat(o.ft!=='none'?['F0']:[]).concat(o.ft==='cos'?['w']:[]);
+  $('#modbanner').hidden=keys.every(k=>typeof o[k]==='string'?o[k]===p[k]:Math.abs(o[k]-p[k])<1e-9||(k==='T'));
+}
+CTL.forEach(([id,key,f])=>$('#'+id).addEventListener('input',e=>{E.p[key]=+e.target.value;$('#'+OUT[id]).textContent=f(E.p[key]);modified();recompute();}));
+$('#pft').addEventListener('change',e=>{E.p.ft=e.target.value;syncCtl();modified();recompute();});
+$('#setres').addEventListener('click',()=>{E.p.w=Math.round(Math.sqrt(E.p.k/E.p.m)*1e6)/1e6;syncCtl();modified();recompute();});
+$('#restore').addEventListener('click',()=>loadProb(E.prob));
+function loadProb(id){
+  if(id==='p9'){setPlaying(false);document.querySelectorAll('#probbar button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.prob===id));dpShow(true);return;}
+  if(DP.active)dpShow(false);
+  E.prob=id;E.p={...PROBS[id]};E.t=0;setPlaying(false);
+  const P0=PROBS[id];E.h=P0.h||0.05;$('#eh').value=sFromH(E.h);$('#oh').textContent=fx(E.h,4);E.speed=P0.speed||1;$('#espeed').value=String(E.speed);
+  document.querySelectorAll('#probbar button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.prob===id));
+  document.querySelectorAll('#worked > div[data-prob]').forEach(d=>d.hidden=d.dataset.prob!==id);
+  syncCtl();modified();recompute();
+}
+document.querySelectorAll('#probbar button').forEach(b=>b.addEventListener('click',()=>loadProb(b.dataset.prob)));
+document.querySelectorAll('#viewtabs button').forEach(b=>b.addEventListener('click',()=>{E.view=b.dataset.view;
+  document.querySelectorAll('#viewtabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));drawMain();}));
+// método numérico
+const hFromS=s=>Math.pow(10,-4+s/100), sFromH=h=>Math.round(100*(Math.log10(h)+4));
+function setH(h){E.h=Math.min(1,Math.max(0.0001,h));$('#eh').value=sFromH(E.h);$('#oh').textContent=fx(E.h,4);recompute();}
+$('#eh').addEventListener('input',e=>{E.h=Number(hFromS(+e.target.value).toPrecision(3));$('#oh').textContent=fx(E.h,4);recompute();});
+$('#hhalf').addEventListener('click',()=>setH(E.h/2));
+$('#hdbl').addEventListener('click',()=>setH(E.h*2));
+$('#emeth').addEventListener('change',e=>{E.method=e.target.value;recompute();});
+
+hookChart(chm,drawMain); hookChart(che,drawEnergy); hookChart(chp,drawPhase);
+const ro=new ResizeObserver(()=>{if(SOL){drawRoots();drawFR();drawDynamic();}});
+[spr,chm,che,chp,chr,chfr].forEach(c=>ro.observe(c.parentElement));
+function retheme(){if(SOL){drawRoots();drawFR();hxBuild();drawDynamic();}}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',retheme);}catch(e){}
+new MutationObserver(retheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+window.addEventListener('coursetab',ev=>{ if(ev.detail!=='tab-edo')setPlaying(false); else retheme(); });
+
+/* ---------- la solución en el plano complejo: hélice ---------- */
+const HX={box:$('#helix3d'),R:null,mode:'unit',view:'iso',walls:true,tween:null,data:null,tubes:[],segs:900};
+const HL=6, HW=1.35, XE=-HL/2-0.6;
+const HXV={iso:[-4.2,3.6,7.8],top:[0,10,0.0005],front:[0,0,10],end:[10,0,0]};
+class HxCurve extends THREE.Curve{
+  constructor(f){super();this.f=f;}
+  getPoint(u,o){const v=this.f(u);return (o||new THREE.Vector3()).set(v[0],v[1],v[2]);}
+  getPointAt(u,o){return this.getPoint(u,o);}
+  getTangentAt(u,o){return this.getTangent(u,o);}
+}
+function hxLabel(text,color,h){
+  const cv=document.createElement('canvas'),g=cv.getContext('2d'),fs=44,font='500 '+fs+'px "IBM Plex Sans", system-ui, sans-serif';
+  g.font=font;cv.width=Math.ceil(g.measureText(text).width)+16;cv.height=fs+18;
+  g.font=font;g.fillStyle=color;g.textBaseline='middle';g.fillText(text,8,cv.height/2);
+  const tx=new THREE.CanvasTexture(cv);tx.minFilter=THREE.LinearFilter;
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthTest:false}));
+  h=h||0.2;sp.scale.set(h*cv.width/cv.height,h,1);sp.center.set(0,0.5);return sp;
+}
+function hxInit(){
+  if(typeof THREE==='undefined'||!THREE.OrbitControls){HX.box.innerHTML='<p class="hint" style="padding:16px">No se pudo cargar la vista 3D.</p>';return;}
+  const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  HX.box.appendChild(renderer.domElement);
+  const scene=new THREE.Scene(),cam=new THREE.OrthographicCamera(-1,1,1,-1,-60,60);
+  cam.position.set(...HXV.iso).setLength(10);
+  const ctl=new THREE.OrbitControls(cam,renderer.domElement);ctl.target.set(0,0,0);
+  scene.add(new THREE.AmbientLight(0xffffff,0.72));const dl=new THREE.DirectionalLight(0xffffff,0.5);dl.position.set(-2,5,6);scene.add(dl);
+  const root=new THREE.Group(),dyn=new THREE.Group();scene.add(root);scene.add(dyn);
+  HX.R={renderer,scene,cam,ctl,root,dyn,halfH:2.1,aspect:1.6};
+  ctl.update();
+  ctl.addEventListener('change',()=>{if(!HX.R)return;if(!HX.tween&&HX.view!=='free'){HX.view='free';hxMark();}hxRender();});
+  hxResize();
+}
+function hxRender(){if(HX.R)HX.R.renderer.render(HX.R.scene,HX.R.cam);}
+function hxZoom(v){const R=HX.R,hh=R.halfH,a=R.aspect;
+  if(v==='end')return hh/1.8;
+  if(v==='iso')return Math.min(1.1,hh*a/(HL/2+2.2),hh/2.3);
+  return Math.min(hh*a/(HL/2+1.3),hh/(HW+0.45));}
+function hxResize(){
+  if(!HX.R)return;const w=HX.box.clientWidth,h=HX.box.clientHeight;if(w<10||h<10)return;
+  const R=HX.R;R.renderer.setSize(w,h);R.aspect=w/h;const hh=R.halfH;
+  R.cam.left=-hh*R.aspect;R.cam.right=hh*R.aspect;R.cam.top=hh;R.cam.bottom=-hh;
+  if(HX.view!=='free')R.cam.zoom=hxZoom(HX.view);R.cam.updateProjectionMatrix();hxRender();
+}
+function hxMark(){document.querySelectorAll('#hxviews button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===HX.view));}
+function hxGo(v){
+  if(!HX.R)return;HX.view=v;hxMark();
+  const R=HX.R,p0=R.cam.position.clone().sub(R.ctl.target),p1=new THREE.Vector3(...HXV[v]).setLength(10),z0=R.cam.zoom,z1=hxZoom(v),t0=R.ctl.target.clone(),O=new THREE.Vector3();
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,dur=reduce?0:750,st=performance.now();
+  if(HX.tween)cancelAnimationFrame(HX.tween);
+  const step=now=>{const u=dur?Math.min(1,(now-st)/dur):1,e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
+    const p=new THREE.Vector3().lerpVectors(p0,p1,e);if(p.length()<0.5)p.y+=1;p.setLength(10);
+    R.ctl.target.lerpVectors(t0,O,e);R.cam.position.copy(p).add(R.ctl.target);
+    R.cam.zoom=z0+(z1-z0)*e;R.cam.updateProjectionMatrix();R.ctl.update();hxRender();
+    if(u<1)HX.tween=requestAnimationFrame(step);else HX.tween=null;};
+  HX.tween=requestAnimationFrame(step);
+}
+function hxData(){
+  const S=SOL,T=E.p.T,cplx=S.roots[0][1]!==0,N=HX.segs;
+  let g=-S.roots[0][0],w=cplx?Math.abs(S.roots[0][1]):0,Ar=1,Ai=0;
+  if(cplx&&HX.mode==='sol'){Ar=S.C1;Ai=-S.C2;}
+  const pts=[];
+  for(let i=0;i<=N;i++){const t=T*i/N;let re,im;
+    if(cplx){const e=Math.exp(-g*t),c=Math.cos(w*t),s=Math.sin(w*t);re=e*(Ar*c-Ai*s);im=e*(Ar*s+Ai*c);}
+    else{re=HX.mode==='sol'?S.Xh(t):Math.exp(S.roots[0][0]*t);im=0;}
+    pts.push([t,re,im]);}
+  let M=0;pts.forEach(q=>{const r=Math.hypot(q[1],q[2]);if(isFinite(r))M=Math.max(M,r);});
+  return {pts,cplx,g,w,Ar,Ai,T,sc:M>1e-12?1/M:1};
+}
+function hxAt(u){const D=HX.data,N=HX.segs,f=Math.max(0,Math.min(1,u))*N,i=Math.min(N-1,Math.floor(f)),a=f-i,p=D.pts[i],q=D.pts[i+1];
+  return [p[0]+(q[0]-p[0])*a,p[1]+(q[1]-p[1])*a,p[2]+(q[2]-p[2])*a];}
+const hxX=t=>-HL/2+t/HX.data.T*HL;
+const PJ={
+  helix:q=>[hxX(q[0]),HX.data.sc*q[2],-HX.data.sc*q[1]],
+  im:q=>[hxX(q[0]),HX.data.sc*q[2],-HW],
+  re:q=>[hxX(q[0]),-HW,-HX.data.sc*q[1]],
+  end:q=>[XE,HX.data.sc*q[2],-HX.data.sc*q[1]]
+};
+function hxDispose(grp){grp.traverse(n=>{if(n.geometry)n.geometry.dispose();if(n.material){if(n.material.map)n.material.map.dispose();n.material.dispose();}});while(grp.children.length)grp.remove(grp.children[0]);}
+function hxLine(pts,color,op){const g=new THREE.BufferGeometry().setFromPoints(pts.map(p=>new THREE.Vector3(...p)));return new THREE.Line(g,new THREE.LineBasicMaterial({color,transparent:op<1,opacity:op}));}
+function hxBuild(){
+  if(!HX.R||!SOL)return;
+  const R=HX.R;hxDispose(R.root);hxDispose(R.dyn);HX.tubes=[];
+  HX.data=hxData();const D=HX.data;
+  R.scene.background=new THREE.Color(tok('--panel')||'#ffffff');
+  const C=k=>new THREE.Color(tok(k));
+  const acc=C('--accent'),cre=C('--re'),cim=C('--im'),mut=C('--muted'),ln=C('--line'),ink=C('--ink');
+  const muted=tok('--muted');
+  // ejes principales
+  R.root.add(hxLine([[-HL/2-0.2,0,0],[HL/2+0.5,0,0]],ink,0.7));
+  R.root.add(hxLine([[-HL/2,0,1.2],[-HL/2,0,-1.2]],mut,0.7));
+  R.root.add(hxLine([[-HL/2,-1.2,0],[-HL/2,1.2,0]],mut,0.7));
+  let s=hxLabel('t',muted,0.24);s.position.set(HL/2+0.55,0,0);R.root.add(s);
+  s=hxLabel('Re',muted,0.2);s.position.set(-HL/2+0.05,0,-1.3);R.root.add(s);
+  s=hxLabel('Im',muted,0.2);s.position.set(-HL/2+0.05,1.3,0);R.root.add(s);
+  s=hxLabel('t = '+fx(D.T,1)+' '+ctx().tu,muted,0.17);s.position.set(HL/2-0.2,0.22,0);R.root.add(s);
+  // paredes
+  if(HX.walls){
+    const wall=(corners,col)=>{R.root.add(hxLine(corners.concat([corners[0]]),ln,1));
+      const geo=new THREE.BufferGeometry().setFromPoints(corners.map(p=>new THREE.Vector3(...p)));geo.setIndex([0,1,2,0,2,3]);
+      R.root.add(new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.05,side:THREE.DoubleSide,depthWrite:false})));};
+    const a=-HL/2,b=HL/2,e=1.2;
+    wall([[a,-e,-HW],[b,-e,-HW],[b,e,-HW],[a,e,-HW]],cim);
+    R.root.add(hxLine([[a,0,-HW],[b,0,-HW]],mut,0.5));
+    wall([[a,-HW,-e],[b,-HW,-e],[b,-HW,e],[a,-HW,e]],cre);
+    R.root.add(hxLine([[a,-HW,0],[b,-HW,0]],mut,0.5));
+    wall([[XE,-e,-e],[XE,-e,e],[XE,e,e],[XE,e,-e]],acc);
+    R.root.add(hxLine([[XE,0,-e],[XE,0,e]],mut,0.5));R.root.add(hxLine([[XE,-e,0],[XE,e,0]],mut,0.5));
+    const circ=[];for(let k=0;k<=128;k++){const th=2*Math.PI*k/128;circ.push([XE,Math.sin(th),-Math.cos(th)]);}
+    R.root.add(hxLine(circ,mut,0.35));
+    s=hxLabel('Im z (seno)',tok('--im'),0.2);s.position.set(a,e+0.18,-HW);R.root.add(s);
+    s=hxLabel('Re z (coseno)',tok('--re'),0.2);s.position.set(a,-HW,-e-0.2);R.root.add(s);
+    s=hxLabel('plano complejo',muted,0.17);s.position.set(XE,e+0.18,-e);R.root.add(s);
+    s=hxLabel('Re',muted,0.16);s.position.set(XE,0.02,-e-0.25);R.root.add(s);
+    s=hxLabel('Im',muted,0.16);s.position.set(XE,e+0.02,0.05);R.root.add(s);
+  }
+  // curvas: guía completa tenue + tubo que avanza con t
+  const curves=[['helix',acc,0.035]].concat(HX.walls?[['im',cim,0.02],['re',cre,0.02],['end',acc,0.016]]:[]);
+  curves.forEach(([key,col,rad])=>{
+    const f=u=>PJ[key](hxAt(u));
+    R.root.add(hxLine(D.pts.map(q=>PJ[key](q)),col,0.28));
+    const geo=new THREE.TubeGeometry(new HxCurve(f),HX.segs,rad,6,false);
+    const m=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({color:col}));m.userData.radial=6;
+    HX.tubes.push(m);R.root.add(m);
+  });
+  // elementos dinámicos
+  const sph=(col,r)=>new THREE.Mesh(new THREE.SphereGeometry(r,20,14),new THREE.MeshLambertMaterial({color:col}));
+  HX.dot=sph(acc,0.08);R.dyn.add(HX.dot);
+  HX.phasor=hxLine([[0,0,0],[0,0,0]],ink,0.8);R.dyn.add(HX.phasor);
+  HX.drops=[];HX.pdots=[];
+  if(HX.walls){[['im',cim],['re',cre],['end',acc]].forEach(([k,col])=>{const l=hxLine([[0,0,0],[0,0,0]],mut,0.45);l.userData.k=k;HX.drops.push(l);R.dyn.add(l);const d=sph(col,0.05);d.userData.k=k;HX.pdots.push(d);R.dyn.add(d);});}
+  hxInfo();
+}
+function hxSet(line,a,b){const p=line.geometry.attributes.position;p.setXYZ(0,...a);p.setXYZ(1,...b);p.needsUpdate=true;line.geometry.computeBoundingSphere();}
+function hxUpdate(){
+  if(!HX.R||!HX.data)return;
+  const u=Math.max(0,Math.min(1,E.t/HX.data.T)),k=Math.round(u*HX.segs);
+  HX.tubes.forEach(m=>m.geometry.setDrawRange(0,k*m.userData.radial*6));
+  const q=hxAt(u),P=PJ.helix(q);
+  HX.dot.position.set(...P);hxSet(HX.phasor,[P[0],0,0],P);
+  HX.drops.forEach((l,i)=>{const Q=PJ[l.userData.k](q);hxSet(l,P,Q);HX.pdots[i].position.set(...Q);});
+  $('#hxtime').textContent='t = '+E.t.toFixed(2)+' '+ctx().tu;
+  hxRender();
+}
+function hxInfo(){
+  const D=HX.data,S=SOL,w=$('#hxwarn');
+  const acc='<span class="sw acc"></span>',re='<span class="sw" style="background:var(--re)"></span>',im='<span class="sw" style="background:var(--im)"></span>';
+  $('#hxleg').innerHTML='<span>'+acc+'z(t)</span>'+(HX.walls?'<span>'+re+'Re z</span><span>'+im+'Im z</span>':'');
+  if(D.cplx){
+    w.hidden=true;
+    let t='Raíces r = '+fx(-D.g,4)+' ± '+fx(D.w,4)+'i, así que γ = '+fx(D.g,4)+' y ω = '+fx(D.w,4)+' rad/'+ctx().tu+'. Una vuelta cada 2π/ω = '+fx(2*Math.PI/D.w,3)+' '+ctx().tu+': '+fx(D.T*D.w/(2*Math.PI),1)+' vueltas en [0, '+fx(D.T,1)+'].';
+    if(HX.mode==='sol')t+=' Con C₁ = '+fx(S.C1,4)+' y C₂ = '+fx(S.C2,4)+', Re z(t) = e^(−γt)(C₁cos ωt + C₂sen ωt) es la parte homogénea x_h(t) de la solución.';
+    t+=' Las distancias al eje t están normalizadas: radio máximo 1.';
+    $('#hxinfo').textContent=t;
+  }else{
+    $('#hxinfo').textContent='';
+    w.textContent='Con estos datos las raíces son reales ('+(Math.abs(S.roots[0][0]-S.roots[1][0])<1e-9?'r = '+fx(S.roots[0][0],4)+' doble':'r₁ = '+fx(S.roots[0][0],4)+', r₂ = '+fx(S.roots[1][0],4))+'), así que z(t) no gira: la curva queda en el plano (t, Re z). Elija el Problema 2 o la Exploración libre, o baje c hasta que c² < 4mk, para ver la hélice.';
+    w.hidden=false;
+  }
+}
+document.querySelectorAll('#hxviews button').forEach(b=>b.addEventListener('click',()=>hxGo(b.dataset.v)));
+$('#hxmode').addEventListener('change',e=>{HX.mode=e.target.value;hxBuild();hxUpdate();});
+$('#hxwalls').addEventListener('change',e=>{HX.walls=e.target.checked;hxBuild();hxUpdate();});
+$('#hxplay').addEventListener('click',()=>setPlaying(!E.playing));
+hxInit();
+new ResizeObserver(hxResize).observe(HX.box);
+
+/* ---------- Problema 9: péndulo doble (dos masas iguales, brazos iguales) ---------- */
+const DP={L:2.45,t1:0.1,t2:0,T:30,t:0,playing:false,shadow:false,showLin:true,speed:1,dt:0.01,active:false,mx:0.1};
+const DPG=9.8,dpc=$('#dpc'),dpc1=$('#dpc1'),dpc2=$('#dpc2');
+function dpRhs(s,L){const [t1,t2,o1,o2]=s,D=t1-t2,den=L*(3-Math.cos(2*D));
+  return [o1,o2,(-3*DPG*Math.sin(t1)-DPG*Math.sin(t1-2*t2)-2*Math.sin(D)*L*(o2*o2+o1*o1*Math.cos(D)))/den,
+    (2*Math.sin(D)*(2*o1*o1*L+2*DPG*Math.cos(t1)+o2*o2*L*Math.cos(D)))/den];}
+function dpRK(s,h,L){const k1=dpRhs(s,L),k2=dpRhs(s.map((v,i)=>v+h/2*k1[i]),L),k3=dpRhs(s.map((v,i)=>v+h/2*k2[i]),L),k4=dpRhs(s.map((v,i)=>v+h*k3[i]),L);
+  return s.map((v,i)=>v+h/6*(k1[i]+2*k2[i]+2*k3[i]+k4[i]));}
+function dpRun(a,b){const h=0.002,every=5,n=Math.round(DP.T/h),out=new Float64Array((Math.floor(n/every)+1)*2);
+  let s=[a,b,0,0],j=1;out[0]=a;out[1]=b;for(let i=1;i<=n;i++){s=dpRK(s,h,DP.L);if(i%every===0){out[2*j]=s[0];out[2*j+1]=s[1];j++;}}return out;}
+function dpLinear(){const a=DPG/DP.L,r=Math.SQRT2,w1=Math.sqrt((2-r)*a),w2=Math.sqrt((2+r)*a),c1=(DP.t1+DP.t2/r)/2,c2=(DP.t1-DP.t2/r)/2;
+  return {w1,w2,c1,c2,f:t=>[c1*Math.cos(w1*t)+c2*Math.cos(w2*t),r*(c1*Math.cos(w1*t)-c2*Math.cos(w2*t))]};}
+function dpAt(arr,t){const N=arr.length/2-1,f=Math.max(0,Math.min(N-1e-9,t/DP.dt)),i=Math.floor(f),u=f-i;
+  return [arr[2*i]+(arr[2*i+2]-arr[2*i])*u,arr[2*i+1]+(arr[2*i+3]-arr[2*i+1])*u];}
+function dpCompute(){
+  DP.nl=dpRun(DP.t1,DP.t2);DP.sh=dpRun(DP.t1+0.001,DP.t2);DP.LIN=dpLinear();
+  let m=0;for(let k=0;k<DP.nl.length;k++)m=Math.max(m,Math.abs(DP.nl[k]));DP.mx=m;
+  const N=DP.nl.length/2;DP.c1=[[],[],[]];DP.c2=[[],[],[]];
+  for(let j=0;j<N;j++){const t=j*DP.dt,l=DP.LIN.f(t);DP.c1[0].push([t,DP.nl[2*j]]);DP.c2[0].push([t,DP.nl[2*j+1]]);DP.c1[1].push([t,l[0]]);DP.c2[1].push([t,l[1]]);DP.c1[2].push([t,DP.sh[2*j]]);DP.c2[2].push([t,DP.sh[2*j+1]]);}
+  if(DP.t>DP.T)DP.t=0;dpInfo();dpDraw();
+}
+function dpInfo(){
+  const L=DP.LIN,big=DP.mx>0.5;
+  $('#dpinfo').textContent='Con L = '+fx(DP.L,2)+' m: ω₁ = '+fx(L.w1,3)+' rad/s (período '+fx(2*Math.PI/L.w1,2)+' s) y ω₂ = '+fx(L.w2,3)+' rad/s (período '+fx(2*Math.PI/L.w2,2)+' s). '+
+    'Modelo lineal: c₁ = '+fx(L.c1,4)+', c₂ = '+fx(L.c2,4)+'.'+(big?' Los ángulos son grandes: la linealización deja de ser válida y el modelo lineal se separa del real.':'');
+  const acc='<span class="sw acc"></span>',mut='<span class="sw env"></span>',nm='<span class="sw num"></span>';
+  $('#dpleg').innerHTML='<span>'+acc+'No lineal (real)</span>'+(DP.showLin?'<span>'+mut+'Modelo lineal</span>':'')+(DP.shadow?'<span>'+nm+'Sombra: θ₁(0) + 0.001 rad</span>':'');
+}
+function dpScene(){
+  const W=dpc.parentElement.clientWidth;if(W<40)return;
+  const H=Math.round(Math.max(320,Math.min(470,W*0.78))),dpr=window.devicePixelRatio||1;
+  dpc.width=Math.round(W*dpr);dpc.height=H*dpr;dpc.style.height=H+'px';
+  const g=dpc.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const ink=tok('--ink'),muted=tok('--muted'),acc=tok('--accent'),accW=tok('--accent-weak'),num=tok('--num');
+  const big=DP.mx>Math.PI/2*0.9,px=W/2,py=big?H/2:28;
+  const Lp=big?Math.min((W/2-18)/2,(H/2-18)/2):Math.min((H-py-26)/2,(W/2-18)/(2*Math.max(0.2,Math.sin(Math.min(DP.mx,Math.PI/2)))));
+  const pos=(a,b)=>{const x1=px+Lp*Math.sin(a),y1=py+Lp*Math.cos(a);return [x1,y1,x1+Lp*Math.sin(b),y1+Lp*Math.cos(b)];};
+  if(!big){g.strokeStyle=ink;g.lineWidth=2;g.beginPath();g.moveTo(px-50,py);g.lineTo(px+50,py);g.stroke();
+    g.lineWidth=1;g.strokeStyle=muted;g.beginPath();for(let k=px-50;k<px+50;k+=8){g.moveTo(k,py);g.lineTo(k+8,py-8);}g.stroke();}
+  g.setLineDash([5,4]);g.strokeStyle=muted;g.lineWidth=1;g.beginPath();g.moveTo(px,py);g.lineTo(px,py+2*Lp+14);g.stroke();g.setLineDash([]);
+  // estela del péndulo de abajo (últimos 3 s)
+  const t=DP.t,t0=Math.max(0,t-3);let prev=null;g.lineWidth=1.6;
+  for(let s=t0;s<=t;s+=DP.dt){const a=dpAt(DP.nl,s),P=pos(a[0],a[1]);if(prev){g.strokeStyle=acc;g.globalAlpha=0.08+0.6*(s-t0)/Math.max(0.01,t-t0);g.beginPath();g.moveTo(prev[0],prev[1]);g.lineTo(P[2],P[3]);g.stroke();}prev=[P[2],P[3]];}
+  g.globalAlpha=1;
+  const rods=(P,col,w,dash)=>{g.strokeStyle=col;g.lineWidth=w;g.setLineDash(dash||[]);g.beginPath();g.moveTo(px,py);g.lineTo(P[0],P[1]);g.lineTo(P[2],P[3]);g.stroke();g.setLineDash([]);};
+  if(DP.showLin){const l=DP.LIN.f(t),P=pos(l[0],l[1]);rods(P,muted,1.5,[5,4]);[[P[0],P[1]],[P[2],P[3]]].forEach(c=>{g.beginPath();g.arc(c[0],c[1],9,0,7);g.strokeStyle=muted;g.lineWidth=1.5;g.stroke();});}
+  if(DP.shadow){const a=dpAt(DP.sh,t),P=pos(a[0],a[1]);rods(P,num,1.5);[[P[0],P[1]],[P[2],P[3]]].forEach(c=>{g.beginPath();g.arc(c[0],c[1],7,0,7);g.fillStyle=num;g.fill();});}
+  const a=dpAt(DP.nl,t),P=pos(a[0],a[1]);rods(P,ink,2.2);
+  g.fillStyle=ink;g.beginPath();g.arc(px,py,3.5,0,7);g.fill();
+  [[P[0],P[1],'1'],[P[2],P[3],'2']].forEach(c=>{g.beginPath();g.arc(c[0],c[1],11,0,7);g.fillStyle=accW;g.fill();g.strokeStyle=ink;g.lineWidth=1.8;g.stroke();
+    g.fillStyle=ink;g.font='600 11px "IBM Plex Sans", sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(c[2],c[0],c[1]+0.5);});
+  readouts(g,H,['t = '+t.toFixed(2)+' s','θ₁ = '+fx(a[0],3)+' rad ('+fx(a[0]*180/Math.PI,1)+'°)','θ₂ = '+fx(a[1],3)+' rad ('+fx(a[1]*180/Math.PI,1)+'°)']);
+}
+function dpChart(cv,data,lab){
+  const acc=tok('--accent'),muted=tok('--muted'),num=tok('--num');
+  const series=[];if(DP.showLin)series.push({pts:data[1],color:muted,width:1.5,dash:[5,4],range:DP.mx<0.5,label:'lineal'});
+  if(DP.shadow)series.push({pts:data[2],color:num,width:1.3,range:true,label:'sombra'});
+  series.push({pts:data[0],color:acc,width:2,range:true,label:'no lineal'});
+  const a=dpAt(DP.nl,DP.t);
+  drawChart(cv,{h:hFor(cv,0.5,220,300),xr:[0,DP.T],series,xlab:'t (s)',ylab:lab,zero:true,cursor:DP.t,hover:true,points:[{x:DP.t,y:lab.startsWith('θ₁')?a[0]:a[1],color:acc}]});
+}
+function dpDraw(){if(!DP.nl)return;dpScene();dpChart(dpc1,DP.c1,'θ₁ (rad)');dpChart(dpc2,DP.c2,'θ₂ (rad)');
+  $('#dptime').value=Math.round(DP.t/DP.T*1000);$('#odptime').textContent='t = '+DP.t.toFixed(2)+' s';}
+let dpLast=null,dpRaf=null;
+function dpFrame(ts){if(!DP.playing){dpLast=null;dpRaf=null;return;}if(dpLast!=null){DP.t+=(ts-dpLast)/1000*DP.speed;if(DP.t>DP.T)DP.t=0;}dpLast=ts;dpDraw();dpRaf=requestAnimationFrame(dpFrame);}
+function dpPlay(on){DP.playing=on;$('#dpplay').textContent=on?'Pausar':'Reproducir';if(on&&!dpRaf)dpRaf=requestAnimationFrame(dpFrame);}
+function dpHook(cv,redraw){
+  const tip=cv.parentElement.querySelector('.tip');
+  cv.addEventListener('pointermove',ev=>{const C=cv._c;if(!C)return;const r=cv.getBoundingClientRect(),mx=ev.clientX-r.left,x=C.x0+(mx-C.pad.l)/(C.W-C.pad.l-C.pad.r)*(C.x1-C.x0);
+    if(x<C.x0||x>C.x1){cv._hx=null;tip.hidden=true;redraw();return;}cv._hx=x;redraw();
+    let h='<b>t = '+x.toFixed(2)+' s</b>';C.o.series.forEach(s=>{if(s.label)h+='<br>'+s.label+': '+fx(interp(s.pts,x),4)+' rad';});
+    tip.innerHTML=h;tip.hidden=false;const tw=tip.offsetWidth;let lx=mx+12;if(lx+tw>C.W)lx=mx-tw-12;tip.style.left=Math.max(0,lx)+'px';tip.style.top=(C.pad.t+4)+'px';});
+  cv.addEventListener('pointerleave',()=>{cv._hx=null;tip.hidden=true;redraw();});
+  cv.addEventListener('click',()=>{if(cv._hx!=null){DP.t=cv._hx;dpPlay(false);dpDraw();}});
+}
+dpHook(dpc1,()=>dpChart(dpc1,DP.c1,'θ₁ (rad)'));dpHook(dpc2,()=>dpChart(dpc2,DP.c2,'θ₂ (rad)'));
+const DPS=[['dpL','L',v=>fx(v,2)+' m'],['dpt1','t1',v=>fx(v,2)+' ('+Math.round(v*180/Math.PI)+'°)'],['dpt2','t2',v=>fx(v,2)+' ('+Math.round(v*180/Math.PI)+'°)'],['dpT','T',v=>fx(v,0)+' s']];
+function dpSync(){DPS.forEach(([id,k,f])=>{$('#'+id).value=DP[k];$('#o'+id).textContent=f(DP[k]);});$('#dplin').checked=DP.showLin;$('#dpshadow').checked=DP.shadow;}
+let dpTimer=null;
+DPS.forEach(([id,k,f])=>$('#'+id).addEventListener('input',e=>{DP[k]=+e.target.value;$('#o'+id).textContent=f(DP[k]);clearTimeout(dpTimer);dpTimer=setTimeout(dpCompute,40);}));
+$('#dplin').addEventListener('change',e=>{DP.showLin=e.target.checked;dpInfo();dpDraw();});
+$('#dpshadow').addEventListener('change',e=>{DP.shadow=e.target.checked;dpInfo();dpDraw();});
+$('#dpplay').addEventListener('click',()=>dpPlay(!DP.playing));
+$('#dpspeed').addEventListener('change',e=>{DP.speed=+e.target.value;});
+$('#dptime').addEventListener('input',e=>{dpPlay(false);DP.t=DP.T*e.target.value/1000;dpDraw();});
+const DPPRE={p9:{t1:0.1,t2:0,shadow:false,showLin:true},m1:{t1:0.1,t2:0.1*Math.SQRT2,shadow:false,showLin:true},m2:{t1:0.1,t2:-0.1*Math.SQRT2,shadow:false,showLin:true},caos:{t1:1.9,t2:2.6,shadow:true,showLin:false}};
+document.querySelectorAll('#dppre button').forEach(b=>b.addEventListener('click',()=>{Object.assign(DP,DPPRE[b.dataset.pre]);DP.t=0;dpSync();dpCompute();if(!DP.playing)dpPlay(true);}));
+new ResizeObserver(()=>{if(DP.active)dpDraw();}).observe(dpc.parentElement);
+[dpc1,dpc2].forEach(c=>new ResizeObserver(()=>{if(DP.active)dpDraw();}).observe(c.parentElement));
+window.addEventListener('coursetab',ev=>{if(ev.detail!=='tab-edo')dpPlay(false);});
+function dpShow(on){DP.active=on;$('#sdof').hidden=on;$('#dpwrap').hidden=!on;if(on){dpSync();dpCompute();}else dpPlay(false);}
+
+
+$('#oh').textContent=fx(E.h,4);
+loadProb('p1');
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(retheme);
+})();
+</script>
+</body>
+</html>

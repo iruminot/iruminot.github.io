@@ -1580,13 +1580,13 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'},startu
 (function(){
   const ROUTES={'calculo-riemann':'tab-calculo','calculo-iteradas':'tab-calculo','calculo-cambio':'tab-calculo','calculo-triples':'tab-calculo','calculo-esfericas':'tab-calculo','calculo-fem':'tab-calculo','edo-resortes':'tab-edo','calc2-sucesiones':'tab-calc2','calc2-series':'tab-calc2','calc2-potencias':'tab-calc2','calc2-taylor':'tab-calc2','fm2-formativa':'tab-fm2'}, DEF='calculo-riemann';
   function show(h){
-    if(!ROUTES[h])h=DEF; const id=ROUTES[h];
+    if(!ROUTES[h]||!document.getElementById(ROUTES[h]))h=DEF; const id=ROUTES[h];
     document.querySelectorAll('.course').forEach(s=>s.hidden=s.id!==id);
     document.querySelectorAll('.coursetabs a').forEach(a=>a.setAttribute('aria-selected',a.getAttribute('aria-controls')===id));
     if(id==='tab-calculo'){
       document.querySelectorAll('#tab-calculo .ctopic').forEach(d=>d.hidden=d.dataset.route!==h);
       document.querySelectorAll('#tab-calculo .topics a').forEach(a=>{if(a.getAttribute('href')==='#'+h)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
-      document.getElementById('ctab-calculo').setAttribute('href','#'+h);
+      const ctc=document.getElementById('ctab-calculo');if(ctc)ctc.setAttribute('href','#'+h);
     }
     window.dispatchEvent(new CustomEvent('coursetab',{detail:id}));
     if(id==='tab-calculo')window.dispatchEvent(new CustomEvent('calctopic',{detail:h}));
@@ -5241,7 +5241,7 @@ function show(id){
   const ct=$('#ctab-calc2');if(ct)ct.setAttribute('href','#'+id);
   T.ctl();T.draw();
 }
-function route(){const h=location.hash.slice(1);if(h.startsWith('calc2-')){ON=true;show(h);}else ON=false;}
+function route(){const h=location.hash.slice(1);if(h.startsWith('calc2-')){ON=true;show(h);}else{ON=false;if(!$('#tab-calc2').hidden)show(CUR||'calc2-sucesiones');}}
 window.addEventListener('hashchange',route);
 window.addEventListener('coursetab',ev=>{if(ev.detail==='tab-calc2'){const h=location.hash.slice(1);if(!h.startsWith('calc2-'))show(CUR||'calc2-sucesiones');}});
 new ResizeObserver(()=>{if(CUR&&!$('#tab-calc2').hidden){const T=TOOLS[CUR];if(CUR==='calc2-sucesiones')sucDraw();else if(CUR==='calc2-series')serDraw(false);else if(CUR==='calc2-potencias')potDraw(false);else tayDraw(false);}}).observe($('#c2cv').parentElement);

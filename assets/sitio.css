@@ -85,3 +85,6 @@ a.card:hover{border-color:var(--accent)}
 
 footer{border-top:1px solid var(--line);padding-block:22px;font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+
+.btnlab{display:inline-block;padding:10px 16px;border-radius:8px;background:var(--accent);color:var(--panel);text-decoration:none;font-weight:600;font-size:15px}
+.btnlab:hover{filter:brightness(1.08)}

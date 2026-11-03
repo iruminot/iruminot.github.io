@@ -10,7 +10,7 @@ Páginas que produce:
   docencia/<semestre>/<curso>/index.html  Un curso con sus unidades
   docencia/laboratorio/index.html         Laboratorio interactivo (desde fuente/laboratorio.html)
 """
-import json, html, os, pathlib
+import json, html, os, pathlib, re
 
 RAIZ = pathlib.Path(__file__).resolve().parent
 D = json.loads((RAIZ / "datos" / "sitio.json").read_text(encoding="utf-8"))
@@ -84,7 +84,7 @@ def inicio():
 <section class="section">
   <div class="cards">
     <a class="card" href="docencia/"><h3>Docencia</h3><p>Mis cursos por año y semestre, con sus unidades y el material de cada una.</p><span class="go">Ver cursos →</span></a>
-    <a class="card" href="{e(D['laboratorio'])}"><h3>Laboratorio interactivo</h3><p>Visualizaciones y ejercicios interactivos: integrales múltiples, ecuaciones diferenciales, matrices y vectores.</p><span class="go">Abrir el laboratorio →</span></a>
+    <a class="card" href="{e(D['laboratorio'])}"><h3>Laboratorios interactivos</h3><p>Un laboratorio por curso, con visualizaciones y ejercicios: series, integrales múltiples, ecuaciones diferenciales, matrices y vectores.</p><span class="go">Abrir el laboratorio →</span></a>
     <a class="card" href="presentaciones/"><h3>Presentaciones</h3><p>Charlas, exposiciones y material de presentaciones.</p><span class="go">Ver presentaciones →</span></a>
   </div>
 </section>
@@ -113,7 +113,7 @@ def presentaciones():
 # ---------- Docencia ----------
 def recurso_url(x, r):
     if x.get("lab"):
-        return f'{r}{D["laboratorio"]}#{x["lab"]}'
+        return f'laboratorio/#{x["lab"]}'
     return x.get("url", "#")
 
 
@@ -132,7 +132,7 @@ def docencia():
         bloques += f'<section class="year"><h2>{a["anio"]}</h2>{sems}</section>'
     cuerpo = f"""<p class="eyebrow">{e(P['nombre'])}</p><h1>Docencia</h1>
 <p class="lede">Cursos por año y semestre. Cada curso está organizado por unidades, con los temas y el material interactivo de cada una.</p>
-<p style="margin-top:14px"><a href="laboratorio/">Abrir el laboratorio interactivo completo →</a></p>
+<p style="margin-top:14px"><a href="laboratorio/">Ver los laboratorios interactivos de cada curso →</a></p>
 {bloques}"""
     pagina("docencia/index.html", "Docencia · " + P["nombre"], "docencia", cuerpo)
 
@@ -157,18 +157,73 @@ def curso(a, s, c):
     cuerpo = f"""<nav class="crumbs" aria-label="Ruta"><a href="{r}docencia/">Docencia</a> / {a['anio']} · {e(s['nombre'])}</nav>
 <p class="eyebrow"><span class="code">{e(c['codigo'])}</span> · {a['anio']}, {e(s['nombre'].lower())}{rol}</p>
 <h1>{e(c['nombre'])}</h1><p class="lede">{e(c['carreras'])}</p>
+{('<p style="margin-top:16px"><a class="btnlab" href="laboratorio/">Abrir el laboratorio interactivo del curso →</a></p>') if c.get('lab') else ''}
 <div class="units">{unidades}</div>"""
     pagina(ruta, f"{c['nombre']} ({c['codigo']}) · {P['nombre']}", "docencia", cuerpo, f"{c['nombre']}: unidades y material del curso.")
 
 
-# ---------- Laboratorio ----------
-def laboratorio():
-    fuente = (RAIZ / "fuente" / "laboratorio.html").read_text(encoding="utf-8")
-    barra = (f'<div style="font:500 14px/1.4 \'IBM Plex Sans\',system-ui,sans-serif;padding:10px max(16px,env(safe-area-inset-left,0px));'
-             f'border-bottom:1px solid var(--line);background:var(--panel);display:flex;flex-wrap:wrap;gap:6px 18px">'
-             f'<a href="../../" style="color:var(--ink);text-decoration:none;font-weight:600">{e(P["nombre"])}</a>'
-             f'<a href="../" style="color:var(--accent)">← Docencia</a></div>')
-    escribir("docencia/laboratorio/index.html", f"""<!doctype html>
+# ---------- Laboratorios (uno por curso) ----------
+LABS = {  # clave del curso -> (id de la sección en la fuente, tema por defecto)
+    "calculo": ("tab-calculo", "calculo-riemann"),
+    "calc2": ("tab-calc2", "calc2-sucesiones"),
+    "edo": ("tab-edo", "edo-resortes"),
+    "fm2": ("tab-fm2", "fm2-formativa"),
+}
+PREFIJO_RUTA = {"calculo-": "calculo", "calc2-": "calc2", "edo-": "edo", "fm2-": "fm2"}
+
+
+def clasificar_script(s):
+    """A qué laboratorio pertenece un bloque <script> de la fuente (None = común a todos)."""
+    if "pestañas por curso" in s or "window.MathJax={" in s or ' src="' in s.split(">")[0]:
+        return None
+    if "Cálculo II (IN1523C)" in s:
+        return "calc2"
+    if "#probbar" in s:
+        return "edo"
+    if "fmworked" in s:
+        return "fm2"
+    return "calculo"
+
+
+def partes_fuente():
+    src = (RAIZ / "fuente" / "laboratorio.html").read_text(encoding="utf-8")
+    i_wrap = src.index('<div class="wrap">')
+    i_scripts = src.index("<script>", i_wrap)
+    cierre_wrap = src.rindex("</div>", 0, i_scripts)
+    cuerpo = src[i_wrap:cierre_wrap]
+    inicios = [m.start() for m in re.finditer(r'<section class="course" id="(tab-[\w-]+)"', cuerpo)]
+    secciones = {}
+    for k, a in enumerate(inicios):
+        b = inicios[k + 1] if k + 1 < len(inicios) else len(cuerpo)
+        sid = re.match(r'<section class="course" id="(tab-[\w-]+)"', cuerpo[a:]).group(1)
+        secciones[sid] = cuerpo[a:b].replace(" hidden>", ">", 1)
+    scripts = re.findall(r"<script[^>]*>.*?</script>", src[i_scripts:], flags=re.S)
+    return src[:i_wrap], secciones, scripts
+
+
+def laboratorios():
+    cabeza, secciones, scripts = partes_fuente()
+    for a in D["docencia"]:
+        for s in a["semestres"]:
+            for c in s["cursos"]:
+                lab = c.get("lab")
+                if not lab:
+                    continue
+                tab, defecto = LABS[lab]
+                comunes = [x for x in scripts if clasificar_script(x) is None]
+                comunes = [x.replace("DEF='calculo-riemann'", f"DEF='{defecto}'") for x in comunes]
+                propios = [x for x in scripts if clasificar_script(x) == lab]
+                barra = (f'<div style="font:500 14px/1.4 \'IBM Plex Sans\',system-ui,sans-serif;padding:10px max(16px,env(safe-area-inset-left,0px));'
+                         f'border-bottom:1px solid var(--line);background:var(--panel);display:flex;flex-wrap:wrap;gap:6px 18px">'
+                         f'<a href="../../../../" style="color:var(--ink);text-decoration:none;font-weight:600">{e(P["nombre"])}</a>'
+                         f'<a href="../" style="color:var(--accent)">← {e(c["nombre"])}: unidades</a>'
+                         f'<a href="../../../" style="color:var(--accent)">Docencia</a></div>')
+                encabezado = (f'<div class="wrap"><div class="site-head"><div><div class="eyebrow">Laboratorio interactivo · '
+                              f'{e(c["codigo"])} · {a["anio"]}, {e(s["nombre"].lower())}</div>'
+                              f'<p class="site-name">{e(c["nombre"])}</p></div></div>')
+                pagina_lab = cabeza.replace("<title>Laboratorio de Cálculo y EDO</title>",
+                                            f"<title>Laboratorio · {e(c['nombre'])}</title>")
+                escribir(f"docencia/{s['id']}/{c['slug']}/laboratorio/index.html", f"""<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -177,14 +232,38 @@ def laboratorio():
 </head>
 <body>
 {barra}
-{fuente}
+{pagina_lab}
+{encabezado}
+{secciones[tab]}
+</div>
+{chr(10).join(comunes)}
+{chr(10).join(propios)}
 </body>
 </html>
 """)
+    indice_laboratorios()
+
+
+def indice_laboratorios():
+    """docencia/laboratorio/: índice de laboratorios; los enlaces antiguos con #tema redirigen al curso correcto."""
+    destinos, tarjetas = {}, ""
+    for a in D["docencia"]:
+        for s in a["semestres"]:
+            for c in s["cursos"]:
+                if c.get("lab"):
+                    destinos[c["lab"]] = f"../{s['id']}/{c['slug']}/laboratorio/"
+                    tarjetas += (f'<a class="card" href="../{s["id"]}/{c["slug"]}/laboratorio/"><span class="code">{e(c["codigo"])}</span>'
+                                 f'<h3>{e(c["nombre"])}</h3><p>{a["anio"]}, {e(s["nombre"].lower())}</p><span class="go">Abrir el laboratorio →</span></a>')
+    mapa = json.dumps({pre: destinos[k] for pre, k in PREFIJO_RUTA.items() if k in destinos})
+    cuerpo = f"""<script>(function(){{var h=location.hash.slice(1),m={mapa};for(var p in m){{if(h.indexOf(p)===0){{location.replace(m[p]+'#'+h);return;}}}}}})();</script>
+<p class="eyebrow">{e(P['nombre'])}</p><h1>Laboratorios interactivos</h1>
+<p class="lede">Cada curso tiene su propio laboratorio con visualizaciones y ejercicios.</p>
+<div class="cards" style="margin-top:28px">{tarjetas}</div>"""
+    pagina("docencia/laboratorio/index.html", "Laboratorios · " + P["nombre"], "docencia", cuerpo)
 
 
 if __name__ == "__main__":
     print("Generando el sitio:")
-    inicio(); presentaciones(); docencia(); laboratorio()
+    inicio(); presentaciones(); docencia(); laboratorios()
     (RAIZ / ".nojekyll").write_text("")
     print("Listo.")

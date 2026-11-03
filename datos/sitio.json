@@ -26,6 +26,7 @@
           "cursos": [
             {
               "slug": "calculo-varias-variables",
+              "lab": "calculo",
               "codigo": "IN1524C",
               "nombre": "Cálculo en varias variables",
               "carreras": "Ingenierías Civil, Civil Eléctrica, Civil Industrial y Civil Informática",
@@ -54,6 +55,7 @@
             },
             {
               "slug": "ecuaciones-diferenciales",
+              "lab": "edo",
               "codigo": "IN1526C",
               "nombre": "Ecuaciones Diferenciales",
               "carreras": "Ingenierías Civil, Civil Eléctrica, Civil Geológica, Civil Industrial y Civil Informática",
@@ -78,6 +80,7 @@
             },
             {
               "slug": "fundamentos-matematicos-2",
+              "lab": "fm2",
               "codigo": "IN1481C",
               "nombre": "Fundamentos Matemáticos II",
               "carreras": "Arquitectura",
@@ -100,6 +103,7 @@
             },
             {
               "slug": "calculo-ii",
+              "lab": "calc2",
               "codigo": "IN1523C",
               "nombre": "Cálculo II",
               "carreras": "Ingenierías, Facultad de Ingeniería",
