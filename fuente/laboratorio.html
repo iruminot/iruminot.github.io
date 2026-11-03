@@ -211,6 +211,22 @@ canvas.chart{display:block;width:100%;touch-action:none}
 .mtable tr.sel td{background:var(--accent-weak)}
 .sw.num{background:var(--num)}
 .sw.acc{background:var(--accent)}
+#rescard{display:flex;flex-direction:column;gap:12px}
+#rescard h2{margin:0}
+#rescard h3{margin:14px 0 6px}
+.resgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 32px}
+@media (max-width:980px){.resgrid{grid-template-columns:minmax(0,1fr)}}
+.resgrid p{margin:6px 0;max-width:68ch}
+.reslist{margin:6px 0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.resgrid mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+.rescheck{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-top:10px}
+.rescheck h3{margin-top:0}
+.rq{display:grid;grid-template-columns:minmax(0,1fr) 7em;gap:10px;align-items:center;margin:6px 0;font-size:14px}
+.rq input{font:14px var(--mono);padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.rq input.good{border-color:var(--im)}.rq input.bad{border-color:var(--num)}
+.rqmsg{font-size:13.5px;font-weight:500}
+.worked .solh{font:600 13px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px}
+.worked details.sol ul{margin:4px 0;padding-left:20px;display:flex;flex-direction:column;gap:5px;max-width:68ch}
 .sw.env{background:none;border-top:2px dashed var(--muted);border-radius:0;height:0;width:16px;vertical-align:3px}
 /* ---------- Fundamentos de Matemática 2 ---------- */
 .vf{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;font-size:14px}
@@ -314,6 +330,7 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
 </div>
 <nav class="coursetabs" role="tablist" aria-label="Cursos">
   <a id="ctab-calculo" role="tab" href="#calculo-riemann" aria-controls="tab-calculo" aria-selected="true"><span class="code">IN1524C</span><span class="name">Cálculo en varias variables</span></a>
+  <a id="ctab-calc2" role="tab" href="#calc2-sucesiones" aria-controls="tab-calc2" aria-selected="false"><span class="code">IN1523C</span><span class="name">Cálculo II</span></a>
   <a id="ctab-edo" role="tab" href="#edo-resortes" aria-controls="tab-edo" aria-selected="false"><span class="code">IN1526C</span><span class="name">Ecuaciones Diferenciales</span></a>
   <a id="ctab-fm2" role="tab" href="#fm2-formativa" aria-controls="tab-fm2" aria-selected="false"><span class="code">IN1481C</span><span class="name">Fundamentos de Matemática 2</span></a>
 </nav>
@@ -675,6 +692,36 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
 </div>
 </div>
 
+</section>
+
+<section class="course" id="tab-calc2" role="tabpanel" aria-labelledby="ctab-calc2" hidden>
+<nav class="topics" aria-label="Temas de Cálculo II" id="c2topics">
+  <span class="lbl">Tema:</span>
+  <a href="#calc2-sucesiones">1. Sucesiones</a>
+  <a href="#calc2-series">2. Series numéricas</a>
+  <a href="#calc2-potencias">3. Series de potencias</a>
+  <a href="#calc2-taylor">4. Polinomios de Taylor</a>
+</nav>
+<header>
+  <div>
+    <div class="eyebrow">Cálculo II · IN1523C · Unidad 4</div>
+    <h1 id="c2h1">Sucesiones y series</h1>
+  </div>
+  <p class="lede" id="c2lede"></p>
+</header>
+<div class="edo">
+  <div class="cx-top">
+    <article class="panel worked" id="c2worked" aria-live="polite"></article>
+    <section class="panel view" aria-label="Visualización">
+      <div class="view-head"><h2 id="c2vh"></h2><span class="hint" id="c2hint"></span></div>
+      <div class="cvctl" id="c2ctl"></div>
+      <div class="canvas-box"><canvas id="c2cv" class="chart"></canvas></div>
+      <div class="legend" id="c2leg"></div>
+      <div class="formula" id="c2crit"></div>
+      <div class="region-desc" id="c2read"></div>
+    </section>
+  </div>
+</div>
 </section>
 
 <section class="course" id="tab-edo" role="tabpanel" aria-labelledby="ctab-edo" hidden>
@@ -1093,6 +1140,50 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       <p class="hint" id="frnote" style="margin:6px 0 0"></p>
     </section>
 </div>
+<section class="panel rescard" id="rescard" aria-label="Cómo reconocer la resonancia">
+  <h2>¿Cómo saber, mirando la ecuación, si habrá resonancia?</h2>
+  <div class="resgrid">
+    <div>
+      <p>Para \( m\,x'' + c\,x' + k\,x = F_0\cos\omega t \), todo depende del <b>polinomio característico</b> \( P(r) = m r^2 + c r + k \) y del número que «trae» la fuerza:</p>
+      \[ F_0\cos\omega t = \operatorname{Re}\!\left(F_0\,e^{i\omega t}\right)\quad\longleftrightarrow\quad r = i\omega . \]
+      <p>Al buscar \( x_p = \operatorname{Re}\!\left(A\,e^{i\omega t}\right) \) y sustituir, aparece \( P(i\omega)\,A = F_0 \). Entonces:</p>
+      \[ A = \frac{F_0}{P(i\omega)},\qquad |A| = \frac{F_0}{|P(i\omega)|} = \frac{F_0}{\sqrt{(k - m\omega^2)^2 + (c\,\omega)^2}} . \]
+      <ol class="reslist">
+        <li><b>Resonancia pura: \( i\omega \) es raíz de \( P \).</b> Entonces \( P(i\omega) = (k - m\omega^2) + i\,c\,\omega = 0 \), lo que exige <b>las dos condiciones a la vez</b>:
+          \[ c = 0\qquad\text{y}\qquad \omega = \sqrt{k/m} = \omega_0 . \]
+          No se puede dividir por \( P(i\omega) \). El método de coeficientes indeterminados dice: si el número de la fuerza es raíz de multiplicidad s, se multiplica la propuesta por \( t^s \). Por eso \( x_p = t\,(A\cos\omega_0 t + B\operatorname{sen}\omega_0 t) \), y el factor t hace crecer la amplitud sin cota.</li>
+        <li><b>Pulsaciones: \( c = 0 \) y \( \omega \) cerca de \( \omega_0 \), pero distinto.</b> \( P(i\omega) = k - m\omega^2 \) es pequeño pero no cero: la amplitud es grande y acotada, y la suma con la solución homogénea produce batimiento.</li>
+        <li><b>Resonancia práctica: \( c &gt; 0 \).</b> Las raíces tienen parte real \( -c/(2m) &lt; 0 \), así que \( i\omega \) nunca es raíz y no hay resonancia pura. Pero \( |P(i\omega)| \) es mínimo en \( \omega_r = \sqrt{\omega_0^2 - \tfrac{c^2}{2m^2}} \) (si \( c^2 &lt; 2mk \)), y ahí la amplitud tiene su pico.</li>
+      </ol>
+    </div>
+    <div>
+      <p><b>Lectura geométrica.</b> Si \( r_1, r_2 \) son las raíces, \( P(i\omega) = m\,(i\omega - r_1)(i\omega - r_2) \), así que</p>
+      \[ |A| = \frac{F_0}{m\;d_1\,d_2},\qquad d_j = |\,i\omega - r_j\,| . \]
+      <p>En la tarjeta «Raíces en el plano complejo», el punto naranjo \( i\omega \) se mueve por el eje imaginario, y las líneas punteadas son \( d_1 \) y \( d_2 \). La amplitud es grande cuando \( i\omega \) pasa cerca de una raíz. Si la toca, \( d_1 = 0 \): eso es la resonancia pura, y solo puede ocurrir si las raíces están <i>sobre</i> el eje imaginario, es decir, si \( c = 0 \).</p>
+      <h3>Receta</h3>
+      <ol class="reslist">
+        <li>Escriba \( P(r) \) a partir de la parte homogénea.</li>
+        <li>Identifique el número de la fuerza: \( \cos\omega t,\ \operatorname{sen}\omega t \to i\omega \); \( e^{at} \to a \); \( e^{at}\cos bt \to a + ib \).</li>
+        <li>Si ese número es raíz de \( P \): hay que multiplicar por t (resonancia). Para fuerzas \( \cos\omega t \), esto ocurre si y solo si \( c = 0 \) y \( m\omega^2 = k \).</li>
+      </ol>
+      <h3>Ejemplos</h3>
+      <ul class="reslist">
+        <li>\( x'' + 9x = \operatorname{sen} 3t \): \( P(3i) = -9 + 9 = 0 \) → <b>resonancia</b>.</li>
+        <li>\( x'' + 9x = \cos 2t \): \( P(2i) = 5 \ne 0 \) → sin resonancia (pulsaciones, porque 2 está cerca de 3).</li>
+        <li>\( x'' + 2x' + 9x = \cos 3t \): \( P(3i) = 6i \ne 0 \) → sin resonancia pura: el roce la impide.</li>
+        <li>\( L q'' + R q' + q/C = E_0\cos\omega t \): resonancia pura si y solo si \( R = 0 \) y \( \omega = 1/\sqrt{LC} \) (la radio del Problema 8).</li>
+      </ul>
+      <div class="rescheck">
+        <h3>Pruebe</h3>
+        <div class="rq"><label for="rq1">¿Para qué ω hay resonancia en \( 4x'' + 25x = \cos\omega t \)?</label><input type="text" id="rq1" data-v="2.5" autocomplete="off"></div>
+        <div class="rq"><label for="rq2">¿Qué k produce resonancia en \( 2x'' + kx = 5\cos 3t \)?</label><input type="text" id="rq2" data-v="18" autocomplete="off"></div>
+        <div class="rq"><label for="rq3">En \( x'' + 16x = \cos 4t \), ¿cuánto vale B en \( x_p = t(A\cos 4t + B\operatorname{sen}4t) \)?</label><input type="text" id="rq3" data-v="0.125" autocomplete="off"></div>
+        <button type="button" id="rqgo">Comprobar</button> <span class="rqmsg" id="rqmsg" role="status"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <section class="panel helix" aria-label="La solución en el plano complejo">
   <div class="helix-3d">
@@ -1487,7 +1578,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'},startu
 <script>
 /* ---------- pestañas por curso (ruta en el #) ---------- */
 (function(){
-  const ROUTES={'calculo-riemann':'tab-calculo','calculo-iteradas':'tab-calculo','calculo-cambio':'tab-calculo','calculo-triples':'tab-calculo','calculo-esfericas':'tab-calculo','calculo-fem':'tab-calculo','edo-resortes':'tab-edo','fm2-formativa':'tab-fm2'}, DEF='calculo-riemann';
+  const ROUTES={'calculo-riemann':'tab-calculo','calculo-iteradas':'tab-calculo','calculo-cambio':'tab-calculo','calculo-triples':'tab-calculo','calculo-esfericas':'tab-calculo','calculo-fem':'tab-calculo','edo-resortes':'tab-edo','calc2-sucesiones':'tab-calc2','calc2-series':'tab-calc2','calc2-potencias':'tab-calc2','calc2-taylor':'tab-calc2','fm2-formativa':'tab-fm2'}, DEF='calculo-riemann';
   function show(h){
     if(!ROUTES[h])h=DEF; const id=ROUTES[h];
     document.querySelectorAll('.course').forEach(s=>s.hidden=s.id!==id);
@@ -2601,7 +2692,7 @@ function drawRoots(){
   const g=chr.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
   const muted=tok('--muted'),line=tok('--line'),ink=tok('--ink'),acc=tok('--accent'),accW=tok('--accent-weak'),panel=tok('--panel');
   const rs=SOL.roots, w0=SOL.w0;
-  let R=Math.max(w0,...rs.map(r=>Math.hypot(r[0],r[1])))*1.2||1;
+  let R=Math.max(w0,E.p.ft==='cos'?E.p.w:0,...rs.map(r=>Math.hypot(r[0],r[1])))*1.2||1;
   const pad=22,cx=W*0.62,cy=H/2,sc=Math.min((cx-pad),(H/2-pad))/R;
   const X=a=>cx+a*sc,Y=b=>cy-b*sc;
   g.fillStyle=accW;g.globalAlpha=.6;g.fillRect(0,0,cx,H);g.globalAlpha=1;
@@ -2612,6 +2703,12 @@ function drawRoots(){
   g.fillText('Im',cx+4,6);g.textAlign='right';g.fillText('Re',W-6,cy+4);
   g.textAlign='left';g.fillText('|r| = ω₀',X(w0*0.72)+2,Y(w0*0.72));
   g.fillStyle=muted;g.textAlign='left';g.textBaseline='bottom';g.font='11px "IBM Plex Sans", sans-serif';g.fillText('Re r < 0: estable',6,H-4);
+  if(E.p.ft==='cos'){const om=E.p.w,nc=tok('--num'),d=rs.map(r=>Math.hypot(r[0],om-r[1]));
+    g.strokeStyle=nc;g.setLineDash([4,3]);g.lineWidth=1.3;rs.forEach(r=>{g.beginPath();g.moveTo(X(0),Y(om));g.lineTo(X(r[0]),Y(r[1]));g.stroke();});g.setLineDash([]);
+    [om,-om].forEach((b,j)=>{g.beginPath();g.arc(X(0),Y(b),j?4:6,0,7);g.fillStyle=j?panel:nc;g.fill();g.strokeStyle=nc;g.lineWidth=2;g.stroke();});
+    g.fillStyle=nc;g.font='12px "IBM Plex Mono", monospace';g.textAlign='right';g.textBaseline='middle';g.fillText('iω',X(0)-9,Y(om));
+    const P=E.p.m*d[0]*d[1];g.textAlign='left';g.textBaseline='top';g.font='11px "IBM Plex Sans", sans-serif';
+    g.fillText(P<1e-9?'iω es raíz: resonancia pura':'|P(iω)| = m·d₁·d₂ = '+fx(P,3),6,6);}
   rs.forEach((r,i)=>{g.beginPath();g.arc(X(r[0]),Y(r[1]),6,0,7);g.fillStyle=acc;g.fill();g.strokeStyle=panel;g.lineWidth=2;g.stroke();});
   g.fillStyle=ink;g.font='12px "IBM Plex Mono", monospace';g.textAlign='left';g.textBaseline='middle';
   if(rs[0][1]!==0){g.fillText(fmtRoot(rs[0]),Math.min(X(rs[0][0])+9,W-110),Y(rs[0][1]));g.fillText(fmtRoot(rs[1]),Math.min(X(rs[1][0])+9,W-110),Y(rs[1][1]));}
@@ -2661,7 +2758,7 @@ function typesetEl(el){ if(window.MathJax&&MathJax.typesetPromise){MathJax.types
 /* ---------- ciclo ---------- */
 const chfr=$('#chfr');
 function drawFR(){
-  const card=$('#frcard'),p=E.p;card.hidden=p.ft!=='cos';if(card.hidden||!SOL)return;
+  const card=$('#frcard'),p=E.p;card.hidden=p.ft!=='cos';$('#rescard').hidden=p.ft!=='cos';if(card.hidden||!SOL)return;
   const {m,c,k,F0,w}=p,w0=Math.sqrt(k/m),A=om=>F0/Math.sqrt((k-m*om*om)**2+(c*om)**2),acc=tok('--accent'),muted=tok('--muted'),num=tok('--num');
   const xmax=Math.max(2.2*w0,1.3*w),pts=[];for(let i=0;i<=500;i++){const om=xmax*i/500;pts.push([om,A(om)]);}
   const hasR=c>0&&k/m-c*c/(2*m*m)>0,wr=hasR?Math.sqrt(k/m-c*c/(2*m*m)):null,Aw=A(w);
@@ -2671,6 +2768,9 @@ function drawFR(){
   drawChart(chfr,{h:hFor(chfr,0.72,240,340),xr:[0,xmax],yr:[0,ymax],series,xlab:'ω (rad/'+ctx().tu+')',ylab:'A ('+ctx().x[1]+')',points,hover:false,padL:52});
   $('#frnote').innerHTML='A(ω) = F₀/√((k − mω²)² + (cω)²). Línea punteada: ω₀ = '+fx(w0,3)+'. Punto naranjo: ω actual = '+fx(w,3)+', A = '+(isFinite(Aw)&&Aw<1e6?fx(Aw,3):'∞ (resonancia pura)')+'.'+(hasR?' Máximo en ω<sub>r</sub> = √(k/m − c²/(2m²)) = '+fx(wr,3)+', A<sub>máx</sub> = '+fx(A(wr),3)+'.':c>0?' Con c² ≥ 2mk la curva no tiene máximo: decrece desde ω = 0.':' Sin amortiguamiento el pico es infinito en ω₀.');
 }
+$('#rqgo').addEventListener('click',()=>{let ok=0;const ins=document.querySelectorAll('#rescard .rq input');
+  ins.forEach(i=>{const s=i.value.trim().replace(',','.');let v=NaN;try{v=Number(math.evaluate(s));}catch(e){}const g=isFinite(v)&&Math.abs(v-(+i.dataset.v))<1e-6+1e-3*Math.abs(+i.dataset.v);i.classList.toggle('good',g);i.classList.toggle('bad',!g&&!!s);if(g)ok++;});
+  const m=$('#rqmsg');m.textContent=ok===ins.length?'Todo correcto.':ok+' de '+ins.length+' correctas. Pista: resonancia ⇔ c = 0 y mω² = k; y para B, 8B = 1.';m.style.color=ok===ins.length?'var(--im)':'var(--num)';});
 chfr.addEventListener('pointerdown',ev=>{const C=chfr._c;if(!C)return;const r=chfr.getBoundingClientRect(),om=C.x0+(ev.clientX-r.left-C.pad.l)/(C.W-C.pad.l-C.pad.r)*(C.x1-C.x0);
   if(om<=0||om>C.x1)return;E.p.w=Math.round(om*100)/100;syncCtl();modified();recompute();});
 function recompute(){
@@ -4824,4 +4924,329 @@ function retheme(){if(IT.it&&BOOT.it){it3Build();itAll();}if(CV.it&&BOOT.cv){cvD
 const h=location.hash.slice(1);if(h.startsWith('calculo-'))boot(h);
 })();
 </script>
+<script>
+/* ===== Cálculo II (IN1523C): sucesiones y series ===== */
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const R=String.raw,PI=Math.PI,E=Math.E,abs=Math.abs,sq=Math.sqrt;
+const minus=s=>String(s).replace(/-/g,'−');
+const fm=(v,d)=>{if(v==null||!isFinite(v))return '—';if(abs(v)>=1e6||(v!==0&&abs(v)<1e-4))return minus(v.toExponential(3));return minus(String(Number(v.toFixed(d??5))));};
+const typeset=el=>{if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetClear&&MathJax.typesetClear([el]);MathJax.typesetPromise([el]).catch(()=>{});}else setTimeout(()=>typeset(el),300);};
+function rgba(c,a){c=(c||'').trim();if(c.startsWith('rgb')){const p=c.replace(/rgba?\(|\)/g,'').split(',').slice(0,3);return 'rgba('+p.join(',')+','+a+')';}let h=c.replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');const n=parseInt(h,16)||0;return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+const fact=n=>{let f=1;for(let i=2;i<=n;i++)f*=i;return f;};
+function prep(s){return String(s).trim().replace(/π/g,'pi').replace(/\bln\s*\(/g,'log(').replace(/\bsen\s*\(/g,'sin(').replace(/(\d),(\d)/g,'$1.$2');}
+function evalNum(s){s=prep(s);if(!s)return NaN;try{const v=math.evaluate(s);return typeof v==='number'?v:NaN;}catch(e){return NaN;}}
+
+/* ---------- gráfico ---------- */
+function niceStep(r,t){const raw=r/(t||6),p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p;return (m<1.5?1:m<3?2:m<7?5:10)*p;}
+function plane(cv,b,o){
+  o=o||{};const W=cv.parentElement.clientWidth;if(W<40)return null;const H=o.h||380,pad={l:56,r:14,t:20,b:34};
+  const dpr=window.devicePixelRatio||1;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.height=H+'px';
+  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  let [x0,x1,y0,y1]=b;const pw=W-pad.l-pad.r,ph=H-pad.t-pad.b,sx=pw/(x1-x0),sy=ph/(y1-y0);
+  const P={g,W,H,pad,x0,x1,y0,y1,X:x=>pad.l+(x-x0)*sx,Y:y=>pad.t+(y1-y)*sy,ix:px=>x0+(px-pad.l)/sx};
+  P.clip=()=>{g.save();g.beginPath();g.rect(pad.l,pad.t,pw,ph);g.clip();};
+  P.path=pts=>{g.beginPath();let pen=false;pts.forEach(([x,y])=>{if(!isFinite(y)){pen=false;return;}const X=P.X(x),Y=P.Y(y);if(pen)g.lineTo(X,Y);else{g.moveTo(X,Y);pen=true;}});};
+  P.axes=(lx,ly)=>{g.save();g.font='11.5px "IBM Plex Mono", monospace';const mu=tok('--muted');g.strokeStyle=tok('--grid')||tok('--line');
+    const sxs=niceStep(x1-x0,7),sys=niceStep(y1-y0,6),fmt=(v,s)=>{if(abs(v)<s*1e-6)return '0';const d=Math.max(0,-Math.floor(Math.log10(s)+1e-9));return minus(v.toFixed(Math.min(4,d)));};
+    g.globalAlpha=.45;for(let v=Math.ceil(x0/sxs)*sxs;v<=x1+1e-9;v+=sxs){g.beginPath();g.moveTo(P.X(v),pad.t);g.lineTo(P.X(v),H-pad.b);g.stroke();}
+    for(let v=Math.ceil(y0/sys)*sys;v<=y1+1e-9;v+=sys){g.beginPath();g.moveTo(pad.l,P.Y(v));g.lineTo(W-pad.r,P.Y(v));g.stroke();}g.globalAlpha=1;
+    g.fillStyle=mu;g.textAlign='center';g.textBaseline='top';for(let v=Math.ceil(x0/sxs)*sxs;v<=x1+1e-9;v+=sxs)if(P.X(v)<W-30)g.fillText(fmt(v,sxs),P.X(v),H-pad.b+5);
+    g.textAlign='right';g.textBaseline='middle';for(let v=Math.ceil(y0/sys)*sys;v<=y1+1e-9;v+=sys)if(P.Y(v)>pad.t+6)g.fillText(fmt(v,sys),pad.l-6,P.Y(v));
+    g.strokeStyle=tok('--ink');g.globalAlpha=.5;if(y0<0&&y1>0){g.beginPath();g.moveTo(pad.l,P.Y(0));g.lineTo(W-pad.r,P.Y(0));g.stroke();}if(x0<0&&x1>0){g.beginPath();g.moveTo(P.X(0),pad.t);g.lineTo(P.X(0),H-pad.b);g.stroke();}g.globalAlpha=1;
+    g.font='italic 14px Spectral, Georgia, serif';g.fillStyle=tok('--ink');g.textAlign='right';g.textBaseline='bottom';g.fillText(lx,W-pad.r,H-2);g.textAlign='left';g.textBaseline='top';g.fillText(ly,6,2);g.restore();};
+  P.dot=(x,y,r,fill,stroke)=>{g.beginPath();g.arc(P.X(x),P.Y(y),r,0,7);if(fill){g.fillStyle=fill;g.fill();}if(stroke){g.strokeStyle=stroke;g.lineWidth=2;g.stroke();}};
+  P.label=(t,x,y,al,col)=>{g.save();g.font='500 12.5px "IBM Plex Sans", sans-serif';g.textAlign=al||'left';g.textBaseline='middle';g.lineJoin='round';g.lineWidth=4;g.strokeStyle=tok('--panel');g.strokeText(t,P.X(x),P.Y(y));g.fillStyle=col||tok('--ink');g.fillText(t,P.X(x),P.Y(y));g.restore();};
+  return P;
+}
+const range=(vals,padf)=>{let lo=Infinity,hi=-Infinity;vals.forEach(v=>{if(isFinite(v)){lo=Math.min(lo,v);hi=Math.max(hi,v);}});if(!isFinite(lo)){lo=-1;hi=1;}if(hi-lo<1e-9){lo-=1;hi+=1;}const p=(hi-lo)*(padf??0.1);return [lo-p,hi+p];};
+
+/* ---------- respuestas ---------- */
+let UID=0;
+function checks(box,list){
+  box.innerHTML='';const uid='c2k'+(++UID);
+  list.forEach((c,i)=>{const f=document.createElement('div');f.className='field';f.innerHTML='<label for="'+uid+i+'">'+c.label+'</label><input type="text" id="'+uid+i+'" autocomplete="off" spellcheck="false">';box.appendChild(f);});
+  const b=document.createElement('button');b.type='button';b.textContent='Comprobar';box.appendChild(b);
+  const m=document.createElement('span');m.className='vfmsg';m.setAttribute('role','status');box.appendChild(m);
+  b.addEventListener('click',()=>{let all=true,any=false;list.forEach((c,i)=>{const inp=document.getElementById(uid+i),v=evalNum(inp.value);if(inp.value.trim())any=true;
+    const ok=isFinite(v)&&abs(v-c.val)<=Math.max(5e-4*abs(c.val),5e-4);inp.classList.toggle('good',ok);inp.classList.toggle('bad',!ok&&!!inp.value.trim());if(!ok)all=false;});
+    m.textContent=!any?'Escriba sus resultados (puede usar fracciones, pi, e, sqrt( ), ln( )).':all?'Todo correcto. Revise el desarrollo.':'Hay valores que no coinciden.';m.className='vfmsg '+(all&&any?'ok':'no');});
+}
+
+/* =================== 1. Sucesiones =================== */
+const SUC=[
+ {name:'(3n² + 1)/(2n² − n)',f:n=>(3*n*n+1)/(2*n*n-n),L:1.5,tex:R`a_n=\frac{3n^2+1}{2n^2-n}`,note:R`Se dividen numerador y denominador por \(n^2\): \(a_n=\dfrac{3+1/n^2}{2-1/n}\to\dfrac32\).`},
+ {name:'(1 + 1/n)ⁿ',f:n=>Math.pow(1+1/n,n),L:E,tex:R`a_n=\left(1+\frac1n\right)^{n}`,note:R`Es creciente y acotada, así que converge (teorema de la sucesión monótona). Su límite es el número \(e\approx2.71828\).`},
+ {name:'(−1)ⁿ / n',f:n=>(n%2?-1:1)/n,L:0,tex:R`a_n=\frac{(-1)^n}{n}`,note:R`\(|a_n|=1/n\to0\), así que \(a_n\to0\) aunque cambie de signo.`},
+ {name:'sen(n) / n',f:n=>Math.sin(n)/n,L:0,tex:R`a_n=\frac{\operatorname{sen} n}{n}`,note:R`Por el teorema del sándwich: \(-\tfrac1n\le a_n\le\tfrac1n\), y ambas cotas tienden a 0.`},
+ {name:'n^(1/n)',f:n=>Math.pow(n,1/n),L:1,tex:R`a_n=\sqrt[n]{n}`,note:R`\(\ln a_n=\dfrac{\ln n}{n}\to0\), así que \(a_n\to e^0=1\).`},
+ {name:'(−1)ⁿ (diverge)',f:n=>n%2?-1:1,L:null,tex:R`a_n=(-1)^n`,note:R`No converge: los términos pares valen 1 y los impares \(-1\). Dos subsucesiones con límites distintos.`},
+ {name:'n / 10 (diverge a ∞)',f:n=>n/10,L:null,tex:R`a_n=\frac{n}{10}`,note:R`No está acotada: \(a_n\to\infty\). Toda sucesión convergente es acotada.`}
+];
+const S1={i:0,N:60,le:-1};
+const EX1={title:'Límite de una sucesión: la definición ε–N',
+ stmt:R`<p>Una sucesión \((a_n)\) converge a \(L\) si para todo \(\varepsilon>0\) existe \(N\) tal que \(|a_n-L|<\varepsilon\) para todo \(n\ge N\). En la figura, la franja es \(L\pm\varepsilon\): desde \(N\) en adelante, todos los puntos quedan adentro.</p>
+ <p><b>Ejercicio.</b> Sea \(a_n=\dfrac{3n^2+1}{2n^2-n}\).</p><ol class="parts" type="a"><li>Calcule \(L=\lim a_n\).</li><li>Encuentre el menor \(N\) tal que \(|a_n-L|<0.01\) para todo \(n\ge N\).</li></ol>`,
+ checks:[{label:'(a) L',val:1.5},{label:'(b) N para ε = 0.01',val:77}],
+ sol:R`<h4 class="solh">Fundamento</h4>
+ <ul><li><b>Álgebra de límites:</b> si \(b_n\to B\) y \(c_n\to C\ne0\), entonces \(b_n/c_n\to B/C\).</li>
+ <li><b>Límites básicos:</b> \(1/n\to0\) y \(1/n^2\to0\).</li>
+ <li><b>Definición ε–N:</b> para probar que \(N\) sirve, hay que mostrar que la desigualdad se cumple para <i>todos</i> los \(n\ge N\), no solo para \(n=N\).</li></ul>
+ <h4 class="solh">Desarrollo</h4>
+ <p><b>(a)</b> Numerador y denominador crecen como \(n^2\), así que dividimos ambos por \(n^2\), la mayor potencia del denominador:</p>
+ \[ a_n=\frac{3n^2+1}{2n^2-n}=\frac{3+\frac{1}{n^2}}{2-\frac1n}. \]
+ <p>Cuando \(n\to\infty\), el numerador tiende a \(3\) y el denominador a \(2\ne0\). Por el álgebra de límites, \(L=\tfrac32\).</p>
+ <p><b>(b)</b> <i>Paso 1: calcular la distancia al límite.</i></p>
+ \[ a_n-\frac32=\frac{2(3n^2+1)-3(2n^2-n)}{2(2n^2-n)}=\frac{3n+2}{2n(2n-1)}. \]
+ <p>Para \(n\ge1\) esta fracción es positiva, así que \(|a_n-\tfrac32|=\dfrac{3n+2}{2n(2n-1)}\). Además, \(a_n\) se acerca a \(\tfrac32\) <i>por arriba</i>.</p>
+ <p><i>Paso 2: resolver la desigualdad.</i> Como los denominadores son positivos, se puede multiplicar sin cambiar el sentido:</p>
+ \[ \frac{3n+2}{2n(2n-1)}<\frac1{100}\iff 100(3n+2)<2n(2n-1)\iff 4n^2-302n-200>0. \]
+ <p>Las raíces de \(4n^2-302n-200\) son \(n=\dfrac{302\pm\sqrt{302^2+3200}}{8}\), es decir \(n\approx-0.66\) y \(n\approx76.16\). La parábola es positiva fuera de las raíces, así que la desigualdad vale para \(n>76.16\).</p>
+ <p><i>Paso 3: comprobar los bordes.</i></p>
+ <ul><li>\(n=76\): \(\dfrac{230}{2\cdot76\cdot151}\approx0.01002>0.01\), así que \(N=76\) no sirve.</li>
+ <li>\(n=77\): \(\dfrac{233}{2\cdot77\cdot153}\approx0.00989<0.01\).</li>
+ <li>Para \(n\ge77\) la distancia sigue bajando, porque el numerador crece linealmente y el denominador cuadráticamente.</li></ul>
+ <p class="ans"><b>Resultado:</b> \(L=\tfrac32\) y \(N=77\).</p>
+ <h4 class="solh">Interpretación</h4>
+ <ul><li><b>N depende de ε.</b> Para \(n\) grande, \(|a_n-L|\approx\dfrac{3n}{4n^2}=\dfrac{3}{4n}\), así que \(N\approx\dfrac{3}{4\varepsilon}\): una tolerancia 10 veces menor exige unas 10 veces más términos. Eso mide qué tan <i>rápido</i> converge la sucesión.</li>
+ <li><b>Lectura práctica.</b> «Converger a \(\tfrac32\)» no significa que algún término valga \(\tfrac32\) (ninguno lo vale). Significa que, para cualquier precisión exigida, desde cierto punto en adelante todos los términos la cumplen.</li>
+ <li><b>En la figura.</b> Con ε = 0.01, la línea vertical queda en \(n=77\). Achique ε y vea cómo se corre hacia la derecha.</li></ul>`};
+function sucCtl(){
+  const c=$('#c2ctl');c.innerHTML='<div class="field"><label for="s1p">Sucesión</label><select id="s1p">'+SUC.map((s,i)=>'<option value="'+i+'">'+s.name+'</option>').join('')+'</select></div>'+
+   '<div class="slider"><label for="s1n">n hasta</label><input type="range" id="s1n" min="10" max="200" value="'+S1.N+'"><output id="s1nv"></output></div>'+
+   '<div class="slider"><label for="s1e">ε</label><input type="range" id="s1e" min="-3" max="0" step="0.01" value="'+S1.le+'"><output id="s1ev"></output></div>';
+  $('#s1p').value=S1.i;$('#s1p').addEventListener('change',e=>{S1.i=+e.target.value;sucCrit();sucDraw();});
+  $('#s1n').addEventListener('input',e=>{S1.N=+e.target.value;sucDraw();});$('#s1e').addEventListener('input',e=>{S1.le=+e.target.value;sucDraw();});
+  sucCrit();
+}
+function sucCrit(){const s=SUC[S1.i],c=$('#c2crit');c.innerHTML='<p style="margin:0">\\('+s.tex+'\\). '+s.note+'</p>';typeset(c);}
+function sucDraw(){
+  const s=SUC[S1.i],N=S1.N,eps=Math.pow(10,S1.le),L=s.L,a=[];for(let n=1;n<=N;n++)a.push(s.f(n));
+  $('#s1nv').textContent=N;$('#s1ev').textContent=fm(eps,3);
+  let [y0,y1]=range(a.concat(L!=null?[L-eps,L+eps]:[]),0.08);
+  const P=plane($('#c2cv'),[0,N+1,y0,y1],{h:380});if(!P)return;const g=P.g,acc=tok('--accent'),nc=tok('--num');P.axes('n','aₙ');P.clip();
+  let Ne=null;
+  if(L!=null){g.fillStyle=rgba(acc,0.13);g.fillRect(P.pad.l,P.Y(L+eps),P.W-P.pad.l-P.pad.r,P.Y(L-eps)-P.Y(L+eps));
+    g.strokeStyle=acc;g.setLineDash([5,4]);g.beginPath();g.moveTo(P.pad.l,P.Y(L));g.lineTo(P.W,P.Y(L));g.stroke();g.setLineDash([]);
+    let last=0;a.forEach((v,i)=>{if(abs(v-L)>=eps)last=i+1;});Ne=last<N?last+1:null;
+    if(Ne){g.strokeStyle=tok('--ink');g.globalAlpha=.6;g.setLineDash([3,3]);g.beginPath();g.moveTo(P.X(Ne-0.5),P.pad.t);g.lineTo(P.X(Ne-0.5),P.H-P.pad.b);g.stroke();g.setLineDash([]);g.globalAlpha=1;}}
+  const r=N>120?2.4:3.4;a.forEach((v,i)=>{const out=L!=null&&abs(v-L)>=eps;P.dot(i+1,v,r,out?nc:acc);});g.restore();
+  if(L!=null){P.label('L = '+fm(L,4),N*0.5,L+(L-y0>y1-L?-1:1)*(y1-y0)*0.06,'center',acc);if(Ne)P.label('N = '+Ne,Ne+0.5,y1-(y1-y0)*0.06,'left');}
+  $('#c2leg').innerHTML=L!=null?'<span><span class="sw" style="background:'+rgba(acc,0.25)+'"></span>franja L ± ε</span><span><span class="sw acc"></span>términos dentro de la franja</span><span><span class="sw num"></span>términos fuera</span>':'<span><span class="sw acc"></span>términos aₙ</span>';
+  let inc=0,dec=0;for(let i=4;i<a.length;i++){if(a[i]>a[i-1])inc++;else if(a[i]<a[i-1])dec++;}
+  const mono=inc&&!dec?'creciente (desde n = 5)':dec&&!inc?'decreciente (desde n = 5)':'no monótona';
+  $('#c2read').innerHTML=(L!=null?'<b>ε = '+fm(eps,4)+'</b>: '+(Ne?'desde N = '+Ne+' todos los términos mostrados cumplen |aₙ − L| &lt; ε.':'con n ≤ '+N+' todavía hay términos fuera de la franja: aumente n o ε.'):'Esta sucesión <b>no converge</b>.')+
+    '<br>Mínimo y máximo de los términos mostrados: '+fm(Math.min(...a),4)+' y '+fm(Math.max(...a),4)+' · Comportamiento: '+mono+'.';
+}
+
+/* =================== 2. Series =================== */
+const zeta=p=>{if(p<=1)return Infinity;const M=2000;let s=0;for(let n=1;n<M;n++)s+=Math.pow(n,-p);return s+Math.pow(M,1-p)/(p-1)+0.5*Math.pow(M,-p);};
+const SER=[
+ {name:'Geométrica Σ rⁿ',n0:0,par:'r',pv:0.6,pr:[-1.2,1.2,0.01],a:(n,r)=>Math.pow(r,n),S:r=>abs(r)<1?1/(1-r):null,
+  crit:r=>R`\sum_{n=0}^{\infty} r^n=\frac{1}{1-r}\ \text{ si } |r|<1;\ \text{ diverge si } |r|\ge1.\quad\text{Con } r=${fm(r,2)}:\ `+(abs(r)<1?R`\text{converge a } ${fm(1/(1-r),4)}`:R`\text{diverge}`)},
+ {name:'Telescópica Σ 1/(n(n+1))',n0:1,a:n=>1/(n*(n+1)),S:()=>1,crit:()=>R`\frac{1}{n(n+1)}=\frac1n-\frac1{n+1}\ \Rightarrow\ S_N=1-\frac{1}{N+1}\to1.`},
+ {name:'Serie p: Σ 1/nᵖ',n0:1,par:'p',pv:2,pr:[0.3,3,0.05],a:(n,p)=>Math.pow(n,-p),S:p=>p>1?zeta(p):null,
+  crit:p=>R`\sum\frac{1}{n^p}\ \text{converge} \iff p>1\ \ (\text{criterio de la integral}).\quad p=${fm(p,2)}:\ `+(p>1?R`\text{converge}`+(abs(p-2)<1e-9?R`\ \text{a } \tfrac{\pi^2}{6}`:''):R`\text{diverge}`)},
+ {name:'Armónica Σ 1/n',n0:1,a:n=>1/n,S:()=>null,crit:()=>R`a_n=\frac1n\to0,\ \text{pero}\ S_N\approx\ln N+0.577\to\infty.\ \text{Que } a_n\to0 \text{ no basta para converger.}`},
+ {name:'Armónica alternante Σ (−1)ⁿ⁺¹/n',n0:1,a:n=>(n%2?1:-1)/n,S:()=>Math.LN2,crit:()=>R`\text{Criterio de Leibniz: } \tfrac1n \text{ decrece a } 0 \Rightarrow \text{converge (a } \ln 2\text{), pero no absolutamente.}`},
+ {name:'Σ n / 2ⁿ',n0:1,a:n=>n/Math.pow(2,n),S:()=>2,crit:()=>R`\text{Criterio de la razón: } \frac{a_{n+1}}{a_n}=\frac{n+1}{2n}\to\frac12<1\Rightarrow\text{converge (a 2).}`},
+ {name:'Σ 1/n!',n0:0,a:n=>1/fact(n),S:()=>E,crit:()=>R`\text{Razón: } \frac{a_{n+1}}{a_n}=\frac{1}{n+1}\to0<1.\ \text{Converge a } e.`}
+];
+const S2={i:0,N:30,pv:{}};
+const EX2={title:'Series numéricas y sumas parciales',
+ stmt:R`<p>Una serie \(\sum a_n\) converge si la sucesión de sus <b>sumas parciales</b> \(S_N=a_1+\dots+a_N\) converge, y su suma es ese límite. En la figura, las barras son los términos \(a_n\) y la línea son las sumas parciales.</p>
+ <p><b>Ejercicio.</b></p><ol class="parts" type="a"><li>Para \(\sum_{n\ge1}\frac{1}{n(n+1)}\), calcule \(S_{10}\).</li><li>Calcule la suma de esa serie.</li><li>Calcule \(\sum_{n=1}^{\infty}\frac{3}{4^n}\).</li></ol>`,
+ checks:[{label:'(a) S₁₀',val:10/11},{label:'(b) suma',val:1},{label:'(c) Σ 3/4ⁿ',val:1}],
+ sol:R`<h4 class="solh">Fundamento</h4>
+ <ul><li><b>Definición:</b> \(\sum_{n=1}^\infty a_n=\lim_{N\to\infty}S_N\). Para sumar una serie hay que obtener una fórmula cerrada para \(S_N\) y luego tomar el límite.</li>
+ <li><b>Serie geométrica:</b> \(S_N=a+ar+\dots+ar^{N-1}=a\,\dfrac{1-r^N}{1-r}\) (multiplique \(S_N\) por \(r\) y reste). Si \(|r|<1\), \(r^N\to0\) y la suma es \(\dfrac{a}{1-r}\).</li>
+ <li><b>Serie telescópica:</b> si \(a_n=b_n-b_{n+1}\), los términos intermedios se cancelan y \(S_N=b_1-b_{N+1}\).</li></ul>
+ <h4 class="solh">Desarrollo</h4>
+ <p><b>(a)</b> <i>Fracciones parciales.</i> \(\dfrac{1}{n(n+1)}=\dfrac An+\dfrac B{n+1}\) da \(1=A(n+1)+Bn\). Con \(n=0\), \(A=1\); con \(n=-1\), \(B=-1\). Entonces</p>
+ \[ S_N=\left(1-\tfrac12\right)+\left(\tfrac12-\tfrac13\right)+\cdots+\left(\tfrac1N-\tfrac1{N+1}\right)=1-\frac1{N+1},\qquad S_{10}=1-\frac1{11}=\frac{10}{11}. \]
+ <p><b>(b)</b> \(\displaystyle\lim_{N\to\infty}\left(1-\frac1{N+1}\right)=1\).</p>
+ <p><b>(c)</b> \(\sum_{n\ge1}\dfrac{3}{4^n}\) es geométrica con primer término \(a=\tfrac34\) (para \(n=1\)) y razón \(r=\tfrac14\). Como \(|r|<1\):</p>
+ \[ \sum_{n=1}^\infty\frac{3}{4^n}=\frac{3/4}{1-1/4}=\frac{3/4}{3/4}=1. \]
+ <h4 class="solh">Interpretación</h4>
+ <ul><li><b>El error es lo que falta.</b> En la telescópica, \(1-S_N=\dfrac{1}{N+1}\): para tener un error menor que 0.001 hacen falta 1000 términos. En la geométrica de (c), el error es \((1/4)^N\): con solo 5 términos ya es menor que 0.001. Las dos convergen, pero a velocidades muy distintas, y la figura lo muestra.</li>
+ <li><b>Un dibujo de (c).</b> Divida un cuadrado de área 1 en 4 partes y pinte 3. Divida el cuarto que queda en 4 y pinte 3, y así sucesivamente. Lo pintado es \(\tfrac34+\tfrac3{16}+\cdots\), y termina cubriendo todo el cuadrado.</li>
+ <li><b>Advertencia.</b> Que los términos tiendan a 0 es <i>necesario</i> pero no suficiente. Elija la serie armónica en la figura: \(1/n\to0\), pero \(S_N\approx\ln N\to\infty\).</li></ul>`};
+function serCtl(){
+  const s=SER[S2.i];const c=$('#c2ctl');
+  c.innerHTML='<div class="field"><label for="s2p">Serie</label><select id="s2p">'+SER.map((x,i)=>'<option value="'+i+'">'+x.name+'</option>').join('')+'</select></div>'+
+   '<div class="slider"><label for="s2n">N</label><input type="range" id="s2n" min="3" max="200" value="'+S2.N+'"><output id="s2nv"></output></div>'+
+   (s.par?'<div class="slider"><label for="s2q">'+s.par+'</label><input type="range" id="s2q" min="'+s.pr[0]+'" max="'+s.pr[1]+'" step="'+s.pr[2]+'" value="'+(S2.pv[S2.i]??s.pv)+'"><output id="s2qv"></output></div>':'');
+  $('#s2p').value=S2.i;$('#s2p').addEventListener('change',e=>{S2.i=+e.target.value;serCtl();serDraw(true);});
+  $('#s2n').addEventListener('input',e=>{S2.N=+e.target.value;serDraw();});
+  if(s.par)$('#s2q').addEventListener('input',e=>{S2.pv[S2.i]=+e.target.value;serDraw(true);});
+}
+function serDraw(crit){
+  const s=SER[S2.i],q=s.par?(S2.pv[S2.i]??s.pv):null,N=S2.N,ns=[],an=[],Sn=[];let acc0=0;
+  for(let k=0;k<N;k++){const n=s.n0+k,v=s.a(n,q);acc0+=v;ns.push(n);an.push(v);Sn.push(acc0);}
+  const S=s.S(q);$('#s2nv').textContent=N;if(s.par)$('#s2qv').textContent=fm(q,2);
+  let [y0,y1]=range(Sn.concat(an).concat(S!=null?[S]:[]).concat([0]),0.08);if(y1-y0>1e6){y1=Math.min(y1,1e6);}
+  const P=plane($('#c2cv'),[s.n0-0.8,s.n0+N,y0,y1],{h:380});if(!P)return;const g=P.g,acc=tok('--accent'),mu=tok('--muted');P.axes('n','');P.clip();
+  const bw=Math.max(1,Math.min(10,(P.X(1)-P.X(0))*0.55));g.fillStyle=rgba(mu,0.55);ns.forEach((n,i)=>{const Y0=P.Y(0),Y1=P.Y(an[i]);g.fillRect(P.X(n)-bw/2,Math.min(Y0,Y1),bw,abs(Y1-Y0)||1);});
+  if(S!=null){g.strokeStyle=tok('--num');g.setLineDash([6,4]);g.lineWidth=1.5;g.beginPath();g.moveTo(P.pad.l,P.Y(S));g.lineTo(P.W,P.Y(S));g.stroke();g.setLineDash([]);}
+  P.path(ns.map((n,i)=>[n,Sn[i]]));g.strokeStyle=acc;g.lineWidth=2;g.stroke();if(N<=60)ns.forEach((n,i)=>P.dot(n,Sn[i],3,acc));g.restore();
+  if(S!=null)P.label('S = '+fm(S,5),s.n0+N*0.97,S,'right',tok('--num'));
+  $('#c2leg').innerHTML='<span><span class="sw" style="background:'+rgba(mu,0.55)+'"></span>términos aₙ</span><span><span class="sw acc"></span>sumas parciales S<sub>N</sub></span>'+(S!=null?'<span><span class="sw num"></span>suma de la serie</span>':'');
+  const last=an[an.length-1],ratio=abs(s.a(s.n0+N,q)/last);
+  $('#c2read').innerHTML='<b>S<sub>'+(s.n0+N-1)+'</b> = '+fm(Sn[N-1],6)+(S!=null?'  ·  suma exacta = '+fm(S,6)+'  ·  diferencia = '+fm(S-Sn[N-1],3):'  ·  la serie diverge')+
+    '<br>Último término a<sub>'+(s.n0+N-1)+'</sub> = '+fm(last,5)+'  ·  |a<sub>n+1</sub>/a<sub>n</sub>| = '+fm(ratio,4)+' (criterio de la razón: &lt; 1 converge, &gt; 1 diverge, → 1 no decide).';
+  if(crit!==false){const c=$('#c2crit');c.innerHTML='\\['+s.crit(q)+'\\]';typeset(c);}
+}
+
+/* =================== 3. Series de potencias =================== */
+const POT=[
+ {name:'Σ xⁿ',a:0,n0:0,c:n=>1,R:1,inc:[false,false],f:x=>abs(x)<1?1/(1-x):NaN,ftex:R`\sum_{n=0}^\infty x^n=\frac{1}{1-x}`,ends:'En x = ±1 los términos no tienden a 0: diverge en ambos extremos.'},
+ {name:'Σ xⁿ / n',a:0,n0:1,c:n=>1/n,R:1,inc:[true,false],f:x=>x<1&&x>=-1?-Math.log(1-x):NaN,ftex:R`\sum_{n=1}^\infty \frac{x^n}{n}=-\ln(1-x)`,ends:'En x = 1 es la armónica (diverge); en x = −1 es la armónica alternante (converge).'},
+ {name:'Σ xⁿ / n!',a:0,n0:0,c:n=>1/fact(n),R:Infinity,inc:[true,true],f:x=>Math.exp(x),ftex:R`\sum_{n=0}^\infty \frac{x^n}{n!}=e^x`,ends:'Converge para todo x real.'},
+ {name:'Σ (−1)ⁿ x²ⁿ⁺¹ / (2n+1)',a:0,n0:0,c:n=>n%2?((n-1)/2%2?-1:1)/n:0,R:1,inc:[true,true],f:x=>abs(x)<=1?Math.atan(x):NaN,ftex:R`\sum_{n=0}^\infty \frac{(-1)^n x^{2n+1}}{2n+1}=\arctan x`,ends:'En x = ±1 converge por Leibniz; en x = 1 da la fórmula de Leibniz: π/4 = 1 − 1/3 + 1/5 − ⋯'},
+ {name:'Σ xⁿ / (n·2ⁿ)',a:0,n0:1,c:n=>1/(n*Math.pow(2,n)),R:2,inc:[true,false],f:x=>x<2&&x>=-2?-Math.log(1-x/2):NaN,ftex:R`\sum_{n=1}^\infty \frac{x^n}{n\,2^n}=-\ln\!\left(1-\frac x2\right)`,ends:'En x = 2 es la armónica (diverge); en x = −2, la armónica alternante (converge).'},
+ {name:'Σ (x − 3)ⁿ / n',a:3,n0:1,c:n=>1/n,R:1,inc:[true,false],f:x=>x<4&&x>=2?-Math.log(4-x):NaN,ftex:R`\sum_{n=1}^\infty \frac{(x-3)^n}{n}=-\ln(4-x)`,ends:'Centrada en a = 3: converge en [2, 4).'},
+ {name:'Σ n! xⁿ',a:0,n0:0,c:n=>fact(n),R:0,inc:[true,true],f:x=>x===0?1:NaN,ftex:R`\sum_{n=0}^\infty n!\,x^n`,ends:'R = 0: solo converge en x = 0.'}
+];
+const S3={i:0,N:8,x:0.5};
+const EX3={title:'Series de potencias: radio e intervalo de convergencia',
+ stmt:R`<p>Una serie de potencias \(\sum c_n(x-a)^n\) converge en un intervalo centrado en \(a\) de radio \(R\) y diverge fuera. En los extremos \(x=a\pm R\) hay que estudiar cada caso por separado.</p>
+ <p><b>Ejercicio.</b> Para \(\displaystyle\sum_{n=1}^\infty\frac{x^n}{n\,2^n}\):</p><ol class="parts" type="a"><li>Calcule el radio R.</li><li>¿Converge en \(x=-2\)? (escriba 1 si converge, 0 si no)</li><li>Usando \(\sum_{n\ge1}\frac{u^n}{n}=-\ln(1-u)\), calcule la suma en \(x=1\).</li></ol>`,
+ checks:[{label:'(a) R',val:2},{label:'(b) ¿converge en x = −2? (1/0)',val:1},{label:'(c) suma en x = 1',val:Math.LN2}],
+ sol:R`<h4 class="solh">Fundamento</h4>
+ <ul><li><b>Criterio de la razón:</b> si \(\lim\left|\dfrac{u_{n+1}}{u_n}\right|=\rho\), la serie \(\sum u_n\) converge (absolutamente) si \(\rho<1\) y diverge si \(\rho>1\). Si \(\rho=1\), el criterio no decide.</li>
+ <li><b>Serie p:</b> \(\sum 1/n^p\) converge si y solo si \(p>1\).</li>
+ <li><b>Criterio de Leibniz:</b> si \(b_n\) decrece y tiende a 0, entonces \(\sum(-1)^nb_n\) converge.</li></ul>
+ <h4 class="solh">Desarrollo</h4>
+ <p><b>(a)</b> Aplicamos la razón a \(u_n=\dfrac{x^n}{n\,2^n}\), con x fijo:</p>
+ \[ \left|\frac{u_{n+1}}{u_n}\right|=\frac{|x|^{n+1}}{(n+1)2^{n+1}}\cdot\frac{n\,2^n}{|x|^n}=\frac{|x|}{2}\cdot\frac{n}{n+1}\ \longrightarrow\ \frac{|x|}{2}. \]
+ <p>La serie converge si \(\tfrac{|x|}{2}<1\), es decir si \(|x|<2\), y diverge si \(|x|>2\). Entonces \(R=2\).</p>
+ <p><b>(b)</b> En los extremos la razón da \(\rho=1\) y no decide, así que hay que sustituir:</p>
+ <ul><li>\(x=2\): \(\sum\dfrac{2^n}{n\,2^n}=\sum\dfrac1n\), la armónica (serie p con \(p=1\)): <b>diverge</b>.</li>
+ <li>\(x=-2\): \(\sum\dfrac{(-1)^n}{n}\). Como \(b_n=\tfrac1n\) decrece y tiende a 0, por Leibniz <b>converge</b>. La convergencia es condicional: en valor absoluto es la armónica.</li></ul>
+ <p>El intervalo de convergencia es \([-2,2)\).</p>
+ <p><b>(c)</b> La fórmula dada sale de integrar la serie geométrica término a término: \(\sum_{n\ge1}u^{n-1}=\dfrac1{1-u}\), e integrando de 0 a u queda \(\sum_{n\ge1}\dfrac{u^n}{n}=-\ln(1-u)\) para \(|u|<1\). Con \(u=\tfrac x2\):</p>
+ \[ \sum_{n=1}^\infty\frac{x^n}{n\,2^n}=\sum_{n=1}^\infty\frac{(x/2)^n}{n}=-\ln\!\left(1-\frac x2\right),\qquad x=1:\ -\ln\tfrac12=\ln2\approx0.6931. \]
+ <h4 class="solh">Interpretación</h4>
+ <ul><li><b>Una serie de potencias define una función, pero solo en su intervalo.</b> Aquí representa \(-\ln(1-x/2)\) en \([-2,2)\). Fuera de ese intervalo la serie no tiene suma, aunque la función sí exista (por ejemplo en \(x=-3\)). En la figura, elija esta serie y mueva x fuera del intervalo: las sumas parciales se disparan.</li>
+ <li><b>Por qué R = 2.</b> La función \(-\ln(1-x/2)\) «se rompe» en \(x=2\). La serie, centrada en 0, no puede ir más allá de ese punto, y el radio es justamente la distancia del centro a ese problema.</li>
+ <li><b>Uso práctico.</b> Con x = 1 obtenemos una forma de calcular \(\ln2\) sumando fracciones. Las calculadoras usan ideas de este tipo, con series elegidas para converger rápido, para calcular logaritmos y exponenciales.</li></ul>`};
+function potCtl(){
+  const c=$('#c2ctl');c.innerHTML='<div class="field"><label for="s3p">Serie</label><select id="s3p">'+POT.map((x,i)=>'<option value="'+i+'">'+x.name+'</option>').join('')+'</select></div>'+
+   '<div class="slider"><label for="s3n">N</label><input type="range" id="s3n" min="1" max="60" value="'+S3.N+'"><output id="s3nv"></output></div>'+
+   '<div class="slider"><label for="s3x">x</label><input type="range" id="s3x" min="0" max="1000" value="600"><output id="s3xv"></output></div>';
+  $('#s3p').value=S3.i;$('#s3p').addEventListener('change',e=>{S3.i=+e.target.value;S3.xr=null;potDraw(true);});
+  $('#s3n').addEventListener('input',e=>{S3.N=+e.target.value;potDraw();});$('#s3x').addEventListener('input',e=>{S3.u=e.target.value/1000;potDraw();});
+}
+function potS(s,x,N){let t=0;for(let n=s.n0;n<=N;n++){const c=s.c(n);if(c)t+=c*Math.pow(x-s.a,n);}return t;}
+function potDraw(crit){
+  const s=POT[S3.i],N=S3.N,Rr=s.R,half=isFinite(Rr)?(Rr>0?2.2*Rr:2):5,x0=s.a-half,x1=s.a+half;S3.u=S3.u??0.6;const xp=x0+(x1-x0)*S3.u;
+  $('#s3nv').textContent=N;$('#s3xv').textContent=fm(xp,3);
+  const xs=[];for(let i=0;i<=500;i++)xs.push(x0+(x1-x0)*i/500);
+  const fv=xs.map(x=>s.f(x)),sv=xs.map(x=>potS(s,x,N));
+  const inside=fv.filter((v,i)=>isFinite(v)&&(!isFinite(Rr)||Rr===0||abs(xs[i]-s.a)<=0.85*Rr));let [y0,y1]=range(inside.length?inside:[-1,1],0.6);if(Rr===0){y0=-3;y1=5;}
+  const P=plane($('#c2cv'),[x0,x1,y0,y1],{h:380});if(!P)return;const g=P.g,acc=tok('--accent'),mu=tok('--muted'),im=tok('--im');P.axes('x','');
+  if(isFinite(Rr)&&Rr>0){g.fillStyle=rgba(im,0.12);g.fillRect(P.X(s.a-Rr),P.pad.t,P.X(s.a+Rr)-P.X(s.a-Rr),P.H-P.pad.t-P.pad.b);}
+  else if(!isFinite(Rr)){g.fillStyle=rgba(im,0.08);g.fillRect(P.pad.l,P.pad.t,P.W-P.pad.l-P.pad.r,P.H-P.pad.t-P.pad.b);}
+  P.clip();P.path(xs.map((x,i)=>[x,fv[i]]));g.strokeStyle=mu;g.lineWidth=4;g.globalAlpha=.55;g.stroke();g.globalAlpha=1;
+  P.path(xs.map((x,i)=>[x,sv[i]]));g.strokeStyle=acc;g.lineWidth=2;g.stroke();
+  const yp=potS(s,xp,N),fp=s.f(xp);g.strokeStyle=tok('--ink');g.globalAlpha=.4;g.setLineDash([3,3]);g.beginPath();g.moveTo(P.X(xp),P.pad.t);g.lineTo(P.X(xp),P.H-P.pad.b);g.stroke();g.setLineDash([]);g.globalAlpha=1;
+  P.dot(xp,yp,5,acc);if(isFinite(fp))P.dot(xp,fp,4,null,mu);g.restore();
+  if(isFinite(Rr)){const yb=y0+(y1-y0)*0.04;if(Rr>0){g.strokeStyle=im;g.lineWidth=3;g.beginPath();g.moveTo(P.X(s.a-Rr),P.Y(yb));g.lineTo(P.X(s.a+Rr),P.Y(yb));g.stroke();
+    [[s.a-Rr,s.inc[0]],[s.a+Rr,s.inc[1]]].forEach(([x,inc])=>P.dot(x,yb,5,inc?im:tok('--panel'),im));}else P.dot(s.a,yb,5,im);}
+  $('#c2leg').innerHTML='<span><span class="sw" style="background:'+rgba(mu,0.6)+'"></span>función f(x)</span><span><span class="sw acc"></span>suma parcial S<sub>N</sub>(x)</span><span><span class="sw imc"></span>intervalo de convergencia (● incluido, ○ excluido)</span>';
+  const iv=!isFinite(Rr)?'(−∞, ∞)':Rr===0?'{'+fm(s.a)+'}':(s.inc[0]?'[':'(')+fm(s.a-Rr)+', '+fm(s.a+Rr)+(s.inc[1]?']':')');
+  const inI=!isFinite(Rr)||(Rr>0&&abs(xp-s.a)<Rr);
+  $('#c2read').innerHTML='<b>R = '+(isFinite(Rr)?fm(Rr):'∞')+'</b>  ·  intervalo de convergencia: '+iv+'. '+s.ends+
+    '<br>En x = '+fm(xp,3)+': S<sub>'+N+'</sub>(x) = '+fm(yp,6)+(isFinite(fp)?'  ·  f(x) = '+fm(fp,6)+'  ·  diferencia = '+fm(fp-yp,3):'')+(inI?'  (dentro: al subir N la diferencia tiende a 0)':'  (fuera del intervalo: la serie diverge)');
+  if(crit!==false){const c=$('#c2crit');c.innerHTML='\\['+s.ftex+',\\qquad R=\\lim_{n\\to\\infty}\\left|\\frac{c_n}{c_{n+1}}\\right|='+(isFinite(Rr)?Rr:'\\infty')+'\\]';typeset(c);}
+}
+
+/* =================== 4. Polinomios de Taylor =================== */
+const TAY=[
+ {name:'eˣ',f:Math.exp,tex:'e^x',d:(k,a)=>Math.exp(a),sing:null,ar:[-2,2]},
+ {name:'sen x',f:Math.sin,tex:'\\operatorname{sen} x',d:(k,a)=>Math.sin(a+k*PI/2),sing:null,ar:[-3,3]},
+ {name:'cos x',f:Math.cos,tex:'\\cos x',d:(k,a)=>Math.cos(a+k*PI/2),sing:null,ar:[-3,3]},
+ {name:'ln(1 + x)',f:x=>x>-1?Math.log(1+x):NaN,tex:'\\ln(1+x)',d:(k,a)=>k===0?Math.log(1+a):(k%2?1:-1)*fact(k-1)/Math.pow(1+a,k),sing:-1,ar:[-0.6,2]},
+ {name:'1 / (1 − x)',f:x=>1/(1-x),tex:'\\frac{1}{1-x}',d:(k,a)=>fact(k)/Math.pow(1-a,k+1),sing:1,ar:[-2,0.6]},
+ {name:'√(1 + x)',f:x=>x>=-1?sq(1+x):NaN,tex:'\\sqrt{1+x}',d:(k,a)=>{let c=1;for(let j=0;j<k;j++)c*=(0.5-j);return c*Math.pow(1+a,0.5-k);},sing:-1,ar:[-0.6,2]}
+];
+const S4={i:0,n:3,a:0,u:0.7};
+const EX4={title:'Polinomios de Taylor',
+ stmt:R`<p>El polinomio de Taylor de orden n de \(f\) en torno a \(a\) es</p>\[ P_n(x)=\sum_{k=0}^{n}\frac{f^{(k)}(a)}{k!}\,(x-a)^k . \]<p>Cerca de \(a\) aproxima a \(f\), y la aproximación mejora al subir n, pero solo dentro del intervalo de convergencia de la serie de Taylor.</p>
+ <p><b>Ejercicio.</b></p><ol class="parts" type="a"><li>Con el polinomio de orden 3 de \(e^x\) en \(a=0\), aproxime \(e^{0.5}\).</li><li>¿Cuál es el coeficiente de \(x^5\) en la serie de Maclaurin de \(\operatorname{sen}x\)?</li><li>Con el polinomio de orden 2 de \(\sqrt{1+x}\) en \(a=0\), aproxime \(\sqrt{1.2}\).</li></ol>`,
+ checks:[{label:'(a) P₃(0.5)',val:1.6458333},{label:'(b) coeficiente de x⁵',val:1/120},{label:'(c) P₂(0.2)',val:1.095}],
+ sol:R`<h4 class="solh">Fundamento</h4>
+ <ul><li><b>Construcción:</b> \(P_n\) es el único polinomio de grado ≤ n que coincide con \(f\) en \(a\), junto con sus primeras n derivadas. Por eso su coeficiente k-ésimo es \(f^{(k)}(a)/k!\).</li>
+ <li><b>Teorema de Taylor (resto de Lagrange):</b> \(f(x)=P_n(x)+R_n(x)\), con \(R_n(x)=\dfrac{f^{(n+1)}(\xi)}{(n+1)!}(x-a)^{n+1}\) para algún \(\xi\) entre \(a\) y \(x\). Esto permite <i>acotar el error</i> sin conocer el valor exacto.</li></ul>
+ <h4 class="solh">Desarrollo</h4>
+ <p><b>(a)</b> Todas las derivadas de \(e^x\) son \(e^x\), y en 0 valen 1:</p>
+ \[ P_3(x)=1+x+\frac{x^2}{2!}+\frac{x^3}{3!},\qquad P_3(0.5)=1+0.5+0.125+0.020833=1.645833. \]
+ <p><i>Cota del error:</i> \(|R_3(0.5)|=\dfrac{e^{\xi}}{4!}(0.5)^4\le\dfrac{e^{0.5}}{24}\cdot0.0625<\dfrac{2\cdot0.0625}{24}\approx0.0052\). El error real es \(e^{0.5}-P_3(0.5)\approx0.0029\), dentro de la cota.</p>
+ <p><b>(b)</b> Las derivadas de \(\operatorname{sen}x\) se repiten cada cuatro: \(\operatorname{sen},\ \cos,\ -\operatorname{sen},\ -\cos\). En 0 valen \(0,1,0,-1,0,1,\dots\), así que \(f^{(5)}(0)=1\) y el coeficiente es \(\dfrac{1}{5!}=\dfrac1{120}\). Solo aparecen potencias impares, porque \(\operatorname{sen}\) es una función impar.</p>
+ <p><b>(c)</b> Con \(f(x)=(1+x)^{1/2}\):</p>
+ \[ f(0)=1,\quad f'(x)=\tfrac12(1+x)^{-1/2}\Rightarrow f'(0)=\tfrac12,\quad f''(x)=-\tfrac14(1+x)^{-3/2}\Rightarrow f''(0)=-\tfrac14. \]
+ \[ P_2(x)=1+\frac x2+\frac{-1/4}{2!}x^2=1+\frac x2-\frac{x^2}{8},\qquad P_2(0.2)=1+0.1-0.005=1.095. \]
+ <p>El valor real es \(\sqrt{1.2}=1.095445\), así que el error es menor que 0.0005.</p>
+ <h4 class="solh">Interpretación</h4>
+ <ul><li><b>Cada orden agrega información.</b> \(P_1\) es la recta tangente (la linealización), \(P_2\) agrega la curvatura, y así sucesivamente. En la figura, suba n y vea cómo el polinomio se pega a la función en un intervalo cada vez mayor.</li>
+ <li><b>En física se usa todo el tiempo.</b> \(\operatorname{sen}\theta\approx\theta\) (orden 1) convierte la ecuación del péndulo en la de un resorte: es la aproximación del Problema 6 de EDO. \(\sqrt{1+x}\approx1+\tfrac x2\) aparece en relatividad y en óptica.</li>
+ <li><b>El límite de la aproximación.</b> Elija \(\ln(1+x)\) y suba n. Para \(x>1\) el polinomio se aleja cada vez más, porque la serie solo converge en \((-1,1]\). Más términos no siempre es mejor: depende de dónde se evalúe.</li></ul>`};
+function tayCtl(){
+  const t=TAY[S4.i],c=$('#c2ctl');
+  c.innerHTML='<div class="field"><label for="s4p">Función</label><select id="s4p">'+TAY.map((x,i)=>'<option value="'+i+'">'+x.name+'</option>').join('')+'</select></div>'+
+   '<div class="slider"><label for="s4n">orden n</label><input type="range" id="s4n" min="0" max="20" value="'+S4.n+'"><output id="s4nv"></output></div>'+
+   '<div class="slider"><label for="s4a">centro a</label><input type="range" id="s4a" min="'+t.ar[0]+'" max="'+t.ar[1]+'" step="0.05" value="'+S4.a+'"><output id="s4av"></output></div>'+
+   '<div class="slider"><label for="s4x">x</label><input type="range" id="s4x" min="0" max="1000" value="'+Math.round(S4.u*1000)+'"><output id="s4xv"></output></div>';
+  $('#s4p').value=S4.i;$('#s4p').addEventListener('change',e=>{S4.i=+e.target.value;S4.a=0;tayCtl();tayDraw(true);});
+  $('#s4n').addEventListener('input',e=>{S4.n=+e.target.value;tayDraw(true);});$('#s4a').addEventListener('input',e=>{S4.a=+e.target.value;tayDraw(true);});
+  $('#s4x').addEventListener('input',e=>{S4.u=e.target.value/1000;tayDraw(false);});
+}
+let tT=null;
+function tayDraw(crit){
+  const t=TAY[S4.i],n=S4.n,a=S4.a,cs=[];for(let k=0;k<=n;k++)cs.push(t.d(k,a)/fact(k));
+  const Pn=x=>{let s=0,p=1;for(let k=0;k<=n;k++){s+=cs[k]*p;p*=(x-a);}return s;};
+  const Rr=t.sing==null?Infinity:abs(a-t.sing),x0=t.sing==null?a-6:Math.min(a-2.2*Rr,t.sing+0.02)-0.3,x1=t.sing==null?a+6:a+2.2*Rr;
+  const xa=t.sing===-1?Math.max(x0,-0.99):x0;const xs=[];for(let i=0;i<=500;i++)xs.push(xa+(x1-xa)*i/500);
+  const fv=xs.map(t.f),pv=xs.map(Pn);let [y0,y1]=range(fv,0.3);if(t.sing===1){y0=Math.max(y0,-3);y1=Math.min(Math.max(y1,3),8);}
+  const xp=xa+(x1-xa)*S4.u;$('#s4nv').textContent=n;$('#s4av').textContent=fm(a,2);$('#s4xv').textContent=fm(xp,3);
+  const P=plane($('#c2cv'),[xa,x1,y0,y1],{h:380});if(!P)return;const g=P.g,acc=tok('--accent'),mu=tok('--muted'),im=tok('--im');P.axes('x','y');
+  if(isFinite(Rr)){g.fillStyle=rgba(im,0.12);g.fillRect(P.X(Math.max(xa,a-Rr)),P.pad.t,P.X(a+Rr)-P.X(Math.max(xa,a-Rr)),P.H-P.pad.t-P.pad.b);}
+  P.clip();P.path(xs.map((x,i)=>[x,fv[i]]));g.strokeStyle=mu;g.lineWidth=4;g.globalAlpha=.55;g.stroke();g.globalAlpha=1;
+  P.path(xs.map((x,i)=>[x,pv[i]]));g.strokeStyle=acc;g.lineWidth=2;g.stroke();
+  P.dot(a,t.f(a),5,tok('--num'));const yp=Pn(xp),fp=t.f(xp);g.strokeStyle=tok('--ink');g.globalAlpha=.4;g.setLineDash([3,3]);g.beginPath();g.moveTo(P.X(xp),P.pad.t);g.lineTo(P.X(xp),P.H-P.pad.b);g.stroke();g.setLineDash([]);g.globalAlpha=1;
+  P.dot(xp,yp,5,acc);if(isFinite(fp))P.dot(xp,fp,4,null,mu);g.restore();
+  $('#c2leg').innerHTML='<span><span class="sw" style="background:'+rgba(mu,0.6)+'"></span>f(x) = '+t.name+'</span><span><span class="sw acc"></span>P<sub>'+n+'</sub>(x)</span><span><span class="sw num"></span>centro a</span>'+(isFinite(Rr)?'<span><span class="sw imc"></span>intervalo de convergencia |x − a| &lt; '+fm(Rr,3)+'</span>':'');
+  $('#c2read').innerHTML='En x = '+fm(xp,4)+': P<sub>'+n+'</sub>(x) = '+fm(yp,6)+'  ·  f(x) = '+fm(fp,6)+'  ·  error = '+fm(abs(fp-yp),3)+
+    (isFinite(Rr)?'<br>La serie de Taylor converge solo para |x − a| &lt; '+fm(Rr,3)+' (distancia de a a la singularidad x = '+t.sing+'). Fuera de esa franja, subir n no mejora la aproximación.':'<br>La serie de Taylor de '+t.name+' converge para todo x: subiendo n, el polinomio se ajusta en intervalos cada vez más grandes.');
+  if(crit!==false){clearTimeout(tT);tT=setTimeout(()=>{const terms=[];const xa2=abs(a)<1e-12?'x':'(x'+(a>0?'-':'+')+fm(abs(a),2)+')';
+    cs.forEach((c,k)=>{if(abs(c)<1e-12)return;const cf=Number(c.toPrecision(4));const body=k===0?'':k===1?xa2:xa2+'^{'+k+'}';terms.push({c:cf,b:body});});
+    let s='';terms.slice(0,7).forEach((q,j)=>{const neg=q.c<0,m=abs(q.c),co=q.b&&abs(m-1)<1e-12?'':String(m);s+=(j?(neg?' - ':' + '):(neg?'-':''))+co+(co&&q.b?'\\,':'')+q.b;});if(terms.length>7)s+=' + \\cdots';
+    const el=$('#c2crit');el.innerHTML='\\[ P_{'+n+'}(x)='+(s||'0')+' \\]';typeset(el);},150);}
+}
+
+/* =================== navegación =================== */
+const TOOLS={'calc2-sucesiones':{h:'Sucesiones',lede:'Una sucesión es una lista infinita de números. ¿A qué valor se acercan sus términos? La definición ε–N lo hace preciso.',vh:'Términos de la sucesión y franja L ± ε',hint:'Mueva ε y vea desde qué N los términos quedan en la franja',ex:EX1,ctl:sucCtl,draw:sucDraw},
+ 'calc2-series':{h:'Series numéricas',lede:'Sumar infinitos términos tiene sentido si las sumas parciales se acercan a un número. Compare series que convergen y que divergen.',vh:'Términos y sumas parciales',hint:'Elija una serie y aumente N',ex:EX2,ctl:serCtl,draw:()=>serDraw(true)},
+ 'calc2-potencias':{h:'Series de potencias',lede:'Una serie de potencias define una función en su intervalo de convergencia. Fuera de él, las sumas parciales se separan sin control.',vh:'Sumas parciales y la función que representan',hint:'Aumente N y mueva x dentro y fuera del intervalo',ex:EX3,ctl:potCtl,draw:()=>potDraw(true)},
+ 'calc2-taylor':{h:'Polinomios de Taylor',lede:'Los polinomios de Taylor aproximan una función cerca de un punto usando sus derivadas. Al subir el orden, la aproximación mejora dentro del radio de convergencia.',vh:'f(x) y su polinomio de Taylor',hint:'Suba el orden y mueva el centro',ex:EX4,ctl:tayCtl,draw:()=>tayDraw(true)}};
+let CUR=null,ON=false;
+function show(id){
+  if(!TOOLS[id])id='calc2-sucesiones';const T=TOOLS[id];CUR=id;
+  $$('#c2topics a').forEach(a=>{if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  $('#c2h1').textContent=T.h;$('#c2lede').textContent=T.lede;$('#c2vh').textContent=T.vh;$('#c2hint').textContent=T.hint;
+  const w=$('#c2worked');w.innerHTML='<h2>'+T.ex.title+'</h2><div class="stmt">'+T.ex.stmt+'</div><div class="anscheck"></div><details class="sol"><summary>Ver desarrollo</summary>'+T.ex.sol+'</details>';
+  checks(w.querySelector('.anscheck'),T.ex.checks);typeset(w);
+  const ct=$('#ctab-calc2');if(ct)ct.setAttribute('href','#'+id);
+  T.ctl();T.draw();
+}
+function route(){const h=location.hash.slice(1);if(h.startsWith('calc2-')){ON=true;show(h);}else ON=false;}
+window.addEventListener('hashchange',route);
+window.addEventListener('coursetab',ev=>{if(ev.detail==='tab-calc2'){const h=location.hash.slice(1);if(!h.startsWith('calc2-'))show(CUR||'calc2-sucesiones');}});
+new ResizeObserver(()=>{if(CUR&&!$('#tab-calc2').hidden){const T=TOOLS[CUR];if(CUR==='calc2-sucesiones')sucDraw();else if(CUR==='calc2-series')serDraw(false);else if(CUR==='calc2-potencias')potDraw(false);else tayDraw(false);}}).observe($('#c2cv').parentElement);
+route();
+})();
+</script>
+
 
