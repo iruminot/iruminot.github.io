@@ -99,6 +99,19 @@
               ]
             },
             {
+              "slug": "calculo-ii",
+              "codigo": "IN1523C",
+              "nombre": "Cálculo II",
+              "carreras": "Ingenierías, Facultad de Ingeniería",
+              "rol": "",
+              "unidades": [
+                {"titulo": "Integral definida", "temas": ["Sumas de Riemann y funciones integrables", "Propiedades de la integral definida", "Teorema fundamental del cálculo"], "recursos": []},
+                {"titulo": "Técnicas de integración", "temas": ["Sustitución", "Integración por partes", "Integrales trigonométricas y sustitución trigonométrica", "Fracciones parciales"], "recursos": []},
+                {"titulo": "Aplicaciones e integrales impropias", "temas": ["Áreas entre curvas", "Volúmenes de sólidos de revolución", "Longitud de arco", "Integrales impropias"], "recursos": []},
+                {"titulo": "Sucesiones y series", "temas": ["Sucesiones: límite, monotonía y acotamiento", "Series numéricas; serie geométrica y telescópica", "Criterios de convergencia", "Series de potencias: radio e intervalo de convergencia", "Series de Taylor y de Maclaurin"], "recursos": [], "actual": true}
+              ]
+            },
+            {
               "slug": "algebra",
               "codigo": "IN1514C",
               "nombre": "Álgebra",

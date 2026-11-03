@@ -150,7 +150,8 @@ def curso(a, s, c):
         temas = "".join(f"<li>{e(t)}</li>" for t in u["temas"])
         recs = "".join(f'<a href="{e(recurso_url(x, r))}">{e(x["titulo"])}<small>{"Laboratorio interactivo" if x.get("lab") else e(x.get("tipo", "Material"))}</small></a>' for x in u.get("recursos", []))
         recs = recs or '<p class="none">Material en preparación.</p>'
-        unidades += f"""<article class="unit"><header><span class="n">Unidad {i}</span><h3>{e(u['titulo'])}</h3></header>
+        ahora = ' <span class="badge">En curso</span>' if u.get("actual") else ""
+        unidades += f"""<article class="unit"><header><span class="n">Unidad {i}</span><h3>{e(u['titulo'])}</h3>{ahora}</header>
 <div><ul>{temas}</ul></div><div class="res"><h4>Material</h4>{recs}</div></article>"""
     rol = f' · {e(c["rol"])}' if c.get("rol") else ""
     cuerpo = f"""<nav class="crumbs" aria-label="Ruta"><a href="{r}docencia/">Docencia</a> / {a['anio']} · {e(s['nombre'])}</nav>
