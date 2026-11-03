@@ -810,66 +810,128 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
 
   <div data-prob="p1">
     <h2>Problema 1 · Resorte con amortiguador</h2>
-    <p class="stmt">Una masa de 0.2 kg se une a un resorte de constante 5 N/m y a un amortiguador de constante 2 N·s/m. Inicialmente la masa se desplaza 0.04 m por debajo del equilibrio y se libera con velocidad 0.1 m/s. Determine a) posición, velocidad y aceleración para t &gt; 0; b) el primer instante en que cruza el equilibrio; c) el primer instante en que la velocidad es cero.</p>
+    <p class="stmt">Una masa de 0.2 kg se une a un resorte de constante 5 N/m y a un amortiguador de constante 2 N·s/m. Inicialmente la masa se desplaza 0.04 m por debajo del equilibrio y se libera con velocidad 0.1 m/s hacia abajo. Determine a) posición, velocidad y aceleración para t &gt; 0; b) el primer instante en que cruza el equilibrio; c) el primer instante en que la velocidad es cero.</p>
     <div class="datos"><span>m = 0.2</span><span>c = 2</span><span>k = 5</span><span>x₀ = 0.04</span><span>v₀ = 0.1 (hacia abajo)</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Segunda ley de Newton.</b> Medido desde el equilibrio, el peso queda cancelado por el estiramiento inicial del resorte. Quedan la fuerza del resorte \(-kx\) (ley de Hooke) y la del amortiguador \(-cx'\), así que \( m x'' = -kx - cx' \).</li>
+      <li><b>Ecuación característica.</b> Al probar \( x = e^{rt} \) se obtiene \( mr^2 + cr + k = 0 \). Si la raíz \( r \) es doble, la segunda solución independiente es \( t\,e^{rt} \) (se obtiene por reducción de orden).</li>
+      <li><b>Existencia y unicidad.</b> Una EDO lineal de orden 2 necesita dos condiciones iniciales, \( x(0) \) y \( x'(0) \), que fijan las dos constantes.</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Ecuación: \( 0.2\,x'' + 2\,x' + 5\,x = 0 \iff x'' + 10x' + 25x = 0. \)</li>
-      <li>Característica: \( r^2 + 10r + 25 = (r+5)^2 = 0 \Rightarrow r = -5 \) doble. Como \( \Delta = 2^2 - 4(0.2)(5) = 0 \), el sistema es <b>críticamente amortiguado</b>.</li>
-      <li>Solución general: \( x(t) = (C_1 + C_2 t)\,e^{-5t}. \) Con \( x(0) = C_1 = 0.04 \) y \( x'(0) = -5C_1 + C_2 = 0.1 \) se obtiene \( C_2 = 0.3 \).</li>
+      <li>Ecuación: \( 0.2\,x'' + 2\,x' + 5\,x = 0 \). Dividiendo por 0.2: \( x'' + 10x' + 25x = 0 \).</li>
+      <li>Característica: \( r^2 + 10r + 25 = (r+5)^2 = 0 \Rightarrow r = -5 \) doble. El discriminante \( \Delta = c^2 - 4mk = 4 - 4(0.2)(5) = 0 \) confirma el caso <b>críticamente amortiguado</b>.</li>
+      <li>Solución general: \( x(t) = (C_1 + C_2 t)\,e^{-5t} \). Derivando con la regla del producto: \( x'(t) = (C_2 - 5C_1 - 5C_2t)\,e^{-5t} \).</li>
+      <li>Condiciones iniciales: \( x(0) = C_1 = 0.04 \) y \( x'(0) = C_2 - 5C_1 = 0.1 \Rightarrow C_2 = 0.1 + 0.2 = 0.3 \).</li>
+      <li>Velocidad y aceleración, derivando otra vez: \( v = (0.1 - 1.5t)e^{-5t} \), \( a = (7.5t - 2)e^{-5t} \). Comprobación: \( a(0) = -2 \) coincide con \( -10v(0) - 25x(0) = -1 - 1 \).</li>
     </ol>
     <div class="ans">
       <p><b>a)</b></p>
       \[ x(t) = (0.04 + 0.3t)\,e^{-5t}\ \text{m},\quad v(t) = (0.1 - 1.5t)\,e^{-5t}\ \text{m/s},\quad a(t) = (7.5t - 2)\,e^{-5t}\ \text{m/s}^2 \]
-      <p><b>b)</b> \( x(t) = 0 \iff 0.04 + 0.3t = 0 \iff t = -\tfrac{2}{15} &lt; 0. \) La masa <b>no cruza</b> el equilibrio para t &gt; 0: se acerca a él sin alcanzarlo, como es típico del caso crítico.</p>
-      <p><b>c)</b> \( v(t) = 0 \iff t = \tfrac{1}{15} \approx 0.0667 \) s. En ese instante la masa alcanza su máximo descenso, \( x(1/15) \approx 0.0430 \) m.</p>
+      <p><b>b)</b> Como \( e^{-5t} &gt; 0 \), \( x(t) = 0 \iff 0.04 + 0.3t = 0 \iff t = -\tfrac{2}{15} &lt; 0 \). La masa <b>nunca cruza</b> el equilibrio para t &gt; 0.</p>
+      <p><b>c)</b> \( v(t) = 0 \iff 0.1 - 1.5t = 0 \iff t = \tfrac{1}{15} \approx 0.0667 \) s. Ahí está el punto más bajo: \( x(1/15) = 0.06\,e^{-1/3} \approx 0.0430 \) m.</p>
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>Qué hace la masa.</b> Parte hacia abajo, así que primero sigue bajando: recorre 3 mm más durante 0.067 s. Luego se detiene y vuelve al equilibrio sin oscilar. En la simulación se ve que nunca lo pasa.</li>
+      <li><b>Por qué no cruza.</b> En el caso crítico, \( x = (C_1 + C_2t)e^{-5t} \) solo puede anularse cuando \( C_1 + C_2 t = 0 \): a lo más una vez. Aquí \( C_1 \) y \( C_2 \) son positivos, así que eso pasaría en un tiempo negativo.</li>
+      <li><b>Para qué sirve.</b> El amortiguamiento crítico es el que lleva al equilibrio lo más rápido posible sin oscilar. Por eso se busca algo cercano en los cierrapuertas y en la suspensión de los autos. Con un c menor, la puerta rebotaría; con uno mayor, cerraría más lento. Pruebe cambiando c en el panel de parámetros.</li>
+    </ul>
   </div>
 
   <div data-prob="p2" hidden>
     <h2>Problema 2 · Movimiento libre no amortiguado</h2>
     <p class="stmt">Un sistema masa-resorte vertical tiene m = 9 kg y k = 25 N/m. La masa se libera desde 4 cm sobre el equilibrio con velocidad hacia abajo de 2 m/s. Determine la posición y la velocidad. ¿Cuál es la posición, la velocidad y la aceleración a los 10 segundos?</p>
     <div class="datos"><span>m = 9</span><span>c = 0</span><span>k = 25</span><span>x₀ = −0.04 (arriba)</span><span>v₀ = 2 (hacia abajo)</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Sin roce:</b> \( m x'' + k x = 0 \). Las raíces características son imaginarias puras, \( r = \pm i\omega_0 \) con \( \omega_0 = \sqrt{k/m} \).</li>
+      <li><b>Fórmula de Euler:</b> \( e^{\pm i\omega_0 t} = \cos\omega_0 t \pm i\operatorname{sen}\omega_0 t \). Las soluciones reales son \( \cos\omega_0 t \) y \( \operatorname{sen}\omega_0 t \).</li>
+      <li><b>Conservación de la energía:</b> sin roce, \( E = \tfrac12 m v^2 + \tfrac12 k x^2 \) es constante. Sirve para comprobar la amplitud.</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Ecuación: \( 9x'' + 25x = 0. \) Característica: \( 9r^2 + 25 = 0 \Rightarrow r = \pm \tfrac{5}{3} i. \)</li>
-      <li>Frecuencia natural \( \omega_0 = \sqrt{k/m} = 5/3 \) rad/s y período \( T = 2\pi/\omega_0 = 6\pi/5 \approx 3.77 \) s.</li>
-      <li>Solución general: \( x(t) = C_1\cos\tfrac{5t}{3} + C_2\sin\tfrac{5t}{3}. \) Con \( x(0) = C_1 = -0.04 \) y \( x'(0) = \tfrac{5}{3}C_2 = 2 \) queda \( C_2 = 1.2 \).</li>
+      <li>Ecuación: \( 9x'' + 25x = 0 \). Característica: \( 9r^2 + 25 = 0 \Rightarrow r = \pm \tfrac{5}{3}\,i \).</li>
+      <li>Frecuencia natural \( \omega_0 = 5/3 \) rad/s, período \( T = 2\pi/\omega_0 = 6\pi/5 \approx 3.77 \) s.</li>
+      <li>Solución general: \( x = C_1\cos\tfrac{5t}{3} + C_2\operatorname{sen}\tfrac{5t}{3} \), y \( x' = -\tfrac53C_1\operatorname{sen}\tfrac{5t}{3} + \tfrac53C_2\cos\tfrac{5t}{3} \).</li>
+      <li>Condiciones iniciales (positivo hacia abajo): \( x(0) = C_1 = -0.04 \) y \( x'(0) = \tfrac{5}{3}C_2 = 2 \Rightarrow C_2 = 1.2 \).</li>
+      <li>Forma amplitud-fase: \( x = A\operatorname{sen}\!\left(\tfrac{5t}{3} + \varphi\right) \) con \( A = \sqrt{C_1^2 + C_2^2} = \sqrt{0.0016 + 1.44} \approx 1.2007 \) m.</li>
+      <li>Comprobación por energía: \( E = \tfrac12(9)(2)^2 + \tfrac12(25)(0.04)^2 = 18.02 \) J. En el punto más alejado \( v = 0 \), así que \( \tfrac12(25)A^2 = 18.02 \Rightarrow A = 1.2007 \) m. Coincide.</li>
     </ol>
     <div class="ans">
-      \[ x(t) = -0.04\cos\tfrac{5t}{3} + 1.2\sin\tfrac{5t}{3}\ \text{m},\qquad v(t) = \tfrac{1}{15}\sin\tfrac{5t}{3} + 2\cos\tfrac{5t}{3}\ \text{m/s} \]
-      <p>Amplitud: \( A = \sqrt{0.04^2 + 1.2^2} \approx 1.2007 \) m. Como no hay amortiguamiento, oscila con esa amplitud para siempre.</p>
-      <p><b>En t = 10 s:</b> \( x(10) \approx -0.9592 \) m (0.96 m sobre el equilibrio), \( v(10) \approx -1.2037 \) m/s (subiendo), \( a(10) = -\tfrac{25}{9}x(10) \approx 2.6643 \) m/s².</p>
+      \[ x(t) = -0.04\cos\tfrac{5t}{3} + 1.2\operatorname{sen}\tfrac{5t}{3}\ \text{m},\qquad v(t) = \tfrac{1}{15}\operatorname{sen}\tfrac{5t}{3} + 2\cos\tfrac{5t}{3}\ \text{m/s} \]
+      <p><b>En t = 10 s:</b> \( x(10) \approx -0.9592 \) m (0.96 m sobre el equilibrio) y \( v(10) \approx -1.2037 \) m/s (subiendo). Además \( a(10) = -\omega_0^2\,x(10) = -\tfrac{25}{9}(-0.9592) \approx 2.6643 \) m/s².</p>
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>La amplitud la deciden las condiciones iniciales.</b> Aunque parte a solo 4 cm del equilibrio, la velocidad inicial de 2 m/s le da energía para alejarse 1.2 m. Casi toda la energía (18 de 18.02 J) es cinética al inicio.</li>
+      <li><b>La frecuencia no depende de cómo se lance.</b> \( \omega_0 = \sqrt{k/m} \) depende solo del resorte y de la masa: cualquier lanzamiento oscila con período 3.77 s. Un resorte más rígido oscila más rápido, y una masa mayor, más lento.</li>
+      <li><b>Signo de la aceleración.</b> \( a = -\omega_0^2 x \): cuando la masa está arriba (\( x &lt; 0 \)), la aceleración apunta hacia abajo (\( a &gt; 0 \)). El resorte siempre empuja hacia el equilibrio. En el modelo ideal sin roce oscila para siempre; en la práctica siempre hay algo de roce (pruebe con c pequeño).</li>
+    </ul>
   </div>
 
   <div data-prob="p3" hidden>
     <h2>Problema 3 · Datos dados por peso y alargamiento</h2>
     <p class="stmt">Una masa que pesa 2.45 N alarga 0.6125 m un resorte. Actúa una fuerza de amortiguamiento proporcional a la velocidad con c = 2. Determine la ecuación de movimiento si la masa se libera desde el equilibrio con una velocidad ascendente de 3 m/s.</p>
     <div class="datos"><span>W = 2.45 N</span><span>s = 0.6125 m</span><span>c = 2</span><span>x₀ = 0</span><span>v₀ = −3 (hacia arriba)</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Equilibrio estático.</b> Al colgar la masa, el resorte se estira s hasta que su fuerza iguala al peso: \( k\,s = W \). De ahí sale \( k = W/s \).</li>
+      <li><b>Peso y masa:</b> \( W = mg \Rightarrow m = W/g \), con \( g = 9.8 \) m/s².</li>
+      <li><b>Clasificación por el discriminante</b> \( \Delta = c^2 - 4mk \): negativo es subamortiguado, cero es crítico y positivo es sobreamortiguado.</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Parámetros: \( k = W/s = 2.45/0.6125 = 4 \) N/m y \( m = W/g = 2.45/9.8 = 0.25 \) kg.</li>
-      <li>Ecuación: \( 0.25x'' + 2x' + 4x = 0 \iff x'' + 8x' + 16x = 0. \) Característica: \( (r+4)^2 = 0 \Rightarrow r = -4 \) doble: <b>críticamente amortiguado</b>.</li>
-      <li>Solución general \( x(t) = (C_1 + C_2t)e^{-4t} \). Con \( x(0) = C_1 = 0 \) y \( x'(0) = C_2 = -3 \).</li>
+      <li>Parámetros: \( k = 2.45/0.6125 = 4 \) N/m y \( m = 2.45/9.8 = 0.25 \) kg.</li>
+      <li>Ecuación: \( 0.25x'' + 2x' + 4x = 0 \iff x'' + 8x' + 16x = 0 \). Discriminante \( \Delta = 4 - 4(0.25)(4) = 0 \): <b>críticamente amortiguado</b>, con raíz doble \( r = -4 \).</li>
+      <li>Solución general: \( x = (C_1 + C_2t)e^{-4t} \), y \( x' = (C_2 - 4C_1 - 4C_2t)e^{-4t} \).</li>
+      <li>Condiciones iniciales: \( x(0) = C_1 = 0 \) y \( x'(0) = C_2 = -3 \) (negativo, porque sube).</li>
+      <li>Punto más alto: \( v = (12t - 3)e^{-4t} = 0 \iff t = \tfrac14 \) s, y \( x(\tfrac14) = -\tfrac34 e^{-1} \approx -0.276 \) m.</li>
     </ol>
     <div class="ans">
       \[ x(t) = -3t\,e^{-4t}\ \text{m},\qquad v(t) = (12t - 3)\,e^{-4t}\ \text{m/s} \]
-      <p>La masa sube hasta \( t = 1/4 \) s, donde llega a \( 0.75/e \approx 0.276 \) m sobre el equilibrio, y luego regresa sin cruzarlo.</p>
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>El recorrido.</b> La masa sale del equilibrio hacia arriba, sube 27.6 cm en 0.25 s, se detiene y vuelve. Se acerca al equilibrio cada vez más lento, sin pasarlo: x es negativo para todo t &gt; 0.</li>
+      <li><b>Leer bien los datos.</b> El problema no da m ni k directamente: los oculta en el peso y el alargamiento. Confundir peso con masa (usar m = 2.45) cambiaría el régimen a subamortiguado (la masa oscilaría). Pruébelo en el panel con m = 2.45.</li>
+      <li><b>Los signos importan.</b> Con la convención «positivo hacia abajo», una velocidad ascendente es negativa. Un error de signo invierte todo el movimiento.</li>
+    </ul>
   </div>
 
   <div data-prob="p4" hidden>
     <h2>Problema 4 · Fuerza externa F(t) = t e<sup>−t</sup></h2>
     <p class="stmt">Un sistema amortiguado vertical tiene m = 1 kg, k = 8 N/m y c = 6 N·s/m. La masa parte del equilibrio con velocidad de 2 m/s hacia arriba, y sobre ella actúa F(t) = t e<sup>−t</sup>. Determine la posición para todo t &gt; 0.</p>
     <div class="datos"><span>m = 1</span><span>c = 6</span><span>k = 8</span><span>x₀ = 0</span><span>v₀ = −2 (hacia arriba)</span><span>F(t) = t e⁻ᵗ</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Principio de superposición.</b> La solución general de la ecuación no homogénea es \( x = x_h + x_p \): la general de la homogénea más <i>una</i> solución particular.</li>
+      <li><b>Coeficientes indeterminados.</b> Si la fuerza es \( P(t)\,e^{at} \), con P un polinomio de grado n, y a <i>no</i> es raíz característica, se propone \( x_p = Q(t)\,e^{at} \) con Q de grado n. Si a fuera raíz de multiplicidad s, habría que multiplicar por \( t^s \): eso es la resonancia.</li>
+      <li><b>Las condiciones iniciales se aplican al final</b>, a la solución completa \( x_h + x_p \), y no solo a \( x_h \).</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Ecuación: \( x'' + 6x' + 8x = t\,e^{-t}. \) Característica: \( r^2 + 6r + 8 = (r+2)(r+4) = 0 \Rightarrow r = -2,\,-4 \): <b>sobreamortiguado</b> (Δ = 4 &gt; 0).</li>
-      <li>Homogénea: \( x_h = C_1e^{-2t} + C_2e^{-4t}. \)</li>
-      <li>Coeficientes indeterminados: como −1 no es raíz, se propone \( x_p = (At + B)e^{-t} \). Al sustituir, \( (3At + 4A + 3B)\,e^{-t} = t\,e^{-t} \), así que \( A = \tfrac13,\ B = -\tfrac49 \).</li>
-      <li>Condiciones iniciales: \( C_1 + C_2 = \tfrac49 \) y \( -2C_1 - 4C_2 + \tfrac79 = -2 \), de donde \( C_1 = -\tfrac12,\ C_2 = \tfrac{17}{18} \).</li>
+      <li>Ecuación: \( x'' + 6x' + 8x = t\,e^{-t} \). Característica: \( r^2 + 6r + 8 = (r+2)(r+4) = 0 \Rightarrow r = -2,\,-4 \). Como \( \Delta = 36 - 32 = 4 &gt; 0 \), es <b>sobreamortiguado</b>.</li>
+      <li>Homogénea: \( x_h = C_1e^{-2t} + C_2e^{-4t} \).</li>
+      <li>La fuerza es \( t\,e^{-t} \): polinomio de grado 1 por \( e^{-t} \), con \( a = -1 \), que no es raíz. Se propone \( x_p = (At + B)e^{-t} \).</li>
+      <li>Derivadas: \( x_p' = (A - B - At)e^{-t} \) y \( x_p'' = (At + B - 2A)e^{-t} \). Sustituyendo y agrupando:
+        \[ x_p'' + 6x_p' + 8x_p = \big(3At + 4A + 3B\big)e^{-t} = t\,e^{-t}. \]
+        Igualando coeficientes: \( 3A = 1 \) y \( 4A + 3B = 0 \), así que \( A = \tfrac13 \) y \( B = -\tfrac49 \).</li>
+      <li>Condiciones iniciales sobre \( x = C_1e^{-2t} + C_2e^{-4t} + \left(\tfrac t3 - \tfrac49\right)e^{-t} \):
+        \[ x(0) = C_1 + C_2 - \tfrac49 = 0, \]
+        \[ x'(0) = -2C_1 - 4C_2 + \tfrac13 + \tfrac49 = -2 . \]
+        Resolviendo: \( C_1 = -\tfrac12 \) y \( C_2 = \tfrac{17}{18} \).</li>
     </ol>
     <div class="ans">
-      \[ x(t) = -\tfrac12 e^{-2t} + \tfrac{17}{18} e^{-4t} + \left(\tfrac{t}{3} - \tfrac49\right)e^{-t}\ \text{m} \]
-      <p>La masa sube hasta unos 0.247 m sobre el equilibrio en t ≈ 0.34 s. Después la fuerza externa la empuja hacia abajo: cruza el equilibrio en t ≈ 1.61 s, baja hasta 0.029 m en t ≈ 2.56 s y vuelve a x = 0 cuando la fuerza se extingue.</p>
+      \[ x(t) = \underbrace{-\tfrac12 e^{-2t} + \tfrac{17}{18} e^{-4t}}_{\text{transitoria}} + \underbrace{\left(\tfrac{t}{3} - \tfrac49\right)e^{-t}}_{\text{respuesta a la fuerza}}\ \text{m} \]
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>Dos causas, dos partes.</b> La parte homogénea se debe al lanzamiento inicial y decae rápido (como \( e^{-2t} \)). La parte particular es la respuesta a la fuerza y decae más lento (como \( e^{-t} \)): pasado el primer segundo, domina la fuerza.</li>
+      <li><b>El recorrido.</b> La masa sube hasta unos 0.247 m sobre el equilibrio (t ≈ 0.34 s). La fuerza, que es máxima en t = 1, la empuja hacia abajo: cruza el equilibrio en t ≈ 1.61 s, baja hasta 0.029 m en t ≈ 2.56 s y vuelve a x = 0 a medida que la fuerza se apaga.</li>
+      <li><b>Sobreamortiguado y aun así cruza.</b> Sin fuerza, un sistema sobreamortiguado cruza el equilibrio a lo más una vez. Aquí lo cruza porque la fuerza externa lo empuja. Ponga F₀ = 0 en el panel para comparar.</li>
+    </ul>
   </div>
 
   <div data-prob="p5" hidden>
