@@ -225,6 +225,7 @@ canvas.chart{display:block;width:100%;touch-action:none}
 .rq input{font:14px var(--mono);padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
 .rq input.good{border-color:var(--im)}.rq input.bad{border-color:var(--num)}
 .rqmsg{font-size:13.5px;font-weight:500}
+.worked ol.vars{background:var(--accent-weak);border-radius:8px;padding:10px 14px 10px 34px;margin:0}
 .worked .solh{font:600 13px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px}
 .worked details.sol ul{margin:4px 0;padding-left:20px;display:flex;flex-direction:column;gap:5px;max-width:68ch}
 .sw.env{background:none;border-top:2px dashed var(--muted);border-radius:0;height:0;width:16px;vertical-align:3px}
@@ -838,6 +839,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       <li><b>Por qué no cruza.</b> En el caso crítico, \( x = (C_1 + C_2t)e^{-5t} \) solo puede anularse cuando \( C_1 + C_2 t = 0 \): a lo más una vez. Aquí \( C_1 \) y \( C_2 \) son positivos, así que eso pasaría en un tiempo negativo.</li>
       <li><b>Para qué sirve.</b> El amortiguamiento crítico es el que lleva al equilibrio lo más rápido posible sin oscilar. Por eso se busca algo cercano en los cierrapuertas y en la suspensión de los autos. Con un c menor, la puerta rebotaría; con uno mayor, cerraría más lento. Pruebe cambiando c en el panel de parámetros.</li>
     </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>¿Con qué velocidad inicial <i>hacia arriba</i> la masa sí alcanza a cruzar el equilibrio? (Pista: cruza si \( C_2 = v_0 + 0.2 &lt; 0 \)). Compruébelo con v₀ en el panel.</li>
+      <li>Baje c a 1.5 y súbalo a 3. ¿Qué régimen resulta en cada caso, y cuál vuelve antes al equilibrio?</li>
+      <li>Si la masa se duplica y el resorte y el amortiguador se mantienen, ¿sigue siendo crítico? ¿Qué c haría falta?</li>
+    </ol>
   </div>
 
   <div data-prob="p2" hidden>
@@ -869,6 +876,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       <li><b>La frecuencia no depende de cómo se lance.</b> \( \omega_0 = \sqrt{k/m} \) depende solo del resorte y de la masa: cualquier lanzamiento oscila con período 3.77 s. Un resorte más rígido oscila más rápido, y una masa mayor, más lento.</li>
       <li><b>Signo de la aceleración.</b> \( a = -\omega_0^2 x \): cuando la masa está arriba (\( x &lt; 0 \)), la aceleración apunta hacia abajo (\( a &gt; 0 \)). El resorte siempre empuja hacia el equilibrio. En el modelo ideal sin roce oscila para siempre; en la práctica siempre hay algo de roce (pruebe con c pequeño).</li>
     </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Si la masa se cuadruplica, ¿qué pasa con el período? Prediga antes con \( T = 2\pi\sqrt{m/k} \).</li>
+      <li>¿Con qué velocidad inicial hacia abajo, partiendo del mismo punto, la amplitud sería exactamente 0.5 m? Use la conservación de la energía.</li>
+      <li>Agregue un roce pequeño (c = 0.5). ¿Cuánto tarda la amplitud en bajar a la mitad? Compare con el período.</li>
+    </ol>
   </div>
 
   <div data-prob="p3" hidden>
@@ -898,6 +911,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       <li><b>Leer bien los datos.</b> El problema no da m ni k directamente: los oculta en el peso y el alargamiento. Confundir peso con masa (usar m = 2.45) cambiaría el régimen a subamortiguado (la masa oscilaría). Pruébelo en el panel con m = 2.45.</li>
       <li><b>Los signos importan.</b> Con la convención «positivo hacia abajo», una velocidad ascendente es negativa. Un error de signo invierte todo el movimiento.</li>
     </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Si el mismo resorte se estira el doble con otra masa (s = 1.225 m), ¿cuánto pesa esa masa? ¿El nuevo sistema sigue siendo crítico con c = 2?</li>
+      <li>Si la masa se suelta desde el equilibrio hacia abajo con 3 m/s, ¿cómo cambia la solución? (Piense en la simetría antes de calcular).</li>
+      <li>Con c = 1, ¿cuántas veces cruza el equilibrio antes de que la amplitud baje de 1 cm?</li>
+    </ol>
   </div>
 
   <div data-prob="p4" hidden>
@@ -932,6 +951,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       <li><b>El recorrido.</b> La masa sube hasta unos 0.247 m sobre el equilibrio (t ≈ 0.34 s). La fuerza, que es máxima en t = 1, la empuja hacia abajo: cruza el equilibrio en t ≈ 1.61 s, baja hasta 0.029 m en t ≈ 2.56 s y vuelve a x = 0 a medida que la fuerza se apaga.</li>
       <li><b>Sobreamortiguado y aun así cruza.</b> Sin fuerza, un sistema sobreamortiguado cruza el equilibrio a lo más una vez. Aquí lo cruza porque la fuerza externa lo empuja. Ponga F₀ = 0 en el panel para comparar.</li>
     </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Si la fuerza fuera \( F(t) = e^{-2t} \), ¿qué forma debería tener \( x_p \)? (−2 es raíz característica: aplique la regla de multiplicidad).</li>
+      <li>Con una fuerza periódica \( F(t) = \cos t \) en vez de \( t\,e^{-t} \), ¿la masa vuelve al reposo? Elija F₀ cos ωt en el panel y compare.</li>
+      <li>Si la masa parte en reposo (v₀ = 0), ¿llega a subir sobre el equilibrio? Prediga con la interpretación de las dos partes de la solución.</li>
+    </ol>
   </div>
 
   <div data-prob="p5" hidden>
@@ -944,16 +969,37 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Un circuito en serie tiene inductancia L = 0.05 H, resistencia R = 2 Ω y un capacitor de C = 0.01 F, sin fuente: E(t) = 0. Al inicio el capacitor tiene una carga de 5 C y no circula corriente. Determine la carga q(t) y la corriente i(t). ¿Cuál es la carga a los 0.01 s?</p>
     <p class="analog"><b>Lectura como resorte.</b> Por la ley de voltajes de Kirchhoff, \( L\,q'' + R\,q' + \tfrac1C\,q = E(t) \). Es la ecuación del resorte con L en el papel de la masa, R en el del amortiguador, 1/C en el de la constante k, la carga q como posición y la corriente i = q′ como velocidad.</p>
     <div class="datos"><span>L = 0.05 ↔ m</span><span>R = 2 ↔ c</span><span>1/C = 100 ↔ k</span><span>q₀ = 5</span><span>i₀ = 0</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Ley de voltajes de Kirchhoff:</b> en un circuito cerrado, la suma de las caídas de voltaje es igual a la fuente. La bobina produce \( L\,\tfrac{di}{dt} \), la resistencia \( R\,i \) (ley de Ohm) y el capacitor \( q/C \).</li>
+      <li><b>Corriente y carga:</b> \( i = \tfrac{dq}{dt} \). Escrita en términos de la carga, la ley es una EDO lineal de orden 2: \( Lq'' + Rq' + q/C = E(t) \).</li>
+      <li><b>Energía:</b> el capacitor guarda \( q^2/(2C) \) y la bobina \( Li^2/2 \). La resistencia la transforma en calor a razón \( Ri^2 \) (efecto Joule).</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Ecuación: \( 0.05\,q'' + 2\,q' + 100\,q = 0 \iff q'' + 40q' + 2000q = 0. \)</li>
-      <li>Característica: \( r^2 + 40r + 2000 = 0 \Rightarrow r = -20 \pm 40i \). Como \( \Delta = 2^2 - 4(0.05)(100) = -16 &lt; 0 \), el circuito es <b>subamortiguado</b>.</li>
-      <li>Solución general \( q(t) = e^{-20t}(C_1\cos 40t + C_2\sin 40t) \). Con \( q(0) = C_1 = 5 \) y \( q'(0) = -20C_1 + 40C_2 = 0 \) queda \( C_2 = 2.5 \).</li>
+      <li>Ecuación: \( 0.05\,q'' + 2\,q' + 100\,q = 0 \). Dividiendo por 0.05: \( q'' + 40q' + 2000q = 0 \).</li>
+      <li>Característica: \( r = \dfrac{-40 \pm \sqrt{1600 - 8000}}{2} = -20 \pm 40i \). El discriminante es negativo: el circuito es <b>subamortiguado</b> y la carga oscila.</li>
+      <li>Solución general: \( q = e^{-20t}(C_1\cos 40t + C_2\operatorname{sen} 40t) \).</li>
+      <li>Condiciones iniciales: \( q(0) = C_1 = 5 \). Además, «no circula corriente» significa \( i(0) = q'(0) = -20C_1 + 40C_2 = 0 \), así que \( C_2 = 2.5 \).</li>
+      <li>Corriente, derivando con la regla del producto: \( i = e^{-20t}\big[(-20\cdot5 + 40\cdot2.5)\cos 40t + (-20\cdot2.5 - 40\cdot5)\operatorname{sen} 40t\big] = -250\,e^{-20t}\operatorname{sen} 40t \).</li>
     </ol>
     <div class="ans">
-      \[ q(t) = e^{-20t}\left(5\cos 40t + 2.5\sin 40t\right)\ \text{C},\qquad i(t) = q'(t) = -250\,e^{-20t}\sin 40t\ \text{A} \]
-      <p><b>En t = 0.01 s:</b> \( q(0.01) \approx 4.568 \) C.</p>
-      <p>La carga oscila entre las placas mientras el capacitor se descarga, con cuasiperíodo \( 2\pi/40 \approx 0.157 \) s. La energía se disipa como calor en la resistencia, igual que en el amortiguador del resorte. Como las raíces son complejas, la hélice de abajo muestra este caso.</p>
+      \[ q(t) = e^{-20t}\left(5\cos 40t + 2.5\operatorname{sen} 40t\right)\ \text{C},\qquad i(t) = -250\,e^{-20t}\operatorname{sen} 40t\ \text{A} \]
+      <p><b>En t = 0.01 s:</b> \( q(0.01) = e^{-0.2}(5\cos 0.4 + 2.5\operatorname{sen} 0.4) \approx 4.568 \) C.</p>
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>El capacitor se descarga, pero oscilando.</b> La carga pasa de una placa a la otra, ida y vuelta, con cuasiperíodo \( 2\pi/40 \approx 0.157 \) s. En la primera centésima de segundo apenas perdió el 9 %.</li>
+      <li><b>La corriente cambia de sentido.</b> El signo de \( i \) se alterna. Su valor máximo es de unos 128.5 A, en \( t \approx 0.028 \) s. Es una corriente enorme porque el capacitor empezó a 500 V (\( V = q/C \)): son números didácticos.</li>
+      <li><b>Adónde va la energía.</b> Al inicio toda está en el capacitor: \( q_0^2/(2C) = 1250 \) J. La resistencia la va disipando como calor, y en la tarjeta de energía se ve cómo cae en escalones. Cada escalón ocurre cuando la corriente es máxima, porque ahí \( Ri^2 \) es mayor.</li>
+    </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>¿Qué resistencia hace que el circuito deje de oscilar? (Busque el valor de R con \( \Delta = 0 \); debería obtener \( R = 2\sqrt{L/C} \approx 4.47\ \Omega \)). Compruébelo con el control R.</li>
+      <li>Con R = 0, ¿cuál es la frecuencia de oscilación y qué le pasa a la energía? Compare con un resorte sin roce.</li>
+      <li>Si se duplica C, ¿la carga oscila más rápido o más lento? Prediga con \( \omega_0 = 1/\sqrt{LC} \) antes de mover el control.</li>
+      <li>Agregue una fuente \( E(t) = E_0\cos\omega t \): ¿para qué ω la carga oscila con mayor amplitud? Use la tarjeta de respuesta en frecuencia.</li>
+    </ol>
   </div>
 
   <div data-prob="p6" hidden>
@@ -967,16 +1013,37 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Un péndulo simple de longitud L = 2.45 m se suelta desde un ángulo de 0.1 rad (unos 5.7°) sin velocidad inicial. Usando la aproximación sen θ ≈ θ y g = 9.8 m/s², determine θ(t), el período y la velocidad angular máxima.</p>
     <p class="analog"><b>Lectura como resorte.</b> En la dirección tangente, \( mL\,\theta'' = -mg\sin\theta \approx -mg\,\theta \). Dividiendo por mL: \( \theta'' + \tfrac{g}{L}\,\theta = 0 \). Es un resorte sin amortiguamiento con “masa” 1, constante k = g/L y el ángulo θ como posición. La gravedad hace el papel del resorte.</p>
     <div class="datos"><span>1 ↔ m</span><span>b = 0 ↔ c</span><span>g/L = 4 ↔ k</span><span>θ₀ = 0.1 rad</span><span>θ′₀ = 0</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Newton en la dirección tangente.</b> La masa se mueve sobre una circunferencia de radio L, así que su aceleración tangencial es \( L\theta'' \). La componente tangencial del peso es \( -mg\operatorname{sen}\theta \), y la tensión del hilo no aporta, porque es perpendicular. Queda \( mL\theta'' = -mg\operatorname{sen}\theta \).</li>
+      <li><b>Linealización (Taylor):</b> \( \operatorname{sen}\theta = \theta - \tfrac{\theta^3}{6} + \cdots \). Para ángulos pequeños, \( \operatorname{sen}\theta \approx \theta \), con un error relativo cercano a \( \theta^2/6 \).</li>
+      <li><b>Conservación de la energía:</b> \( \tfrac12 mL^2\theta'^2 + mgL(1 - \cos\theta) \) es constante. Sirve para comprobar el resultado sin linealizar.</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Ecuación: \( \theta'' + 4\theta = 0 \). Característica: \( r^2 + 4 = 0 \Rightarrow r = \pm 2i \), así que \( \omega_0 = \sqrt{g/L} = 2 \) rad/s.</li>
-      <li>Período \( T = 2\pi/\omega_0 = \pi \approx 3.14 \) s. No depende de la masa, y en la aproximación lineal tampoco del ángulo inicial.</li>
-      <li>Solución general \( \theta = C_1\cos 2t + C_2\sin 2t \). Con \( \theta(0) = 0.1 \) y \( \theta'(0) = 0 \): \( C_1 = 0.1,\ C_2 = 0 \).</li>
+      <li>Dividiendo por mL y linealizando: \( \theta'' + \tfrac{g}{L}\theta = 0 \), con \( \tfrac{g}{L} = \tfrac{9.8}{2.45} = 4 \).</li>
+      <li>Característica: \( r^2 + 4 = 0 \Rightarrow r = \pm 2i \), así que \( \omega_0 = 2 \) rad/s y el período es \( T = 2\pi/\omega_0 = \pi \approx 3.14 \) s.</li>
+      <li>Solución general: \( \theta = C_1\cos 2t + C_2\operatorname{sen} 2t \). Con \( \theta(0) = 0.1 \) y \( \theta'(0) = 2C_2 = 0 \): \( C_1 = 0.1 \) y \( C_2 = 0 \).</li>
+      <li>Velocidad angular: \( \theta' = -0.2\operatorname{sen} 2t \), cuyo valor máximo es \( 0.2 \) rad/s, en el punto más bajo (\( \theta = 0 \)).</li>
+      <li>Comprobación sin linealizar, por energía: \( \tfrac12 L^2\theta'^2_{\max} = gL(1 - \cos 0.1) \Rightarrow \theta'_{\max} = \sqrt{8(1 - \cos 0.1)} \approx 0.19992 \) rad/s. El error de la aproximación es de 0.04 %.</li>
     </ol>
     <div class="ans">
-      \[ \theta(t) = 0.1\cos 2t\ \text{rad},\qquad \theta'(t) = -0.2\sin 2t\ \text{rad/s} \]
-      <p>La velocidad angular máxima es 0.2 rad/s y se alcanza en el punto más bajo, donde la rapidez de la masa es \( L\cdot 0.2 = 0.49 \) m/s. Por ejemplo, \( \theta(1) = 0.1\cos 2 \approx -0.0416 \) rad.</p>
-      <p>La aproximación es buena: \( \sin(0.1) = 0.09983 \), un error de 0.17 %. Pruebe a agregar resistencia del aire con el control b.</p>
+      \[ \theta(t) = 0.1\cos 2t\ \text{rad},\qquad T = \pi \approx 3.14\ \text{s} \]
+      \[ \theta'_{\max} = 0.2\ \text{rad/s}\quad(\text{rapidez de la masa: } L\cdot0.2 = 0.49\ \text{m/s}) \]
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>La masa no importa.</b> m se cancela: un péndulo de plomo y uno de madera del mismo largo oscilan igual, despreciando el aire. El período depende solo de L y de g.</li>
+      <li><b>Por eso sirve de reloj.</b> Mientras el ángulo sea pequeño, el período casi no depende de la amplitud (isocronismo). Aunque el péndulo de un reloj pierda amplitud, sigue marcando el mismo ritmo. Galileo y Huygens usaron este hecho.</li>
+      <li><b>La gravedad hace de resorte.</b> \( g/L \) ocupa el lugar de k/m: un péndulo más largo es como un resorte más blando, y oscila más lento.</li>
+    </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>¿Qué largo debe tener el péndulo para que el período sea 2 s (un «péndulo que bate segundos»)? Despeje L de \( T = 2\pi\sqrt{L/g} \).</li>
+      <li>El mismo péndulo en la Luna (g = 1.62 m/s²): ¿cuál sería su período? Cambie el control g/L para comprobarlo.</li>
+      <li>Si se suelta desde 1 rad (57°), la linealización ya no es buena: el período real es un 6.6 % mayor que π. ¿Por qué un péndulo con amplitud grande tarda más? (Compare \( \operatorname{sen}\theta \) con \( \theta \) para θ grande.)</li>
+      <li>Agregue resistencia del aire con el control b: ¿cuántas oscilaciones da antes de que la amplitud baje a la mitad?</li>
+    </ol>
   </div>
 
   <div data-prob="p7" hidden>
@@ -991,15 +1058,37 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Una boya cilíndrica de 10 kg, con sección transversal A = 0.05 m², flota en agua (ρ = 1000 kg/m³). Se hunde 10 cm desde su posición de equilibrio y se suelta. El agua ejerce una resistencia proporcional a la velocidad con c = 20 N·s/m. Determine el movimiento de la boya y cuánto tarda la amplitud en bajar de 1 cm.</p>
     <p class="analog"><b>Lectura como resorte.</b> Si la boya se hunde x metros más que en el equilibrio, desplaza un volumen extra A·x y el empuje de Arquímedes aumenta en ρgA·x. Es una fuerza restauradora proporcional a x, como la de un resorte de constante k = ρgA.</p>
     <div class="datos"><span>m = 10</span><span>c = 20</span><span>k = ρgA = 490</span><span>x₀ = 0.1 (abajo)</span><span>v₀ = 0</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Principio de Arquímedes:</b> el agua empuja hacia arriba con una fuerza igual al peso del agua desalojada, \( \rho g V_{\text{sum}} \).</li>
+      <li><b>Equilibrio de flotación:</b> la boya se hunde hasta que el empuje iguala su peso: \( \rho g A h = mg \). Esta boya queda con \( h = \dfrac{m}{\rho A} = \dfrac{10}{1000\cdot0.05} = 0.2 \) m sumergidos.</li>
+      <li><b>Fuerza restauradora:</b> si se hunde x metros más, el empuje aumenta en \( \rho gA\,x \) y la empuja de vuelta. Es proporcional a x, como un resorte de constante \( k = \rho gA \).</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Constante: \( k = 1000\cdot 9.8\cdot 0.05 = 490 \) N/m. Ecuación: \( 10x'' + 20x' + 490x = 0 \iff x'' + 2x' + 49x = 0 \).</li>
-      <li>Característica: \( r = -1 \pm i\sqrt{48} \approx -1 \pm 6.928i \): <b>subamortiguado</b>.</li>
-      <li>Solución general \( x = e^{-t}(C_1\cos\sqrt{48}\,t + C_2\sin\sqrt{48}\,t) \). Con \( C_1 = 0.1 \) y \( -C_1 + \sqrt{48}\,C_2 = 0 \): \( C_2 = 0.1/\sqrt{48} \approx 0.01443 \).</li>
+      <li>Constante: \( k = 1000\cdot9.8\cdot0.05 = 490 \) N/m. Ecuación: \( 10x'' + 20x' + 490x = 0 \iff x'' + 2x' + 49x = 0 \).</li>
+      <li>Característica: \( r = \dfrac{-2 \pm \sqrt{4 - 196}}{2} = -1 \pm i\sqrt{48} \approx -1 \pm 6.928i \): <b>subamortiguado</b>.</li>
+      <li>Solución general: \( x = e^{-t}(C_1\cos\sqrt{48}\,t + C_2\operatorname{sen}\sqrt{48}\,t) \). Con \( x(0) = C_1 = 0.1 \) y \( x'(0) = -C_1 + \sqrt{48}\,C_2 = 0 \): \( C_2 = 0.1/\sqrt{48} \approx 0.01443 \).</li>
+      <li>Amplitud: \( x = R\,e^{-t}\cos(\sqrt{48}\,t - \delta) \), con \( R = \sqrt{C_1^2 + C_2^2} \approx 0.1010 \) m. La amplitud que va quedando es \( R\,e^{-t} \).</li>
+      <li>\( R\,e^{-t} &lt; 0.01 \iff e^{t} &gt; 10.10 \iff t &gt; \ln 10.10 \approx 2.31 \) s.</li>
     </ol>
     <div class="ans">
-      \[ x(t) = e^{-t}\left(0.1\cos 6.928t + 0.01443\sin 6.928t\right)\ \text{m} \]
-      <p>La boya oscila con cuasiperíodo \( 2\pi/\sqrt{48} \approx 0.907 \) s. Su amplitud es \( R\,e^{-t} \) con \( R = \sqrt{0.1^2 + 0.01443^2} \approx 0.1010 \) m, y \( R\,e^{-t} &lt; 0.01 \iff t &gt; \ln(10.10) \approx 2.31 \) s.</p>
+      \[ x(t) = e^{-t}\left(0.1\cos 6.928t + 0.01443\operatorname{sen} 6.928t\right)\ \text{m} \]
+      \[ t_{1\,\text{cm}} \approx 2.31\ \text{s} \]
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>El cabeceo de la boya.</b> La boya sube y baja con un cuasiperíodo de unos 0.91 s. En los 2.31 s que tarda en calmarse alcanza a dar unas dos oscilaciones y media.</li>
+      <li><b>El agua frena y empuja a la vez.</b> El empuje es el «resorte», y la viscosidad del agua y las olas que genera la boya son el «amortiguador».</li>
+      <li><b>Límite del modelo.</b> En reposo la boya tiene 20 cm sumergidos. Si se la levantara más de 20 cm, saldría del agua y el empuje dejaría de ser proporcional a x: la ecuación ya no valdría. Aquí se hundió solo 10 cm, así que el modelo es válido.</li>
+    </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Una boya del doble de ancho (A = 0.1 m²) y la misma masa: ¿cabecea más rápido o más lento? ¿Cuánto queda sumergida?</li>
+      <li>La misma boya en el mar (ρ = 1025 kg/m³): ¿cuánto cambian k y el cuasiperíodo? ¿Se notaría?</li>
+      <li>Si las olas del mar llegan con un período cercano a 0.9 s, ¿qué fenómeno ocurriría? (Relacione con los problemas de resonancia).</li>
+      <li>¿Desde qué hundimiento inicial x₀ la boya saldría del agua en su primer rebote? (Use que la amplitud del primer rebote hacia arriba es menor que x₀).</li>
+    </ol>
   </div>
 
   <div data-prob="p8" hidden>
@@ -1013,15 +1102,36 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">El circuito de sintonía de una radio es un circuito LC sin resistencia, con L = 1 H y C = 0.25 F (valores didácticos). Recibe la señal de una emisora, E(t) = cos 2t V. El capacitor parte descargado y sin corriente. Determine q(t) y explique qué ocurre.</p>
     <p class="analog"><b>Lectura como resorte.</b> \( L\,q'' + \tfrac1C\,q = E(t) \) es un resorte sin amortiguamiento empujado por una fuerza periódica. Su frecuencia natural es \( \omega_0 = 1/\sqrt{LC} = 2 \) rad/s, igual a la de la señal: hay <b>resonancia</b>. Sintonizar una radio consiste en ajustar C para que esto ocurra con la emisora deseada.</p>
     <div class="datos"><span>L = 1 ↔ m</span><span>R = 0 ↔ c</span><span>1/C = 4 ↔ k</span><span>E(t) = cos 2t ↔ F(t)</span><span>q₀ = 0</span><span>i₀ = 0</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Kirchhoff sin resistencia:</b> \( Lq'' + q/C = E(t) \). La frecuencia natural del circuito es \( \omega_0 = 1/\sqrt{LC} \).</li>
+      <li><b>Regla de resonancia:</b> si la frecuencia de la señal coincide con \( \omega_0 \), el número \( i\omega \) es raíz característica. La propuesta de coeficientes indeterminados debe multiplicarse por t (vea el panel «¿Cómo saber si habrá resonancia?»).</li>
+      <li><b>Superposición:</b> si llegan varias emisoras, \( E = E_1 + E_2 \), la respuesta es la suma de las respuestas a cada una.</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Ecuación: \( q'' + 4q = \cos 2t \). Homogénea: \( q_h = C_1\cos 2t + C_2\sin 2t \).</li>
-      <li>Como \( \cos 2t \) ya es solución de la homogénea, se propone \( q_p = t\,(A\cos 2t + B\sin 2t) \). Al sustituir, \( -4A\sin 2t + 4B\cos 2t = \cos 2t \), así que \( A = 0,\ B = \tfrac14 \).</li>
-      <li>Condiciones iniciales: \( q(0) = C_1 = 0 \) y \( q'(0) = 2C_2 = 0 \).</li>
+      <li>Con L = 1 y 1/C = 4: \( q'' + 4q = \cos 2t \). Homogénea: \( r = \pm 2i \), así que \( \omega_0 = 2 \), igual a la frecuencia de la señal.</li>
+      <li>Como \( \cos 2t \) es solución de la homogénea, se propone \( q_p = t\,(A\cos 2t + B\operatorname{sen} 2t) \).</li>
+      <li>Derivando dos veces: \( q_p'' = (-4A t + 4B)\cos 2t + (-4Bt - 4A)\operatorname{sen} 2t \). Al sumar \( 4q_p \), los términos con t se cancelan y queda \( q_p'' + 4q_p = 4B\cos 2t - 4A\operatorname{sen} 2t \).</li>
+      <li>Igualando con \( \cos 2t \): \( B = \tfrac14 \) y \( A = 0 \).</li>
+      <li>Condiciones iniciales en \( q = C_1\cos 2t + C_2\operatorname{sen} 2t + \tfrac t4\operatorname{sen} 2t \): \( q(0) = C_1 = 0 \) y \( q'(0) = 2C_2 = 0 \).</li>
     </ol>
     <div class="ans">
-      \[ q(t) = \frac{t}{4}\,\sin 2t\ \text{C} \]
-      <p>La amplitud crece linealmente con el tiempo: el circuito amplifica la emisora sintonizada. En un circuito real hay resistencia. Ponga R = 0.2 Ω en el control R y la amplitud se estabiliza en \( E_0/(R\omega) = 2.5 \) C. Si cambia 1/C, ω₀ deja de ser 2 y aparecen pulsaciones: la radio queda “desintonizada”.</p>
+      \[ q(t) = \frac{t}{4}\,\operatorname{sen} 2t\ \text{C} \]
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>Sintonizar es provocar resonancia a propósito.</b> La antena recibe al mismo tiempo las señales de muchas emisoras. El circuito LC responde con fuerza solo a la que tiene su misma frecuencia, y su amplitud crece: esa es la emisora que se escucha.</li>
+      <li><b>Las demás emisoras se apagan solas.</b> Una emisora con ω = 3 produce solo \( q_p = \dfrac{\cos 3t}{4 - 9} = -0.2\cos 3t \): una oscilación pequeña y acotada que no crece.</li>
+      <li><b>En un circuito real</b> hay algo de resistencia, y la amplitud no crece sin cota: se estabiliza en \( E_0/(R\omega_0) \). Con R = 0.2 Ω son 2.5 C. Mientras menor es R, más alto y angosto es el pico de la curva A(ω), y la radio separa mejor emisoras cercanas (es más selectiva).</li>
+    </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Para sintonizar una emisora de ω = 3 rad/s, ¿qué capacitancia hay que poner? (Despeje C de \( 1/\sqrt{LC} = 3 \)). Ajuste 1/C y ω en el panel.</li>
+      <li>Con R = 0.2 Ω y R = 1 Ω, compare la curva de respuesta en frecuencia: ¿cuál radio distingue mejor dos emisoras con ω = 2 y ω = 2.3?</li>
+      <li>Si llegan a la vez \( \cos 2t \) y \( \cos 3t \), escriba la solución por superposición. ¿Cuál de los dos términos domina a los 20 s?</li>
+      <li>Con la radio levemente desintonizada (1/C = 4.4), ¿qué patrón aparece? Relacione con el Problema 13 (pulsaciones).</li>
+    </ol>
   </div>
 
   <div data-prob="p10" hidden>
@@ -1029,16 +1139,36 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">En un mercado, la demanda depende del precio P y también de cómo los compradores esperan que cambie: \( Q_d = 40 - 2P - 2P' - P'' \). La oferta es \( Q_s = -5 + 3P \). El precio se ajusta para que oferta y demanda coincidan en todo instante (t en meses). Si P(0) = 12 $ y P′(0) = 1 $/mes, determine P(t) y diga si el mercado es estable.</p>
     <p class="analog"><b>Lectura como resorte.</b> Al igualar \( Q_d = Q_s \) se obtiene \( P'' + 2P' + 5P = 45 \). La desviación \( p = P - P^* \) respecto del precio de equilibrio cumple \( p'' + 2p' + 5p = 0 \), un resorte amortiguado. El exceso de oferta o de demanda empuja el precio de vuelta al equilibrio, y el término de expectativas \( P' \) hace de amortiguador. Modelo tomado de A. Chiang, <i>Métodos fundamentales de economía matemática</i>.</p>
     <div class="datos"><span>1 ↔ m</span><span>2 ↔ c</span><span>β + δ = 5 ↔ k</span><span>p₀ = 12 − 9 = 3</span><span>p′₀ = 1</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Equilibrio de mercado:</b> el precio se ajusta para que \( Q_d = Q_s \) en todo instante. Como la demanda incluye \( P' \) y \( P'' \) (expectativas: los compradores miran hacia dónde va el precio), esa igualdad es una EDO.</li>
+      <li><b>Ecuación con término constante:</b> la solución es \( P = P^* + p \), donde \( P^* \) es la solución constante (el precio de equilibrio) y p resuelve la homogénea.</li>
+      <li><b>Estabilidad dinámica:</b> \( P(t) \to P^* \) para cualquier condición inicial si y solo si todas las raíces características tienen parte real negativa.</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>\( Q_d = Q_s \iff -P'' - 2P' - 2P + 40 = -5 + 3P \iff P'' + 2P' + 5P = 45. \)</li>
-      <li>Precio de equilibrio: la solución constante es \( P^* = 45/5 = 9 \) $. Con \( p = P - 9 \): \( p'' + 2p' + 5p = 0 \).</li>
-      <li>\( r^2 + 2r + 5 = 0 \Rightarrow r = -1 \pm 2i \): <b>subamortiguado</b>. Entonces \( p = e^{-t}(C_1\cos 2t + C_2\sin 2t) \), con \( C_1 = p(0) = 3 \) y \( -C_1 + 2C_2 = 1 \Rightarrow C_2 = 2 \).</li>
+      <li>\( Q_d = Q_s \iff 40 - 2P - 2P' - P'' = -5 + 3P \iff P'' + 2P' + 5P = 45 \).</li>
+      <li>Precio de equilibrio: si P es constante, \( P' = P'' = 0 \) y \( 5P^* = 45 \), así que \( P^* = 9 \) $. Es el precio donde se cruzan oferta y demanda «estáticas»: \( 40 - 2P = -5 + 3P \).</li>
+      <li>Desviación \( p = P - 9 \): cumple \( p'' + 2p' + 5p = 0 \), con \( p(0) = 3 \) y \( p'(0) = 1 \).</li>
+      <li>Característica: \( r^2 + 2r + 5 = 0 \Rightarrow r = -1 \pm 2i \). Entonces \( p = e^{-t}(C_1\cos 2t + C_2\operatorname{sen} 2t) \), con \( C_1 = 3 \) y \( p'(0) = -C_1 + 2C_2 = 1 \Rightarrow C_2 = 2 \).</li>
     </ol>
     <div class="ans">
-      \[ P(t) = 9 + e^{-t}\left(3\cos 2t + 2\sin 2t\right)\ \text{\$} \]
-      <p>El precio oscila alrededor de 9 $ con una amplitud que decae como \( \sqrt{13}\,e^{-t} \). El mercado es <b>dinámicamente estable</b> porque las dos raíces tienen parte real negativa.</p>
-      <p>Pruebe c &lt; 0, que corresponde a expectativas que refuerzan la tendencia del precio: las oscilaciones crecen y el mercado se vuelve inestable. En el plano complejo, las raíces pasan al semiplano derecho.</p>
+      \[ P(t) = 9 + e^{-t}\left(3\cos 2t + 2\operatorname{sen} 2t\right)\ \text{\$} \]
+      <p>Como las raíces tienen parte real \(-1 &lt; 0\), el mercado es <b>dinámicamente estable</b>.</p>
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>Un ciclo de precios que se apaga.</b> El precio parte en 12 $ y aún subiendo. Luego cae, cruza el precio de equilibrio al mes (t ≈ 1.08), baja hasta unos 8.37 $ (t ≈ 1.63 meses) y vuelve a subir. Cada vuelta es más pequeña, con un período de π ≈ 3.1 meses.</li>
+      <li><b>Las expectativas frenan.</b> El término \( -2P' \) de la demanda dice que, si el precio sube, los compradores esperan que siga subiendo y adelantan sus compras (o al revés). En la ecuación ese término actúa como amortiguador: sin él, el precio oscilaría para siempre.</li>
+      <li><b>Lo que no cambia es el destino.</b> Sin importar el precio inicial, el mercado termina en 9 $. Los parámetros de expectativas solo cambian el <i>camino</i>: cuánto oscila y qué tan rápido se calma.</li>
+    </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Si los compradores ignoran las expectativas (sin el término en \( P' \), c = 0), ¿qué pasa con el ciclo de precios?</li>
+      <li>Ponga c &lt; 0 (expectativas que refuerzan la tendencia, como en una burbuja): ¿qué le pasa al precio? ¿Dónde quedan las raíces en el plano complejo?</li>
+      <li>Si la oferta es más sensible al precio (\( Q_s = -5 + 5P \)), ¿cambia el precio de equilibrio? ¿Y la frecuencia del ciclo?</li>
+      <li>¿Qué valor del coeficiente de \( P' \) eliminaría las oscilaciones (amortiguamiento crítico)? Interprételo como un tipo de comprador.</li>
+    </ol>
   </div>
 
   <div data-prob="p11" hidden>
@@ -1046,16 +1176,37 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">En la prueba de tolerancia a la glucosa, un paciente en ayunas bebe una dosis de glucosa y se mide su concentración en la sangre durante varias horas. El modelo de Ackerman y colaboradores (1965) describe la desviación \( g(t) = G(t) - G_0 \) respecto del nivel basal \( G_0 = 90 \) mg/dL mediante \( g'' + 2\alpha g' + \omega_0^2 g = 0 \). Para un paciente con α = 0.8 h⁻¹ y ω₀ = 2 h⁻¹, la glucosa parte del nivel basal y sube a razón de 150 mg/dL por hora. Determine g(t) y el nivel máximo, y diga si el paciente es normal según el criterio T₀ = 2π/ω₀ &lt; 4 h.</p>
     <p class="analog"><b>Lectura como resorte.</b> La insulina y otras hormonas actúan como un resorte que devuelve la glucosa a su nivel basal, y la absorción de los tejidos hace de amortiguador. El diagnóstico se basa en la frecuencia natural de ese resorte: si el período natural T₀ supera unas 4 horas, la regulación es lenta y se sospecha diabetes (M. Braun, <i>Ecuaciones diferenciales y sus aplicaciones</i>, sección 2.7).</p>
     <div class="datos"><span>1 ↔ m</span><span>2α = 1.6 ↔ c</span><span>ω₀² = 4 ↔ k</span><span>g₀ = 0</span><span>g′₀ = 150 mg/dL/h</span></div>
+    <h4 class="solh">Fundamento</h4>
+    <ul>
+      <li><b>Regulación como sistema de segundo orden.</b> El cuerpo corrige la glucosa con la insulina y otras hormonas. Ackerman y colaboradores modelaron esa corrección, cerca del nivel basal, con una ecuación lineal de orden 2 para la desviación \( g = G - G_0 \): el resorte es la corrección hormonal y el amortiguador la absorción de los tejidos.</li>
+      <li><b>Criterio clínico:</b> el parámetro relevante es la frecuencia natural \( \omega_0 \) del «resorte». Si el período natural \( T_0 = 2\pi/\omega_0 \) supera unas 4 horas, la regulación es lenta y se sospecha diabetes.</li>
+      <li><b>Datos de la prueba:</b> la glucosa parte del nivel basal (\( g(0) = 0 \)) y sube por la absorción de la dosis (\( g'(0) = 150 \) mg/dL por hora).</li>
+    </ul>
+    <h4 class="solh">Desarrollo</h4>
     <ol>
-      <li>Ecuación: \( g'' + 1.6g' + 4g = 0 \), con \( g(0) = 0,\ g'(0) = 150 \).</li>
-      <li>\( r^2 + 1.6r + 4 = 0 \Rightarrow r = -0.8 \pm i\sqrt{3.36} \approx -0.8 \pm 1.833i \): <b>subamortiguado</b>.</li>
-      <li>\( g = e^{-0.8t}(C_1\cos 1.833t + C_2\sin 1.833t) \), con \( C_1 = 0 \) y \( 1.833\,C_2 = 150 \Rightarrow C_2 \approx 81.83 \).</li>
+      <li>Con α = 0.8 y ω₀ = 2: \( g'' + 1.6g' + 4g = 0 \), con \( g(0) = 0 \) y \( g'(0) = 150 \).</li>
+      <li>Característica: \( r = -0.8 \pm i\sqrt{4 - 0.64} = -0.8 \pm i\sqrt{3.36} \approx -0.8 \pm 1.833i \): <b>subamortiguado</b>.</li>
+      <li>\( g = e^{-0.8t}(C_1\cos 1.833t + C_2\operatorname{sen} 1.833t) \). De \( g(0) = 0 \) sale \( C_1 = 0 \), y de \( g'(0) = 1.833\,C_2 = 150 \) sale \( C_2 \approx 81.83 \).</li>
+      <li>Máximo: \( g' = 0 \iff \tan(1.833t) = 1.833/0.8 \Rightarrow t \approx 0.63 \) h, con \( G \approx 135 \) mg/dL. Mínimo, en la siguiente raíz de \( g' \): \( t \approx 2.35 \) h, con \( G \approx 78.5 \) mg/dL.</li>
+      <li>Criterio: \( T_0 = 2\pi/\omega_0 = 2\pi/2 = \pi \approx 3.14 \) h.</li>
     </ol>
     <div class="ans">
-      \[ g(t) \approx 81.83\,e^{-0.8t}\sin(1.833t)\ \text{mg/dL},\qquad G(t) = 90 + g(t) \]
-      <p>La glucosa llega a su máximo, unos 135 mg/dL, a las 0.63 h (38 minutos). Después baja un poco por debajo del nivel basal, hasta unos 78.5 mg/dL a las 2.35 h, y vuelve a 90.</p>
-      <p><b>Diagnóstico:</b> \( T_0 = 2\pi/\omega_0 = \pi \approx 3.14 \) h &lt; 4 h, así que el paciente es normal. Si baja ω₀² por debajo de \( (2\pi/4)^2 \approx 2.47 \) h⁻², el criterio indica sospecha de diabetes.</p>
+      \[ G(t) \approx 90 + 81.83\,e^{-0.8t}\operatorname{sen}(1.833t)\ \text{mg/dL} \]
+      \[ T_0 \approx 3.14\ \text{h} &lt; 4\ \text{h}:\ \text{paciente normal} \]
     </div>
+    <h4 class="solh">Interpretación</h4>
+    <ul>
+      <li><b>La curva que ve el médico.</b> La glucosa sube a unos 135 mg/dL a los 38 minutos y luego baja. Antes de estabilizarse cae un poco <i>bajo</i> lo normal (unos 78.5 mg/dL, cerca de las 2 h 20 min): la insulina «se pasa» de la corrección. Ese pequeño rebote es la parte oscilatoria de la solución.</li>
+      <li><b>Por qué se mira ω₀ y no el máximo.</b> El máximo depende de la dosis y de la absorción de cada persona. ω₀, en cambio, describe qué tan fuerte es la corrección hormonal, que es lo que falla en la diabetes. Con varias mediciones se ajustan α y ω₀, y se decide con \( T_0 \).</li>
+      <li><b>Un modelo, no un diagnóstico.</b> Es una aproximación lineal cerca del nivel basal. La interpretación clínica real considera más factores. Lo que el modelo muestra es por qué un sistema de control lento produce curvas más altas y más largas.</li>
+    </ul>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Un paciente con ω₀² = 2 h⁻² (y el mismo α): calcule \( T_0 \) y diga qué indica el criterio. En el panel verá que su glucosa sube a unos 145 mg/dL y tarda más en volver.</li>
+      <li>Si α aumenta hasta igualar a ω₀, ¿sigue habiendo una caída bajo el nivel basal? ¿Qué régimen es?</li>
+      <li>Si la dosis es mayor y \( g'(0) = 200 \), ¿cambia el instante del máximo? ¿Y su altura? (Use que la ecuación es lineal).</li>
+      <li>Si el laboratorio mide solo cada 30 minutos (t = 0, 0.5, 1, …), ¿con qué mediciones estimaría el máximo? ¿Se lo podría perder?</li>
+    </ol>
   </div>
 
   <div data-prob="p12" hidden>
@@ -1074,6 +1225,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       <p>La oscilación tiene la frecuencia de la fuerza, pero su amplitud \( t/4 \) crece sin cota: a los 10 s ya es 2.5 m (en el gráfico, la envolvente punteada \( \pm t/4 \)). En la tarjeta «Respuesta en frecuencia» se ve que la amplitud estacionaria es infinita justo en \( \omega = \omega_0 \).</p>
       <p>Pruebe con el control c: con c = 0.2 la amplitud deja de crecer y se estabiliza en \( F_0/(c\,\omega_0) = 2.5 \) m. Con ω = 3.8 aparecen pulsaciones (Problema 13).</p>
     </div>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Con un roce mínimo, c = 0.1, ¿hasta qué amplitud llega? (Use \( F_0/(c\,\omega_0) \)). ¿Cuánto tarda en acercarse a ese valor?</li>
+      <li>Si se duplica la fuerza (F₀ = 4), ¿cómo cambia la velocidad con que crece la amplitud?</li>
+      <li>Cambie k a 17 sin tocar ω: ¿sigue habiendo resonancia? ¿Qué patrón aparece y por qué?</li>
+    </ol>
   </div>
 
   <div data-prob="p13" hidden>
@@ -1092,6 +1249,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       <p>Es una oscilación rápida (4.5 rad/s, el promedio de las dos frecuencias) dentro de una envolvente lenta \( \pm 2\operatorname{sen}(t/2) \), punteada en el gráfico. La amplitud se anula cada vez que \( \operatorname{sen}(t/2) = 0 \): el período de las pulsaciones es \( 2\pi \approx 6.28 \) s.</p>
       <p>Acerque ω a 5 con el control: las pulsaciones se hacen más largas y más altas. En el límite \( \omega \to \omega_0 \) se obtiene la resonancia pura del Problema 12.</p>
     </div>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Con ω = 4.5, ¿cuál es el período de las pulsaciones? (Se repiten cada \( 2\pi/|\omega_0 - \omega| \)). ¿Y su amplitud máxima, \( 2F_0/|k - m\omega^2| \)?</li>
+      <li>¿Qué pasa con las pulsaciones si se agrega un roce pequeño, c = 0.3? ¿Se mantienen para siempre?</li>
+      <li>Al afinar una guitarra se escuchan 2 «latidos» por segundo. ¿Qué tan distintas son las frecuencias de las dos cuerdas?</li>
+    </ol>
   </div>
 
   <div data-prob="p14" hidden>
@@ -1109,6 +1272,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
       \[ \omega_r = \sqrt{24} \approx 4.90\ \text{rad/s},\qquad A_{\max} = 1,\qquad v = \frac{\omega_r\,\lambda}{2\pi} = \frac{4.90\cdot 5}{2\pi} \approx 3.9\ \text{m/s} \approx 14\ \text{km/h} \]
       <p>En la tarjeta «Respuesta en frecuencia», haga clic en otros valores de ω: lejos de \( \omega_r \) la amplitud cae rápido. Suba c y verá que la curva se aplana y su máximo se mueve hacia la izquierda; con \( c^2 \ge 2mk \) ya no hay máximo. Si baja c a 0, el pico se vuelve infinito en \( \omega_0 \): es la resonancia pura.</p>
     </div>
+    <h4 class="solh">Variaciones para analizar</h4>
+    <ol class="vars">
+      <li>Con amortiguadores gastados (c = 1), calcule el nuevo \( \omega_r \) y la amplitud máxima. ¿Por qué es peligroso?</li>
+      <li>Con c = 8, ¿la curva de respuesta tiene máximo? Compruebe la condición \( c^2 &lt; 2mk \).</li>
+      <li>Si el camino tiene ondulaciones cada 10 m en vez de cada 5 m, ¿a qué velocidad vibra más el auto?</li>
+    </ol>
   </div>
 
   <div data-prob="libre" hidden>
