@@ -65,7 +65,8 @@
                 {"titulo": "Ecuaciones de orden superior",
                  "temas": ["Ecuaciones lineales homogéneas y no homogéneas", "Wronskiano e independencia lineal", "Coeficientes constantes y ecuación característica", "Coeficientes indeterminados y variación de parámetros", "Cauchy-Euler", "Aplicaciones: vibraciones mecánicas y circuitos"],
                  "recursos": [
-                   {"titulo": "Resortes, circuitos RLC, péndulo y otros modelos (Práctico 11)", "lab": "edo-resortes"}
+                   {"titulo": "Resortes, circuitos RLC, péndulo y otros modelos (Práctico 11)", "lab": "edo-resortes"},
+                   {"titulo": "Resonancia, pulsaciones y respuesta en frecuencia (Problemas 12 a 14)", "lab": "edo-resortes"}
                  ]},
                 {"titulo": "Transformada de Laplace",
                  "temas": ["Definición, existencia y propiedades", "Transformada inversa y resolución de PVI", "Teoremas de traslación; Heaviside y delta de Dirac", "Convolución y ecuaciones integrales"],
