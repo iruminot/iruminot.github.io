@@ -377,9 +377,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">El volumen del sólido generado al girar en torno al eje \(X\) la región \(R\) acotada por la curva \(y = \sqrt{x}\), el eje \(X\) y la recta \(x = 4\) es \(V = 8\pi\ \text{u}^3\).</p>
     <div class="vf" data-ans="V"><span>Su respuesta:</span><button type="button" data-v="V">Verdadero</button><button type="button" data-v="F">Falso</button><span class="vfmsg" role="status"></span></div>
     <details class="sol"><summary>Ver justificación</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Método de discos:</b> al girar en torno al eje X, el corte en x es un disco de radio \(f(x)\) y área \(\pi f(x)^2\). Entonces \(V=\pi\int_a^bf(x)^2dx\).</li></ul><h4 class="solh">Desarrollo</h4>
       <p>Al girar en torno al eje \(X\), cada corte perpendicular al eje es un <b>disco</b> de radio \(r = \sqrt{x}\) y grosor \(dx\):</p>
       \[ V = \pi\int_0^4 \left(\sqrt{x}\right)^2 dx = \pi\int_0^4 x\,dx = \pi\left[\frac{x^2}{2}\right]_0^4 = 8\pi\ \text{u}^3 \]
       <p class="ans"><b>Verdadero.</b> En la figura, suba el número de discos: la suma de sus volúmenes se acerca a \(8\pi \approx 25.13\).</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Qué sólido es.</b> Al girar \(y=\sqrt x\) se obtiene un paraboloide de revolución, como una antena o una copa, de 4 de largo y radio 2 en la boca.</li><li><b>Un dato bonito:</b> el cilindro que lo contiene (radio 2, largo 4) tiene volumen \(16\pi\). El paraboloide ocupa exactamente la mitad: \(8\pi\). Arquímedes ya conocía este tipo de relación.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Si se gira hasta x = 9, ¿cuánto vale el volumen? ¿Sigue siendo la mitad del cilindro que lo contiene?</li><li>Gire la misma región en torno al eje Y (capas cilíndricas): ¿da lo mismo?</li><li>En la figura, ¿cuántos discos hacen falta para que la suma difiera menos del 1 % de \(8\pi\)?</li></ol>
     </details>
   </div>
 
@@ -388,10 +390,12 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Para los vectores \(\vec u = \hat\imath - 2\hat\jmath + 2\hat k\) y \(\vec v = 2\hat\imath + \hat\jmath\) se cumple que \(\|\vec u\times\vec v\| = \|\vec u\|\,\|\vec v\|\).</p>
     <div class="vf" data-ans="V"><span>Su respuesta:</span><button type="button" data-v="V">Verdadero</button><button type="button" data-v="F">Falso</button><span class="vfmsg" role="status"></span></div>
     <details class="sol"><summary>Ver justificación</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Norma del producto cruz:</b> \(\|\vec u\times\vec v\|=\|\vec u\|\|\vec v\|\operatorname{sen}\theta\), y es el área del paralelogramo generado por los dos vectores.</li><li><b>Perpendicularidad:</b> \(\vec u\cdot\vec v=0\iff\theta=90^\circ\).</li></ul><h4 class="solh">Desarrollo</h4>
       <p>En general \( \|\vec u\times\vec v\| = \|\vec u\|\,\|\vec v\|\operatorname{sen}\theta \), así que la igualdad vale solo si \(\theta = 90^\circ\). Aquí \( \vec u\cdot\vec v = 2 - 2 + 0 = 0 \): los vectores son perpendiculares.</p>
       \[ \vec u\times\vec v = \begin{vmatrix}\hat\imath&\hat\jmath&\hat k\\ 1&-2&2\\ 2&1&0\end{vmatrix} = (-2,\ 4,\ 5),\qquad \|\vec u\times\vec v\| = \sqrt{45} = 3\sqrt5 \]
       <p>Además \( \|\vec u\| = 3 \) y \( \|\vec v\| = \sqrt5 \), así que \( \|\vec u\|\,\|\vec v\| = 3\sqrt5 \).</p>
       <p class="ans"><b>Verdadero</b>, porque \(\vec u\perp\vec v\). La norma del producto cruz es el área del paralelogramo: cuando los vectores son perpendiculares, ese paralelogramo es un rectángulo.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Cuándo vale la igualdad.</b> Solo si \(\operatorname{sen}\theta=1\): el paralelogramo es un rectángulo, y su área es base por altura, \(\|\vec u\|\|\vec v\|\).</li><li><b>En arquitectura:</b> dos vigas perpendiculares de largos 3 y \(\sqrt5\) delimitan un panel rectangular de área \(3\sqrt5\). Si no fueran perpendiculares, el panel tendría menos área.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Con \(\vec v=(2,1,1)\), ¿se cumple la igualdad? Calcule el ángulo entre los vectores.</li><li>Encuentre un vector \(\vec w\) perpendicular a \(\vec u\) y a \(\vec v\) a la vez. ¿Qué relación tiene con \(\vec u\times\vec v\)?</li><li>¿Para qué ángulo el área del paralelogramo es la mitad de \(\|\vec u\|\|\vec v\|\)?</li></ol>
     </details>
   </div>
 
@@ -400,9 +404,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Si \( A = \begin{pmatrix}1&2\\3&4\end{pmatrix} \) y \( B = \begin{pmatrix}2&0\\1&3\end{pmatrix} \), entonces \(\det(A + B) = \det(A) + \det(B)\).</p>
     <div class="vf" data-ans="F"><span>Su respuesta:</span><button type="button" data-v="V">Verdadero</button><button type="button" data-v="F">Falso</button><span class="vfmsg" role="status"></span></div>
     <details class="sol"><summary>Ver justificación</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Propiedades del determinante:</b> es multiplicativo, \(\det(AB)=\det A\det B\), pero <i>no</i> es aditivo.</li><li><b>Interpretación:</b> \(|\det A|\) es el área del paralelogramo generado por las columnas de A.</li></ul><h4 class="solh">Desarrollo</h4>
       \[ \det A = 4 - 6 = -2,\qquad \det B = 6 - 0 = 6,\qquad \det A + \det B = 4 \]
       \[ A + B = \begin{pmatrix}3&2\\4&7\end{pmatrix},\qquad \det(A + B) = 21 - 8 = 13 \]
       <p class="ans"><b>Falso:</b> \(\det(A + B) = 13 \ne 4\). El determinante no es aditivo. Geométricamente, |det| es el área del paralelogramo generado por las columnas, y el área del paralelogramo de A + B no es la suma de las otras dos.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Por qué no suma.</b> El área de un paralelogramo no es lineal en sus lados: si se suman los lados de dos paralelogramos, el nuevo no tiene como área la suma de las áreas.</li><li><b>El signo.</b> \(\det A=-2\) indica que las columnas de A invierten la orientación (como un espejo). \(\det B=6\) la conserva.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Busque dos matrices 2×2 distintas de la nula para las que sí se cumpla \(\det(A+B)=\det A+\det B\).</li><li>Compruebe que \(\det(AB)=\det A\det B\) con estas matrices.</li><li>¿Cuánto vale \(\det(2A)\)? ¿Por qué no es \(2\det A\)?</li></ol>
     </details>
   </div>
 
@@ -411,9 +417,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">El volumen del sólido generado al girar en torno al eje \(Y\) la región \(R\) acotada por la parábola \(y = x^2\), el eje \(X\) y la recta \(x = 2\) es \(V = \dfrac{32\pi}{5}\ \text{u}^3\).</p>
     <div class="vf" data-ans="F"><span>Su respuesta:</span><button type="button" data-v="V">Verdadero</button><button type="button" data-v="F">Falso</button><span class="vfmsg" role="status"></span></div>
     <details class="sol"><summary>Ver justificación</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Capas cilíndricas:</b> al girar en torno al eje Y una franja vertical en x de altura \(h(x)\) se forma un tubo de volumen \(\approx2\pi x\,h(x)\,dx\). Entonces \(V=2\pi\int x\,h(x)\,dx\).</li></ul><h4 class="solh">Desarrollo</h4>
       <p>Al girar en torno al eje \(Y\) conviene usar <b>capas cilíndricas</b>. La franja vertical en \(x\), de altura \(x^2\) y grosor \(dx\), genera una capa de radio \(x\):</p>
       \[ V = 2\pi\int_0^2 x\cdot x^2\,dx = 2\pi\left[\frac{x^4}{4}\right]_0^2 = 8\pi\ \text{u}^3 \]
       <p class="ans"><b>Falso:</b> el volumen correcto es \(8\pi\ \text{u}^3\). El valor \(32\pi/5\) corresponde a girar la misma región en torno al eje <b>X</b>: \( \pi\int_0^2 (x^2)^2dx = 32\pi/5 \). Cambie el eje en la figura para compararlos.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Elegir el método.</b> Con discos en torno al eje Y habría que despejar \(x=\sqrt y\) y restar dos radios (arandelas). Las capas usan directamente \(y=x^2\).</li><li><b>El error de la afirmación.</b> \(32\pi/5\) es el volumen al girar en torno al eje X. El sólido cambia según el eje: aquí es una especie de taza con fondo curvo.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Calcule el mismo volumen con arandelas: \(V=\pi\int_0^4\left(2^2-(\sqrt y)^2\right)dy\).</li><li>¿Qué volumen se obtiene al girar en torno a la recta \(x=2\)?</li><li>Si la parábola fuera \(y=x^3\), ¿cuánto vale el volumen en torno al eje Y?</li></ol>
     </details>
   </div>
 
@@ -422,9 +430,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Los vectores \(\vec u = 3\hat\imath + 4\hat k\) y \(\vec w = -6\hat\imath - 8\hat k\) son paralelos y, por lo tanto, \(\vec u\times\vec w = \vec\theta\) (el vector nulo).</p>
     <div class="vf" data-ans="V"><span>Su respuesta:</span><button type="button" data-v="V">Verdadero</button><button type="button" data-v="F">Falso</button><span class="vfmsg" role="status"></span></div>
     <details class="sol"><summary>Ver justificación</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Vectores paralelos:</b> \(\vec w=\lambda\vec u\) para algún escalar λ.</li><li><b>Producto cruz de paralelos:</b> \(\vec u\times\lambda\vec u=\vec0\), porque el paralelogramo que generan no tiene área.</li></ul><h4 class="solh">Desarrollo</h4>
       <p>Como \( \vec w = -2\,\vec u \), los vectores son paralelos (con sentidos opuestos). Verificación:</p>
       \[ \vec u\times\vec w = \begin{vmatrix}\hat\imath&\hat\jmath&\hat k\\ 3&0&4\\ -6&0&-8\end{vmatrix} = \big(0 - 0,\ -24 + 24,\ 0 - 0\big) = (0,0,0) \]
       <p class="ans"><b>Verdadero.</b> El paralelogramo que generan dos vectores paralelos es degenerado (área 0). Modifique \(\vec w\) en la figura y vea cómo aparece el producto cruz.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Sentido opuesto.</b> \(\lambda=-2&lt;0\): \(\vec w\) apunta al revés y mide el doble. Para el producto cruz no importa el sentido, solo que estén en la misma recta.</li><li><b>Uso práctico:</b> \(\vec u\times\vec w=\vec0\) es una prueba rápida de que dos vigas, cables o aristas son paralelas.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Cambie \(\vec w\) a \((-6,1,-8)\) en la figura: ¿cuánto vale ahora \(\|\vec u\times\vec w\|\)?</li><li>¿Para qué valor de a son paralelos \((3,0,4)\) y \((a,0,10)\)?</li><li>Demuestre que \(\vec u\times\vec u=\vec0\) para cualquier vector.</li></ol>
     </details>
   </div>
 
@@ -433,9 +443,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Si \( A = \begin{pmatrix}1&2&-1\\0&3&2\\2&4&-2\end{pmatrix} \), entonces \(\det(A) = 0\).</p>
     <div class="vf" data-ans="V"><span>Su respuesta:</span><button type="button" data-v="V">Verdadero</button><button type="button" data-v="F">Falso</button><span class="vfmsg" role="status"></span></div>
     <details class="sol"><summary>Ver justificación</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Filas proporcionales:</b> si una fila es múltiplo de otra, el determinante es 0.</li><li><b>Interpretación:</b> \(|\det A|\) es el volumen del paralelepípedo generado por las filas.</li></ul><h4 class="solh">Desarrollo</h4>
       <p>La fila 3 es el doble de la fila 1, y una matriz con dos filas proporcionales tiene determinante 0. Desarrollando por la primera fila:</p>
       \[ \det A = 1(-6 - 8) - 2(0 - 4) + (-1)(0 - 6) = -14 + 8 + 6 = 0 \]
       <p class="ans"><b>Verdadero.</b> \(|\det A|\) es el volumen del paralelepípedo que generan las filas. Como la fila 3 es paralela a la fila 1, el paralelepípedo es plano y tiene volumen 0.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Un paralelepípedo aplastado.</b> Como la fila 3 es paralela a la fila 1, las tres filas están en un mismo plano y el sólido que generan es plano.</li><li><b>Consecuencia:</b> A no tiene inversa, y el sistema \(A\vec x=\vec b\) tiene infinitas soluciones o ninguna.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Cambie la entrada \(a_{33}\) de −2 a 0: ¿cuánto vale el determinante ahora?</li><li>Resuelva \(A\vec x=\vec0\): ¿cuántas soluciones tiene?</li><li>Calcule el determinante desarrollando por la segunda columna y compruebe que da lo mismo.</li></ol>
     </details>
   </div>
 
@@ -444,12 +456,14 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Una constructora levanta viviendas tipo I y II en los condominios Norte y Sur, en dos etapas. \(E_1\) y \(E_2\) dan la cantidad de viviendas (filas: Norte, Sur; columnas: tipo I, II). \(M\) da los materiales por tipo de vivienda (columnas: sacos de cemento, cientos de ladrillos, barras de fierro) y \(\vec c\) el costo unitario de cada material, en miles de pesos.\[ E_1 = \begin{pmatrix}4&2\\3&5\end{pmatrix},\qquad E_2 = \begin{pmatrix}2&3\\1&2\end{pmatrix} \]\[ M = \begin{pmatrix}50&20&30\\80&30&40\end{pmatrix},\qquad \vec c = \begin{pmatrix}5\\30\\10\end{pmatrix} \]i) Calcule \(V = E_1 + E_2\) e interprete sus entradas. ii) Calcule \(Q = VM\), indique su orden e interprete \(q_{12}\). iii) Calcule \(Q\vec c\), el costo por condominio y el total. ¿Se puede calcular \(\vec c\,Q\)?</p>
     <div class="anscheck" data-checks='[{"label":"q₁₂","val":270},{"label":"Costo total (miles de $)","val":31900}]'></div>
     <details class="sol"><summary>Ver desarrollo</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Suma de matrices:</b> entrada a entrada; solo tiene sentido con matrices del mismo tamaño.</li><li><b>Producto de matrices:</b> la entrada \((i,j)\) de \(VM\) es la fila i de V por la columna j de M. Requiere que el número de columnas de V sea igual al de filas de M.</li></ul><h4 class="solh">Desarrollo</h4>
       <p><b>i)</b> \( V = E_1 + E_2 = \begin{pmatrix}6&5\\4&7\end{pmatrix} \). Cada entrada es el total de viviendas de un tipo en un condominio, sumando ambas etapas. Por ejemplo, \(v_{12} = 5\): el condominio Norte tiene 5 viviendas tipo II.</p>
       <p><b>ii)</b> \(V\) es \(2\times 2\) y \(M\) es \(2\times 3\), así que \(Q = VM\) es de orden <b>\(2\times 3\)</b>:</p>
       \[ Q = \begin{pmatrix}6&5\\4&7\end{pmatrix}\begin{pmatrix}50&20&30\\80&30&40\end{pmatrix} = \begin{pmatrix}700&270&380\\760&290&400\end{pmatrix} \]
       <p>\(q_{12} = 6\cdot 20 + 5\cdot 30 = 270\): el condominio Norte necesita 270 cientos de ladrillos (27 000 ladrillos).</p>
       <p><b>iii)</b> \( Q\vec c = \begin{pmatrix}700\cdot5 + 270\cdot30 + 380\cdot10\\ 760\cdot5 + 290\cdot30 + 400\cdot10\end{pmatrix} = \begin{pmatrix}15\,400\\16\,500\end{pmatrix} \). En materiales, Norte cuesta $15 400 000, Sur $16 500 000, y el proyecto completo $31 900 000.</p>
       <p class="ans">\(\vec c\,Q\) <b>no está definido</b>: \(\vec c\) es \(3\times 1\) y \(Q\) es \(2\times 3\). Para multiplicar, el número de columnas de \(\vec c\) (1) tendría que ser igual al número de filas de \(Q\) (2).</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Qué significa cada entrada.</b> \(q_{ij}\) es la cantidad del material j que necesita el condominio i: suma, sobre los tipos de vivienda, «viviendas de ese tipo × material por vivienda».</li><li><b>Las dimensiones cuentan una historia:</b> (condominios × tipos)·(tipos × materiales) = condominios × materiales. Si las dimensiones no calzan, la multiplicación no tiene sentido físico.</li><li><b>Costo total:</b> \(Q\vec c\) da el costo por condominio; sumando, el proyecto cuesta 31 900 miles de pesos.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Si el cemento sube a 6 mil pesos el saco, ¿cuánto aumenta el costo total? Hágalo cambiando solo \(\vec c\).</li><li>¿Qué representa \(E_1M\)? ¿Y \((E_1M)\vec c\)?</li><li>Si se agrega un tercer tipo de vivienda, ¿qué dimensiones tendrían V y M?</li></ol>
     </details>
   </div>
 
@@ -457,12 +471,14 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <h2>P.4 · Jardinera: traslación y rotación</h2>
     <p class="stmt">La jardinera triangular tiene vértices \(A(-2,1)\), \(B(1,1)\) y \(C(-2,3)\), cuyos vectores posición forman las columnas de \(P = \begin{pmatrix}-2&1&-2\\1&1&3\end{pmatrix}\). Primero se traslada según \(\vec v = (2,-1)\) y luego se rota \(180^\circ\) en torno al origen con \(R(\theta) = \begin{pmatrix}\cos\theta&-\operatorname{sen}\theta\\ \operatorname{sen}\theta&\cos\theta\end{pmatrix}\). i) Calcule \(P_1 = P + T\). ii) Calcule \(R = R(180^\circ)\) y \(P' = RP_1\). iii) Compare con \(RP + T\), que corresponde a invertir el orden.</p>
     <details class="sol"><summary>Ver desarrollo</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Traslación:</b> sumar el mismo vector a cada vértice (\(P+T\), con T de columnas iguales).</li><li><b>Rotación en torno al origen:</b> multiplicar por \(R(\theta)\). Con \(180^\circ\), \(R=-I\): cada punto va a su opuesto.</li><li><b>Composición:</b> el orden importa: rotar y luego trasladar no es lo mismo que trasladar y luego rotar.</li></ul><h4 class="solh">Desarrollo</h4>
       \[ P_1 = P + T = \begin{pmatrix}-2&1&-2\\1&1&3\end{pmatrix} + \begin{pmatrix}2&2&2\\-1&-1&-1\end{pmatrix} = \begin{pmatrix}0&3&0\\0&0&2\end{pmatrix} \]
       <p>Vértices trasladados: \(A_1(0,0)\), \(B_1(3,0)\), \(C_1(0,2)\).</p>
       \[ R(180^\circ) = \begin{pmatrix}-1&0\\0&-1\end{pmatrix},\qquad P' = RP_1 = \begin{pmatrix}0&-3&0\\0&0&-2\end{pmatrix} \]
       <p>Posición final: \(A'(0,0)\), \(B'(-3,0)\), \(C'(0,-2)\).</p>
       \[ RP + T = \begin{pmatrix}2&-1&2\\-1&-1&-3\end{pmatrix} + \begin{pmatrix}2&2&2\\-1&-1&-1\end{pmatrix} = \begin{pmatrix}4&1&4\\-2&-2&-4\end{pmatrix} \]
       <p class="ans"><b>No</b> se obtiene la misma posición: \( P' = R(P + T) = RP + RT \), y \( RT = -T \ne T \). Trasladar y rotar no conmutan.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>La jardinera termina en otro lugar según el orden.</b> \(R(P+T)=RP+RT\ne RP+T\): la rotación también gira el desplazamiento. En la figura se ven los dos resultados.</li><li><b>Forma y tamaño se conservan.</b> Traslaciones y rotaciones son movimientos rígidos: la jardinera no se deforma, solo cambia de posición.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Rote 90° en lugar de 180°: calcule \(R(90^\circ)\) y la nueva posición.</li><li>¿Qué traslación habría que aplicar <i>después</i> de rotar para obtener el mismo resultado que trasladar y luego rotar?</li><li>Compruebe que el área de la jardinera no cambia, calculándola con un determinante antes y después.</li></ol>
     </details>
   </div>
 
@@ -471,9 +487,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Una escultura de peso \(W = 200\) N cuelga de un nudo \(O\), sostenido por dos cables anclados a la losa. El cable de la tensión \(\vec T_1\) forma \(60^\circ\) con la horizontal (hacia la izquierda) y el de \(\vec T_2\) forma \(30^\circ\) (hacia la derecha). Dibuje el DCL del nudo, plantee \(\sum F_x = 0\) y \(\sum F_y = 0\) y determine \(\|\vec T_1\|\) y \(\|\vec T_2\|\).</p>
     <div class="anscheck" data-checks='[{"label":"‖T₁‖ (N)","val":173.205},{"label":"‖T₂‖ (N)","val":100}]'></div>
     <details class="sol"><summary>Ver desarrollo</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Equilibrio de una partícula (el nudo):</b> \(\sum\vec F=\vec0\), es decir, \(\sum F_x=0\) y \(\sum F_y=0\).</li><li><b>Descomposición:</b> un cable a ángulo α de la horizontal tira con \((T\cos\alpha,\ T\operatorname{sen}\alpha)\), con el signo según el sentido.</li></ul><h4 class="solh">Desarrollo</h4>
       \[ \begin{aligned} \textstyle\sum F_x &= -T_1\cos 60^\circ + T_2\cos 30^\circ = 0\\ \textstyle\sum F_y &= T_1\operatorname{sen} 60^\circ + T_2\operatorname{sen} 30^\circ - 200 = 0 \end{aligned} \]
       <p>De la primera, \( \tfrac12 T_1 = \tfrac{\sqrt3}{2}T_2 \), o sea \( T_1 = \sqrt3\,T_2 \). Al reemplazar en la segunda: \( \tfrac32 T_2 + \tfrac12 T_2 = 200 \), así que \( T_2 = 100 \).</p>
       <p class="ans">\( \|\vec T_1\| = 100\sqrt3 \approx 173.2 \) N y \( \|\vec T_2\| = 100 \) N. En forma matricial es un sistema 2 × 2, \( A\,\mathbf T = \mathbf b \), y la figura lo resuelve para cualquier ángulo.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>El cable más vertical carga más.</b> \(T_1=100\sqrt3\approx173\) N y \(T_2=100\) N: el cable a 60° sostiene la mayor parte del peso.</li><li><b>Polígono de fuerzas.</b> Las tres fuerzas, puestas una tras otra, forman un triángulo cerrado: equilibrio. Como los cables son perpendiculares (60° + 30° = 90°), el triángulo es rectángulo, y \(T_1=W\operatorname{sen}60^\circ\), \(T_2=W\cos60^\circ\).</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Si los dos cables forman 45°, ¿cuánto vale cada tensión? Compruébelo en la figura.</li><li>¿Qué pasa con las tensiones si los cables se acercan a la horizontal (ángulos de 10°)? ¿Por qué es peligroso?</li><li>Si cada cable resiste como máximo 150 N, ¿qué peso máximo se puede colgar con estos ángulos?</li></ol>
     </details>
   </div>
 
@@ -482,9 +500,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">El lucernario es un panel triangular de vidrio con vértices \(A(2,1,0)\), \(B(5,1,0)\) y \(C(2,5,3)\). Determine \(\overrightarrow{AB}\), \(\overrightarrow{AC}\), un vector normal \(\overrightarrow{AB}\times\overrightarrow{AC}\) y el área del panel.</p>
     <div class="anscheck" data-checks='[{"label":"Área (m²)","val":7.5}]'></div>
     <details class="sol"><summary>Ver desarrollo</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Producto cruz:</b> \(\overrightarrow{AB}\times\overrightarrow{AC}\) es perpendicular al plano del triángulo.</li><li><b>Área de un triángulo en el espacio:</b> \(\tfrac12\|\overrightarrow{AB}\times\overrightarrow{AC}\|\).</li></ul><h4 class="solh">Desarrollo</h4>
       \[ \overrightarrow{AB} = (3, 0, 0),\qquad \overrightarrow{AC} = (0, 4, 3) \]
       \[ \overrightarrow{AB}\times\overrightarrow{AC} = \begin{vmatrix}\hat\imath&\hat\jmath&\hat k\\3&0&0\\0&4&3\end{vmatrix} = (0,\ -9,\ 12),\qquad \|\overrightarrow{AB}\times\overrightarrow{AC}\| = \sqrt{81 + 144} = 15 \]
       <p class="ans">\(\text{Área} = \tfrac12\cdot 15 = 7.5\ \text{m}^2\). El producto cruz es perpendicular al panel, y su norma es el área del paralelogramo; el triángulo es la mitad.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>La normal del vidrio.</b> \(\vec n=(0,-9,12)\) no tiene componente x, porque el panel contiene una arista paralela al eje x. Su inclinación respecto de la horizontal es \(\arctan(9/12)\approx36.9^\circ\).</li><li><b>Para qué sirve:</b> la normal indica hacia dónde mira el lucernario y cuánta luz recibe, y el área da cuánto vidrio comprar: 7.5 m².</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Si C se mueve a \((2,5,6)\), ¿cambia el área? ¿Y la inclinación?</li><li>Calcule el ángulo entre \(\vec n\) y el vector vertical \((0,0,1)\).</li><li>Use \(\overrightarrow{BA}\times\overrightarrow{BC}\): ¿obtiene la misma normal? ¿Y la misma área?</li></ol>
     </details>
   </div>
 
@@ -493,9 +513,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">Un letrero de peso \(W = 300\) N cuelga de un nudo \(O\), sostenido por un cable inclinado anclado al muro (tensión \(\vec T_1\), a \(60^\circ\) de la horizontal, hacia la izquierda) y un cable horizontal anclado a un pilar (tensión \(\vec T_2\), hacia la derecha). Dibuje el DCL del nudo, plantee el equilibrio y determine \(\|\vec T_1\|\) y \(\|\vec T_2\|\).</p>
     <div class="anscheck" data-checks='[{"label":"‖T₁‖ (N)","val":346.41},{"label":"‖T₂‖ (N)","val":173.205}]'></div>
     <details class="sol"><summary>Ver desarrollo</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Equilibrio de una partícula (el nudo):</b> \(\sum\vec F=\vec0\), es decir, \(\sum F_x=0\) y \(\sum F_y=0\).</li><li><b>Descomposición:</b> un cable a ángulo α de la horizontal tira con \((T\cos\alpha,\ T\operatorname{sen}\alpha)\), con el signo según el sentido.</li></ul><h4 class="solh">Desarrollo</h4>
       \[ \begin{aligned} \textstyle\sum F_x &= -T_1\cos 60^\circ + T_2 = 0\\ \textstyle\sum F_y &= T_1\operatorname{sen} 60^\circ - 300 = 0 \end{aligned} \]
       <p>De la segunda, \( T_1 = 300/\tfrac{\sqrt3}{2} = 200\sqrt3 \). De la primera, \( T_2 = \tfrac12 T_1 = 100\sqrt3 \).</p>
       <p class="ans">\( \|\vec T_1\| = 200\sqrt3 \approx 346.4 \) N y \( \|\vec T_2\| = 100\sqrt3 \approx 173.2 \) N. El cable inclinado es el único que sostiene el peso, así que su tensión supera a W.</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>El cable horizontal no sostiene peso.</b> Solo equilibra la componente horizontal del cable inclinado: todo el peso lo carga \(T_1\operatorname{sen}60^\circ\).</li><li><b>Por eso \(T_1&gt;W\):</b> \(T_1=200\sqrt3\approx346\) N, más que los 300 N del letrero. Un cable inclinado siempre tira más fuerte que el peso que sostiene verticalmente.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Si el cable del muro forma 30° con la horizontal, ¿cuánto valen las tensiones? ¿Conviene?</li><li>¿Para qué ángulo la tensión del cable horizontal es la mitad del peso?</li><li>Si el pilar puede resistir como máximo 200 N horizontales, ¿qué ángulo mínimo debe tener el cable del muro?</li></ol>
     </details>
   </div>
 
@@ -504,9 +526,11 @@ details.sol mjx-container[display=true]{overflow-x:auto;overflow-y:hidden;max-wi
     <p class="stmt">La cubierta del acceso es un panel triangular de policarbonato con vértices \(A(0,2,4)\), \(B(6,2,4)\) y \(C(0,5,8)\). Determine \(\overrightarrow{AB}\), \(\overrightarrow{AC}\), un vector normal \(\overrightarrow{AB}\times\overrightarrow{AC}\) y el área del panel.</p>
     <div class="anscheck" data-checks='[{"label":"Área (m²)","val":15}]'></div>
     <details class="sol"><summary>Ver desarrollo</summary>
+      <h4 class="solh">Fundamento</h4><ul><li><b>Producto cruz y área</b> de un triángulo en el espacio, como en 5(b).</li><li><b>Una arista paralela a un eje:</b> \(\overrightarrow{AB}=(6,0,0)\), y por eso la normal tiene componente x nula.</li></ul><h4 class="solh">Desarrollo</h4>
       \[ \overrightarrow{AB} = (6, 0, 0),\qquad \overrightarrow{AC} = (0, 3, 4) \]
       \[ \overrightarrow{AB}\times\overrightarrow{AC} = \begin{vmatrix}\hat\imath&\hat\jmath&\hat k\\6&0&0\\0&3&4\end{vmatrix} = (0,\ -24,\ 18),\qquad \|\overrightarrow{AB}\times\overrightarrow{AC}\| = \sqrt{576 + 324} = 30 \]
       <p class="ans">\(\text{Área} = \tfrac12\cdot 30 = 15\ \text{m}^2\).</p>
+    <h4 class="solh">Interpretación</h4><ul><li><b>Material:</b> la cubierta mide 15 m², que es lo que hay que comprar de policarbonato, más los cortes.</li><li><b>Pendiente:</b> \(\vec n=(0,-24,18)\) es proporcional a \((0,-4,3)\). La cubierta sube 4 unidades en z por cada 3 en y: una pendiente de unos 53°, que deja escurrir bien el agua.</li></ul><h4 class="solh">Variaciones para analizar</h4><ol class="vars"><li>Calcule el ángulo de la cubierta con la horizontal usando \(\vec n\).</li><li>Si la cubierta fuera un rectángulo con los lados \(\overrightarrow{AB}\) y \(\overrightarrow{AC}\), ¿cuánto mediría?</li><li>¿Qué punto D completa el paralelogramo ABDC?</li></ol>
     </details>
   </div>
 </article>

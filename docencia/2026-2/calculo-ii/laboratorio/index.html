@@ -695,6 +695,7 @@ function tayDraw(crit){
     const el=$('#c2crit');el.innerHTML='\\[ P_{'+n+'}(x)='+(s||'0')+' \\]';typeset(el);},150);}
 }
 
+const C2V={"EX1": ["Para la misma sucesión, ¿qué N necesita ε = 0.001? Compruebe la estimación \\(N\\approx3/(4\\varepsilon)\\).", "Elija \\(a_n=\\operatorname{sen}(n)/n\\) en la figura: ¿por qué N salta de forma irregular al mover ε?", "Con \\(a_n=(-1)^n\\), explique con la definición por qué ningún L sirve."], "EX2": ["¿Cuántos términos de la telescópica hacen falta para que el error sea menor que 0.001? ¿Y para la geométrica de (c)?", "En la figura, ponga la geométrica con r = 0.95 y con r = −0.95: ¿cuál converge más lento? ¿Por qué oscila una de ellas?", "Con la serie p, busque el menor p con el que S₂₀₀ parece haberse estabilizado. ¿Es una prueba de convergencia?"], "EX3": ["Calcule el radio de \\(\\sum\\frac{x^n}{n^2\\,3^n}\\). ¿Converge en ambos extremos?", "Con la serie \\(\\sum x^n/n!\\) de la figura, ¿qué N hace falta para aproximar \\(e^3\\) con error menor que 0.01?", "¿Qué serie de potencias, centrada en 0, representa \\(\\ln(1+x)\\)? (Cambie x por −x en la fórmula usada)."], "EX4": ["¿Qué orden n necesita \\(P_n\\) de \\(e^x\\) en 0 para aproximar e con error menor que 0.001? Use la cota del resto.", "Aproxime \\(\\operatorname{sen}(0.5)\\) con \\(P_3\\) y acote el error. ¿Por qué \\(P_3\\) y \\(P_4\\) dan lo mismo para el seno?", "En la figura, centre \\(\\ln(1+x)\\) en a = 1: ¿cambia el radio de convergencia? ¿Por qué?"]};EX1.vars=C2V.EX1;EX2.vars=C2V.EX2;EX3.vars=C2V.EX3;EX4.vars=C2V.EX4;
 /* =================== navegación =================== */
 const TOOLS={'calc2-sucesiones':{h:'Sucesiones',lede:'Una sucesión es una lista infinita de números. ¿A qué valor se acercan sus términos? La definición ε–N lo hace preciso.',vh:'Términos de la sucesión y franja L ± ε',hint:'Mueva ε y vea desde qué N los términos quedan en la franja',ex:EX1,ctl:sucCtl,draw:sucDraw},
  'calc2-series':{h:'Series numéricas',lede:'Sumar infinitos términos tiene sentido si las sumas parciales se acercan a un número. Compare series que convergen y que divergen.',vh:'Términos y sumas parciales',hint:'Elija una serie y aumente N',ex:EX2,ctl:serCtl,draw:()=>serDraw(true)},
@@ -705,7 +706,7 @@ function show(id){
   if(!TOOLS[id])id='calc2-sucesiones';const T=TOOLS[id];CUR=id;
   $$('#c2topics a').forEach(a=>{if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   $('#c2h1').textContent=T.h;$('#c2lede').textContent=T.lede;$('#c2vh').textContent=T.vh;$('#c2hint').textContent=T.hint;
-  const w=$('#c2worked');w.innerHTML='<h2>'+T.ex.title+'</h2><div class="stmt">'+T.ex.stmt+'</div><div class="anscheck"></div><details class="sol"><summary>Ver desarrollo</summary>'+T.ex.sol+'</details>';
+  const w=$('#c2worked');w.innerHTML='<h2>'+T.ex.title+'</h2><div class="stmt">'+T.ex.stmt+'</div><div class="anscheck"></div><details class="sol"><summary>Ver desarrollo</summary>'+T.ex.sol+(T.ex.vars?'<h4 class="solh">Variaciones para analizar</h4><ol class="vars">'+T.ex.vars.map(s=>'<li>'+s+'</li>').join('')+'</ol>':'')+'</details>';
   checks(w.querySelector('.anscheck'),T.ex.checks);typeset(w);
   const ct=$('#ctab-calc2');if(ct)ct.setAttribute('href','#'+id);
   T.ctl();T.draw();
